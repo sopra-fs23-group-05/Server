@@ -5,8 +5,8 @@ import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 public class UserGetDTO {
 
   private Long id;
-  private String name;
   private String username;
+  private boolean isLeader;
   private UserStatus status;
 
   public Long getId() {
@@ -17,15 +17,15 @@ public class UserGetDTO {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
-  }
+    public boolean isLeader() {
+        return isLeader;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setLeader(boolean leader) {
+        isLeader = leader;
+    }
 
-  public String getUsername() {
+    public String getUsername() {
     return username;
   }
 
