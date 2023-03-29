@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.custom.Settings;
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
@@ -97,6 +99,43 @@ public class UserControllerTest {
         .andExpect(jsonPath("$.username", is(user.getUsername())))
         .andExpect(jsonPath("$.status", is(user.getStatus().toString())));
   }
+
+  // Test POST for lobby
+    @Test
+    public void createLobby_validInput_lobbyCreated() throws Exception {
+        // given
+        User user = new User();
+        user.setId(1L);
+        user.setName("Test User");
+        user.setUsername("testUsername");
+        user.setToken("1");
+        user.setStatus(UserStatus.ONLINE);
+
+        Lobby lobby = new Lobby();
+        lobby.setAccessCode();
+        lobby.setLobbyLeader(user);
+        lobby.setSettings(new Settings());
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setName("Test User");
+        userPostDTO.setUsername("testUsername");
+
+        given(userService.createLobby(Mockito.any())).willReturn(lobby);
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/lobbies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPostDTO));
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.lobbyLeader.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.settings.rounds", is(7)))
+                .andExpect(jsonPath("$.settings.roundTime", is(120)))
+                .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
+
+    }
 
   /**
    * Helper Method to convert userPostDTO into a JSON string such that the input
