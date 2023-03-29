@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
@@ -61,10 +62,12 @@ public class UserController {
     @ResponseBody
     public LobbyGetDTO createLobby(@RequestBody UserPostDTO userPostDTO) {
         // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        // create user
+        // create lobby
+        Lobby createdLobby = userService.createLobby(userInput);
         // convert internal representation of user back to API
-        return new LobbyGetDTO();
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
 }
 

@@ -1,7 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.custom.Settings;
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +32,12 @@ public class UserService {
   private final Logger log = LoggerFactory.getLogger(UserService.class);
 
   private final UserRepository userRepository;
+    private final LobbyRepository lobbyRepository;
 
   @Autowired
-  public UserService(@Qualifier("userRepository") UserRepository userRepository) {
+  public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository) {
     this.userRepository = userRepository;
+      this.lobbyRepository = lobbyRepository;
   }
 
   public List<User> getUsers() {
@@ -51,6 +56,21 @@ public class UserService {
     log.debug("Created Information for User: {}", newUser);
     return newUser;
   }
+
+    public Lobby createLobby(User leader) {
+      leader = userRepository.findByUsername(leader.getUsername());
+      Lobby newLobby = new Lobby();
+      newLobby.setAccessCode();
+      newLobby.setLobbyLeader(leader);
+      newLobby.setSettings(new Settings());
+        // saves the given entity but data is only persisted in the database once
+        // flush() is called
+        newLobby = lobbyRepository.save(newLobby);
+        lobbyRepository.flush();
+
+        log.debug("Created Information for Lobby: {}", newLobby);
+        return newLobby;
+    }
 
   /**
    * This is a helper method that will check the uniqueness criteria of the
