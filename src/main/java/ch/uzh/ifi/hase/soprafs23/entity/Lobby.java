@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 
 import javax.persistence.*;
+import java.util.Random;
 
 @Entity
 @Table(name = "LOBBY")
@@ -10,7 +11,7 @@ public class Lobby {
     // TODO implement serializable to generate an access code.
 
     @Id
-    private Long accessCode;
+    private int accessCode;
 
     @OneToOne
     private User lobbyLeader;
@@ -18,7 +19,7 @@ public class Lobby {
     @Embedded
     private Settings aSettings;
 
-    public Long getAccessCode() {
+    public int getAccessCode() {
         return accessCode;
     }
 
@@ -30,8 +31,11 @@ public class Lobby {
         return aSettings;
     }
 
-    public void setAccessCode(Long accessCode) {
-        this.accessCode = accessCode;
+    public void setAccessCode() {
+        Random random = new Random();
+        int min = 100000;
+        int max = 999999;
+        accessCode = random.nextInt((max - min) + 1) + min;
     }
 
     public void setLobbyLeader(User lobbyLeader) {
