@@ -47,7 +47,7 @@ public class UserService {
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
     newUser.setStatus(UserStatus.OFFLINE);
-    checkIfUserExists(newUser);
+    validateUsername(newUser);
     // saves the given entity but data is only persisted in the database once
     // flush() is called
     newUser = userRepository.save(newUser);
@@ -82,11 +82,13 @@ public class UserService {
    * @throws org.springframework.web.server.ResponseStatusException
    * @see User
    */
-  private void checkIfUserExists(User userToBeCreated) {
+  private void validateUsername(User userToBeCreated) {
     User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
 
     if (userByUsername != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is not unique. Therefore, the user could not be created!");
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "The username provided is not unique. Therefore, the user could not be created!");
+    }else if(userToBeCreated.getUsername().equals("")){
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is empty. Therefore, the user could not be created!");
     }
   }
 }

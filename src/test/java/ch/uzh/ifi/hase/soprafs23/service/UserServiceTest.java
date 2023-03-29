@@ -33,14 +33,14 @@ public class UserServiceTest {
     testUser.setLeader(true);
     testUser.setUsername("testUsername");
 
-    // when -> any object is being save in the userRepository -> return the dummy
+    // when -> any object is being saved in the userRepository -> return the dummy
     // testUser
     Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
   }
 
   @Test
   public void createUser_validInputs_success() {
-    // when -> any object is being save in the userRepository -> return the dummy
+    // when -> any object is being saved in the userRepository -> return the dummy
     // testUser
     User createdUser = userService.createUser(testUser);
 
@@ -83,5 +83,20 @@ public class UserServiceTest {
     // is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
   }
+
+  // Test if exception is thrown for empty usernames. #86
+    @Test
+    public void createUser_emptyInputs_throwsException() {
+
+        // given
+        User testEmptyUsernameUser = new User();
+        testEmptyUsernameUser.setId(1L);
+        testEmptyUsernameUser.setLeader(true);
+        testEmptyUsernameUser.setUsername("");
+
+        // then -> attempt to create user with empty username -> check that an error
+        // is thrown
+        assertThrows(ResponseStatusException.class, () -> userService.createUser(testEmptyUsernameUser));
+    }
 
 }
