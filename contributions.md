@@ -1,1 +1,1 @@
-Hello World!
+Before each meeting, each team member is required to manually append the two development tasks they completed during the previous week. Each entry should consist of the (week-) date, your name, links to the GitHub Issues you worked on, and optionally a short description of your work.
