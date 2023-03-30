@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 @Entity
@@ -18,6 +19,12 @@ public class Lobby {
 
     @Embedded
     private Settings aSettings;
+
+    @OneToMany
+    private ArrayList<User> team1;
+
+    @OneToMany
+    private ArrayList<User> team2;
 
     public int getAccessCode() {
         return accessCode;
@@ -44,5 +51,21 @@ public class Lobby {
 
     public void setSettings(Settings aSettings) {
         this.aSettings = aSettings;
+    }
+
+    public void addUserToTeam1(User user) {
+        team1.add(user);
+    }
+
+    public void addUserToTeam2(User user) {
+        team2.add(user);
+    }
+
+    public void removeUserFromTeam1(User user) {
+        team1.remove(user);
+    }
+
+    public void removeUserFromTeam2(User user) {
+        team2.remove(user);
     }
 }
