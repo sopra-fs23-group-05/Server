@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -21,10 +22,20 @@ public class Lobby {
     private Settings aSettings;
 
     @OneToMany
-    private ArrayList<User> team1;
+    private List<User> lobbyUsers;
 
     @OneToMany
-    private ArrayList<User> team2;
+    private List<User> team1;
+
+    @OneToMany
+    private List<User> team2;
+
+    public Lobby() {
+        setAccessCode();
+        lobbyUsers = new ArrayList<>();
+        team1 = new ArrayList<>();
+        team2 = new ArrayList<>();
+    }
 
     public int getAccessCode() {
         return accessCode;
@@ -53,6 +64,10 @@ public class Lobby {
         this.aSettings = aSettings;
     }
 
+    public List<User> getLobbyUsers() {
+        return lobbyUsers;
+    }
+
     public void addUserToTeam1(User user) {
         team1.add(user);
     }
@@ -67,5 +82,13 @@ public class Lobby {
 
     public void removeUserFromTeam2(User user) {
         team2.remove(user);
+    }
+
+    public void addUserToLobby(User userInput) {
+        lobbyUsers.add(userInput);
+    }
+
+    public void removeUserFromLobby(User userInput) {
+        lobbyUsers.remove(userInput);
     }
 }
