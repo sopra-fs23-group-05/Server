@@ -60,7 +60,6 @@ public class UserService {
     public Lobby createLobby(User leader) {
       leader = userRepository.findByUsername(leader.getUsername());
       Lobby newLobby = new Lobby();
-      newLobby.setAccessCode();
       newLobby.setLobbyLeader(leader);
       newLobby.setSettings(new Settings());
         // saves the given entity but data is only persisted in the database once
@@ -91,4 +90,52 @@ public class UserService {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is empty. Therefore, the user could not be created!");
     }
   }
+
+    public Lobby joinLobbyTeam(int lobbyId, int teamNr, User userInput) {
+      Lobby existingLobby = lobbyRepository.findByAccessCode(lobbyId);
+      if(teamNr == 1){
+          existingLobby.addUserToTeam1(userInput);
+      }else if(teamNr == 2){
+          existingLobby.addUserToTeam2(userInput);
+      }else{
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The team number provided is not valid. Therefore, the user could not be added to the lobby!");
+      }
+       existingLobby = lobbyRepository.save(existingLobby);
+         lobbyRepository.flush();
+        log.debug("Added User to lobby team: {}", teamNr);
+      return existingLobby;
+    }
+
+    public Lobby leaveLobbyTeam(int lobbyId, int teamNr, User userInput) {
+        Lobby existingLobby = lobbyRepository.findByAccessCode(lobbyId);
+        if(teamNr == 1){
+            existingLobby.removeUserFromTeam1(userInput);
+        }else if(teamNr == 2){
+            existingLobby.removeUserFromTeam2(userInput);
+        }else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The team number provided is not valid. Therefore, the user could not be removed from the lobby!");
+        }
+        existingLobby = lobbyRepository.save(existingLobby);
+        lobbyRepository.flush();
+        log.debug("Removed User from lobby team: {}", teamNr);
+        return existingLobby;
+    }
+
+    public Lobby joinLobby(int lobbyId, User userInput) {
+        Lobby existingLobby = lobbyRepository.findByAccessCode(lobbyId);
+        existingLobby.addUserToLobby(userInput);
+        existingLobby = lobbyRepository.save(existingLobby);
+        lobbyRepository.flush();
+        log.debug("Added User to lobby: {}", existingLobby);
+        return existingLobby;
+    }
+
+    public Lobby leaveLobby(int lobbyId, User userInput) {
+        Lobby existingLobby = lobbyRepository.findByAccessCode(lobbyId);
+        existingLobby.removeUserFromLobby(userInput);
+        existingLobby = lobbyRepository.save(existingLobby);
+        lobbyRepository.flush();
+        log.debug("Removed User from lobby: {}", existingLobby);
+        return existingLobby;
+    }
 }
