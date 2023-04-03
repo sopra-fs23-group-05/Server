@@ -89,14 +89,24 @@ public class UserService {
     }
   }
 
-    public Lobby joinLobbyTeam(int lobbyId, int teamNr, User userInput) {
-      Lobby existingLobby = lobbyRepository.findByAccessCode(lobbyId);
-      if(teamNr == 1){
+    public Lobby joinLobbyTeam(int accessCode, int teamNr, int userId) {
+      Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
+        User userInput = userRepository.findById(userId);
+        if(existingLobby == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby with the access code provided does not exist. Therefore, the user could not be added to the lobby team!");
+        }
+        if(userInput == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be added to the lobby team!");
+        }else if (!existingLobby.isUserInLobby(userInput)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided is not in the lobby. Therefore, the user could not be added to the lobby team!");
+        }
+
+        if(teamNr == 1){
           existingLobby.addUserToTeam1(userInput);
       }else if(teamNr == 2){
           existingLobby.addUserToTeam2(userInput);
       }else{
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The team number provided is not valid. Therefore, the user could not be added to the lobby!");
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The team number provided is not valid. Therefore, the user could not be added to the lobby team!");
       }
        existingLobby = lobbyRepository.save(existingLobby);
          lobbyRepository.flush();

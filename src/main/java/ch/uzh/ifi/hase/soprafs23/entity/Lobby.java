@@ -35,6 +35,7 @@ public class Lobby {
         lobbyUsers = new ArrayList<>();
         team1 = new ArrayList<>();
         team2 = new ArrayList<>();
+        System.out.println("--------------------I got here------------------");
     }
 
     public int getAccessCode() {
@@ -93,5 +94,17 @@ public class Lobby {
 
     public void removeUserFromLobby(User userInput) {
         lobbyUsers.remove(userInput);
+    }
+
+    public boolean isUserInLobby(User userInput) {
+        return lobbyUsers.contains(userInput);
+    }
+
+    public List<User> getTeam1() {
+        return team1;
+    }
+
+    public List<User> getTeam2() {
+        return team2;
     }
 }

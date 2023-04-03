@@ -55,15 +55,15 @@ public class LobbyGetDTO {
     public List<User> getTeam1() {
         return team1;
     }
-    public void setTeam1(User user) {
-        this.team1.add(user);
+    public void setTeam1(List<User> team1) {
+        this.team1 = team1;
     }
 
     public List<User> getTeam2() {
         return team2;
     }
 
-    public void setTeam2(User user) {
-        this.team2.add(user);
+    public void setTeam2(List<User> team2) {
+        this.team2 = team2;
     }
 }
