@@ -44,7 +44,6 @@ public class UserController {
     return userGetDTOs;
   }
 
-  // TODO Maybe post a user directly into a lobby.
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
@@ -61,12 +60,9 @@ public class UserController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public LobbyGetDTO createLobby(@RequestBody UserPostDTO userPostDTO) {
-        // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
-
+    public LobbyGetDTO createLobby() {
         // create lobby
-        Lobby createdLobby = userService.createLobby(userInput);
+        Lobby createdLobby = userService.createLobby();
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }

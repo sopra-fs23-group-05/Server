@@ -57,10 +57,8 @@ public class UserService {
     return newUser;
   }
 
-    public Lobby createLobby(User leader) {
-      leader = userRepository.findByUsername(leader.getUsername());
+    public Lobby createLobby() {
       Lobby newLobby = new Lobby();
-      newLobby.setLobbyLeader(leader);
       newLobby.setSettings(new Settings());
         // saves the given entity but data is only persisted in the database once
         // flush() is called
