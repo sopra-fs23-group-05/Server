@@ -138,9 +138,16 @@ public class UserService {
         return existingLobby;
     }
 
-    public Lobby leaveLobby(int lobbyId, User userInput) {
-        Lobby existingLobby = lobbyRepository.findByAccessCode(lobbyId);
-        existingLobby.removeUserFromLobby(userInput);
+    public Lobby leaveLobby(int accessCode, int userId) {
+        Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
+        User existingUser = userRepository.findById(userId);
+
+        if(existingLobby == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby with the access code provided does not exist. Therefore, the user could not be removed from the lobby!");
+        }else if(existingUser == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be removed from the lobby!");
+        }
+        existingLobby.removeUserFromLobby(existingUser);
         existingLobby = lobbyRepository.save(existingLobby);
         lobbyRepository.flush();
         log.debug("Removed User from lobby: {}", existingLobby);
