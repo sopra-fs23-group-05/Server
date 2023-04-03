@@ -119,9 +119,14 @@ public class UserService {
         return existingLobby;
     }
 
-    public Lobby joinLobby(int lobbyId, User userInput) {
-        Lobby existingLobby = lobbyRepository.findByAccessCode(lobbyId);
-        existingLobby.addUserToLobby(userInput);
+    public Lobby joinLobby(int accessCode, long userId) {
+        Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
+        User existingUser = userRepository.findById(userId);
+
+        if(existingLobby.getLobbyLeader() == null && existingUser.isLeader()){
+            existingLobby.setLobbyLeader(existingUser);
+        }
+        existingLobby.addUserToLobby(existingUser);
         existingLobby = lobbyRepository.save(existingLobby);
         lobbyRepository.flush();
         log.debug("Added User to lobby: {}", existingLobby);
@@ -134,6 +139,12 @@ public class UserService {
         existingLobby = lobbyRepository.save(existingLobby);
         lobbyRepository.flush();
         log.debug("Removed User from lobby: {}", existingLobby);
+        return existingLobby;
+    }
+
+    public Lobby getLobby(int accessCode) {
+        Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
+        System.out.println("-----------------" + existingLobby.getAccessCode() + "-----------------");
         return existingLobby;
     }
 }

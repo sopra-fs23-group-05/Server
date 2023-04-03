@@ -67,16 +67,22 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
 
-    // TODO Priority Low, It would be smarter to get the users ID as a path variable.
-    @PutMapping ("/lobbies/{lobbyId}/additions/users")
+    @GetMapping("/lobbies/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO joinLobby(@PathVariable int lobbyId, @RequestBody UserPostDTO userPostDTO) {
-        // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+    public LobbyGetDTO getLobby(@PathVariable int accessCode) {
+        // create lobby
+        Lobby createdLobby = userService.getLobby(accessCode);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
+    }
 
+    @PutMapping ("/lobbies/{accessCode}/additions/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO joinLobby(@PathVariable int accessCode, @PathVariable int userId) {
         // join lobby
-        Lobby joinedLobby = userService.joinLobby(lobbyId, userInput);
+        Lobby joinedLobby = userService.joinLobby(accessCode, userId);
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(joinedLobby);
     }
