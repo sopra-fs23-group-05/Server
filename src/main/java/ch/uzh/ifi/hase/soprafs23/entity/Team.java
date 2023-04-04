@@ -2,8 +2,10 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +23,7 @@ public class Team {
     @Column(nullable = false)
     private int points;
 
-    @OneToMany
+    @ElementCollection
     @Column(nullable = false)
     private List<Player> players;
 
