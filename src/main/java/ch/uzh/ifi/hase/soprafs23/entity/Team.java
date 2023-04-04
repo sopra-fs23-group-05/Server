@@ -20,9 +20,10 @@ public class Team {
 
     @Column(nullable = false)
     private int points;
+
     @OneToMany
     @Column(nullable = false)
-    private List<User> players;
+    private List<Player> players;
 
     @Column(nullable = false)
     private int idxClueGiver;
@@ -35,11 +36,11 @@ public class Team {
         return idxClueGiver;
     }
 
-    public List<User> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<User> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 

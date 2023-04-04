@@ -1,8 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
-import ch.uzh.ifi.hase.soprafs23.custom.Settings;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class TeamGetDTO {
 
     private int points;
 
-    private List<User> players;
+    private List<Player> players;
 
     private int idxClueGiver;
 
@@ -28,11 +27,11 @@ public class TeamGetDTO {
         return idxClueGiver;
     }
 
-    public List<User> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<User> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
