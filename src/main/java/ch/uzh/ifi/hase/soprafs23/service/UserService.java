@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
@@ -74,6 +75,22 @@ public class UserService {
 
         log.debug("Created Information for Lobby: {}", newLobby);
         return newLobby;
+    }
+    //updates the team at the end of a round with the points they amde and switches the roles
+    public Team updateTeam(int points,Team team){
+      team.setPoints(team.getPoints()+points);
+      int teamSize = team.getPlayers().size();
+      if (team.getIdxClueGiver()<teamSize){
+          team.setIdxClueGiver(team.getIdxClueGiver()+1);
+      }else{
+          team.setIdxClueGiver(0);
+      }
+      if (team.getaRole()== Role.BuzzingTeam){
+          team.setaRole(Role.GuessingTeam);
+      }else{
+          team.setaRole(Role.BuzzingTeam);
+      }
+      return team;
     }
 
   /**

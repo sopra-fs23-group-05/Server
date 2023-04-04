@@ -80,6 +80,15 @@ public class UserController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
+    @PutMapping ("/teams/{teamId}/points/{points}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public TeamGetDTO updateTeam(@PathVariable int points,@PathVariable int teamId) {
+        Team team = userService.getTeam(teamId);
+        userService.updateTeam(points, team);
+
+        return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
+    }
 }
 
 
