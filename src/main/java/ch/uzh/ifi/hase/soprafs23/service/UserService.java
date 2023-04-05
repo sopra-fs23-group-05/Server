@@ -174,7 +174,6 @@ public class UserService {
     }
 
     public Lobby getLobby(int accessCode) {
-        Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
-        return existingLobby;
+        return lobbyRepository.findByAccessCode(accessCode);
     }
 }
