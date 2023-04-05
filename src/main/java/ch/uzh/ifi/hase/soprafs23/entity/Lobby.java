@@ -24,6 +24,7 @@ public class Lobby {
     @OneToMany
     private List<User> lobbyUsers;
 
+    // TODO: Low priority; Implement a class Teams to handle team related logic in a separate class.
     @OneToMany
     private List<User> team1;
 
@@ -98,6 +99,14 @@ public class Lobby {
 
     public boolean isUserInLobby(User userInput) {
         return lobbyUsers.contains(userInput);
+    }
+
+    public boolean isUserInTeam1(User userInput) {
+        return team1.contains(userInput);
+    }
+
+    public boolean isUserInTeam2(User userInput) {
+        return team2.contains(userInput);
     }
 
     public List<User> getTeam1() {
