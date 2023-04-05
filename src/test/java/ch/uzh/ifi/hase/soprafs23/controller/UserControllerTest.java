@@ -117,6 +117,10 @@ public class UserControllerTest {
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode())))
+                .andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader())))
+                .andExpect(jsonPath("$.lobbyUsers", is(lobby.getLobbyUsers())))
+                .andExpect(jsonPath("$.team1", is(lobby.getTeam1())))
+                .andExpect(jsonPath("$.team2", is(lobby.getTeam2())))
                 .andExpect(jsonPath("$.settings.rounds", is(7)))
                 .andExpect(jsonPath("$.settings.roundTime", is(120)))
                 .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
