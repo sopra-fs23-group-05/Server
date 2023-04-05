@@ -24,7 +24,7 @@ public class Lobby {
     @OneToMany
     private List<User> lobbyUsers;
 
-    // TODO: Low priority; Implement a class Teams to handle team related logic in a separate class.
+    // Low priority; Implement a class Teams to handle team related logic in a separate class.
     @OneToMany
     private List<User> team1;
 
@@ -36,7 +36,6 @@ public class Lobby {
         lobbyUsers = new ArrayList<>();
         team1 = new ArrayList<>();
         team2 = new ArrayList<>();
-        System.out.println("--------------------I got here------------------");
     }
 
     public int getAccessCode() {
