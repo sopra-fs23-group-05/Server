@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-import ch.uzh.ifi.hase.soprafs23.constant.Role;
+
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-import ch.uzh.ifi.hase.soprafs23.custom.Settings;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
@@ -35,19 +32,17 @@ public class UserService {
   private final Logger log = LoggerFactory.getLogger(UserService.class);
 
   private final UserRepository userRepository;
-    private final LobbyRepository lobbyRepository;
-    private final TeamRepository teamRepository;
+
   @Autowired
   public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository, TeamRepository teamRepository) {
     this.userRepository = userRepository;
-      this.lobbyRepository = lobbyRepository;
-      this.teamRepository = teamRepository;
+
   }
 
   public List<User> getUsers() {
     return this.userRepository.findAll();
   }
-  public Team getTeam(int teamId){return this.teamRepository.findById(teamId);}
+
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
@@ -61,6 +56,7 @@ public class UserService {
     log.debug("Created Information for User: {}", newUser);
     return newUser;
   }
+
 
     public Lobby createLobby() {
       Lobby newLobby = new Lobby();
@@ -89,6 +85,7 @@ public class UserService {
       }
       return team;
     }
+
 
   /**
    * This is a helper method that will check the uniqueness criteria of the

@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Team;
+
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.TeamGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
@@ -45,15 +42,7 @@ public class UserController {
     }
     return userGetDTOs;
   }
-    @GetMapping("/teams/{teamId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public TeamGetDTO getTeam(@PathVariable("teamId")int teamId) {
-        // fetch all users in the internal representation
-        Team team = userService.getTeam(teamId);
 
-        return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
-    }
 
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED)
@@ -67,6 +56,8 @@ public class UserController {
     // convert internal representation of user back to API
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
   }
+
+
 
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
