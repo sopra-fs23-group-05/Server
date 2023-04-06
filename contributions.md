@@ -1,6 +1,11 @@
 Before each meeting, each team member is required to manually append the two development tasks they completed during the previous week. Each entry should consist of the (week-) date, your name, links to the GitHub Issues you worked on, and optionally a short description of your work.
 
 # Meeting 06.04.2023 - Week 07
+## Daniel
+- [#34] (https://github.com/sopra-fs23-group-05/Client/issues/34): Create homepage for users.
+- [#35] (https://github.com/sopra-fs23-group-05/Client/issues/35): Create rules page for users.
+- [#36] (https://github.com/sopra-fs23-group-05/Client/issues/36): Add rules to rules page.
+
 ## Melea
 - [#38] (https://github.com/sopra-fs23-group-05/Client/issues/38): Create login page for lobby leaders.
 - [#44] (https://github.com/sopra-fs23-group-05/Client/issues/44): Create login page for users.
