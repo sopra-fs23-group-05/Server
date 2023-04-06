@@ -53,7 +53,7 @@ public class UserServiceTest {
     assertNotNull(createdUser.getToken());
     assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
   }
-/*
+
   @Test
   public void createUser_duplicateName_throwsException() {
     // given -> a first user has already been created
@@ -62,13 +62,13 @@ public class UserServiceTest {
     // when -> setup additional mocks for UserRepository
     // I deleted the field user.name
       // Mockito.when(userRepository.findByName(Mockito.any())).thenReturn(testUser);
-    Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(null);
+    Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
     // then -> attempt to create second user with same user -> check that an error
     // is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
   }
-*/
+
   @Test
   public void createUser_duplicateInputs_throwsException() {
     // given -> a first user has already been created
