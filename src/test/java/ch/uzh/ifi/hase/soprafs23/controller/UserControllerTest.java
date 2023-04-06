@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +45,9 @@ public class UserControllerTest {
 
   @MockBean
   private UserService userService;
+
+    @MockBean
+    private LobbyService lobbyService;
 
   @Test
   public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
@@ -120,7 +124,7 @@ public class UserControllerTest {
         userPostDTO.setLeader(true);
         userPostDTO.setUsername("testUsername");
 
-        given(userService.createLobby(Mockito.any())).willReturn(lobby);
+        given(lobbyService.createLobby(Mockito.any())).willReturn(lobby);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/lobbies")
