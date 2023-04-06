@@ -85,10 +85,10 @@ public class UserService {
       }else{
           team.setIdxClueGiver(0);
       }
-      if (team.getaRole()== Role.BuzzingTeam){
-          team.setaRole(Role.GuessingTeam);
+      if (team.getaRole()== Role.BUZZINGTEAM){
+          team.setaRole(Role.GUESSINGTEAM);
       }else{
-          team.setaRole(Role.BuzzingTeam);
+          team.setaRole(Role.BUZZINGTEAM);
       }
       return team;
     }

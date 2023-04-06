@@ -30,9 +30,7 @@ public class Team {
     @Column(nullable = false)
     private int idxClueGiver;
 
-    public void setIdxClueGiver(int idxClueGiver) {
-        this.idxClueGiver = idxClueGiver;
-    }
+    public void setIdxClueGiver(int idxClueGiver) {this.idxClueGiver = idxClueGiver;}
 
     public int getIdxClueGiver() {
         return idxClueGiver;
