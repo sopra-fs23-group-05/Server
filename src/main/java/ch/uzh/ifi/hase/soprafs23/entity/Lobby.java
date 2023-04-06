@@ -3,6 +3,8 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -18,6 +20,23 @@ public class Lobby {
 
     @Embedded
     private Settings aSettings;
+
+    @OneToMany
+    private List<User> lobbyUsers;
+
+    // Low priority; Implement a class Teams to handle team related logic in a separate class.
+    @OneToMany
+    private List<User> team1;
+
+    @OneToMany
+    private List<User> team2;
+
+    public Lobby() {
+        setAccessCode();
+        lobbyUsers = new ArrayList<>();
+        team1 = new ArrayList<>();
+        team2 = new ArrayList<>();
+    }
 
     public int getAccessCode() {
         return accessCode;
@@ -36,6 +55,9 @@ public class Lobby {
         int min = 100000;
         int max = 999999;
         accessCode = random.nextInt((max - min) + 1) + min;
+
+        // Get predictable behaviour for testing with postman
+        accessCode = 123456;
     }
 
     public void setLobbyLeader(User lobbyLeader) {
@@ -44,5 +66,53 @@ public class Lobby {
 
     public void setSettings(Settings aSettings) {
         this.aSettings = aSettings;
+    }
+
+    public List<User> getLobbyUsers() {
+        return lobbyUsers;
+    }
+
+    public void addUserToTeam1(User user) {
+        team1.add(user);
+    }
+
+    public void addUserToTeam2(User user) {
+        team2.add(user);
+    }
+
+    public void removeUserFromTeam1(User user) {
+        team1.remove(user);
+    }
+
+    public void removeUserFromTeam2(User user) {
+        team2.remove(user);
+    }
+
+    public void addUserToLobby(User userInput) {
+        lobbyUsers.add(userInput);
+    }
+
+    public void removeUserFromLobby(User userInput) {
+        lobbyUsers.remove(userInput);
+    }
+
+    public boolean isUserInLobby(User userInput) {
+        return lobbyUsers.contains(userInput);
+    }
+
+    public boolean isUserInTeam1(User userInput) {
+        return team1.contains(userInput);
+    }
+
+    public boolean isUserInTeam2(User userInput) {
+        return team2.contains(userInput);
+    }
+
+    public List<User> getTeam1() {
+        return team1;
+    }
+
+    public List<User> getTeam2() {
+        return team2;
     }
 }
