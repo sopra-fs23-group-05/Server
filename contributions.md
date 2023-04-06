@@ -9,3 +9,5 @@ Before each meeting, each team member is required to manually append the two dev
 - added necessary field isLeader to User in client; felix edited user entity in server (issue 85): https://github.com/sopra-fs23-group-05/Server/issues/85
 ## Felix
 - [Issue 87](https://github.com/sopra-fs23-group-05/Server/issues/87): Store a new user in the database. 12 files changed.
+- [Issue 86](https://github.com/sopra-fs23-group-05/Server/issues/86): Implement code to catch non-unique/non-empty usernames.
+- [Issue 97](https://github.com/sopra-fs23-group-05/Server/issues/97): Create and store a new lobby in the database. Created classes: Lobby, Settings, Topic, LobbyGetDTO, LobbyRepository. Implemented six new endpoints in UserController.java and according methods in UserService.
