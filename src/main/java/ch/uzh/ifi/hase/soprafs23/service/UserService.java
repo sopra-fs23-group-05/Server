@@ -1,10 +1,13 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +36,18 @@ public class UserService {
 
   private final UserRepository userRepository;
     private final LobbyRepository lobbyRepository;
-
+    private final TeamRepository teamRepository;
   @Autowired
-  public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository) {
+  public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository, TeamRepository teamRepository) {
     this.userRepository = userRepository;
       this.lobbyRepository = lobbyRepository;
+      this.teamRepository = teamRepository;
   }
 
   public List<User> getUsers() {
     return this.userRepository.findAll();
   }
+  public Team getTeam(int teamId){return this.teamRepository.findById(teamId);}
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
@@ -70,6 +75,22 @@ public class UserService {
 
         log.debug("Created Information for Lobby: {}", newLobby);
         return newLobby;
+    }
+    //updates the team at the end of a round with the points they amde and switches the roles
+    public Team updateTeam(int points,Team team){
+      team.setPoints(team.getPoints()+points);
+      int teamSize = team.getPlayers().size();
+      if (team.getIdxClueGiver()<teamSize){
+          team.setIdxClueGiver(team.getIdxClueGiver()+1);
+      }else{
+          team.setIdxClueGiver(0);
+      }
+      if (team.getaRole()== Role.BUZZINGTEAM){
+          team.setaRole(Role.GUESSINGTEAM);
+      }else{
+          team.setaRole(Role.BUZZINGTEAM);
+      }
+      return team;
     }
 
   /**
