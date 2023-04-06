@@ -71,15 +71,63 @@ public class UserController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public LobbyGetDTO createLobby(@RequestBody UserPostDTO userPostDTO) {
-        // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
-
+    public LobbyGetDTO createLobby() {
         // create lobby
-        Lobby createdLobby = userService.createLobby(userInput);
+        Lobby createdLobby = userService.createLobby();
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
+
+    @GetMapping("/lobbies/{accessCode}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO getLobby(@PathVariable int accessCode) {
+        // create lobby
+        Lobby createdLobby = userService.getLobby(accessCode);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
+    }
+
+
+    @PutMapping ("/lobbies/{accessCode}/additions/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO joinLobby(@PathVariable int accessCode, @PathVariable int userId) {
+        // join lobby
+        Lobby joinedLobby = userService.joinLobby(accessCode, userId);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(joinedLobby);
+    }
+
+    @PutMapping ("/lobbies/{accessCode}/removals/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO leaveLobby(@PathVariable int accessCode, @PathVariable int userId) {
+        // leave lobby
+        Lobby leftLobby = userService.leaveLobby(accessCode, userId);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(leftLobby);
+    }
+
+    @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/additions/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO joinLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
+        // join lobby team
+        Lobby lobbyOfTeam = userService.joinLobbyTeam(accessCode, teamNr, userId);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyOfTeam);
+    }
+
+    @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/removals/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public LobbyGetDTO leaveLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
+        // join lobby
+        Lobby joinedLobby = userService.leaveLobbyTeam(accessCode, teamNr, userId);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(joinedLobby);
+
     @PutMapping ("/teams/{teamId}/points/{points}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -88,6 +136,7 @@ public class UserController {
         userService.updateTeam(points, team);
 
         return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
+
     }
 }
 

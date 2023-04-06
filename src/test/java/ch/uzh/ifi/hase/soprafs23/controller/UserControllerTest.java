@@ -104,33 +104,23 @@ public class UserControllerTest {
     @Test
     public void createLobby_validInput_lobbyCreated() throws Exception {
         // given
-        User user = new User();
-        user.setId(1L);
-        user.setLeader(true);
-        user.setUsername("testUsername");
-        user.setToken("1");
-        user.setStatus(UserStatus.ONLINE);
 
         Lobby lobby = new Lobby();
-        lobby.setAccessCode();
-        lobby.setLobbyLeader(user);
         lobby.setSettings(new Settings());
 
-        UserPostDTO userPostDTO = new UserPostDTO();
-        userPostDTO.setLeader(true);
-        userPostDTO.setUsername("testUsername");
 
-        given(userService.createLobby(Mockito.any())).willReturn(lobby);
+        given(userService.createLobby()).willReturn(lobby);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest = post("/lobbies")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+        MockHttpServletRequestBuilder postRequest = post("/lobbies");
 
-        // then
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.lobbyLeader.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode())))
+                .andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader())))
+                .andExpect(jsonPath("$.lobbyUsers", is(lobby.getLobbyUsers())))
+                .andExpect(jsonPath("$.team1", is(lobby.getTeam1())))
+                .andExpect(jsonPath("$.team2", is(lobby.getTeam2())))
                 .andExpect(jsonPath("$.settings.rounds", is(7)))
                 .andExpect(jsonPath("$.settings.roundTime", is(120)))
                 .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
