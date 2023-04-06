@@ -1,7 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-
+import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.custom.Settings;
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
@@ -27,22 +30,24 @@ import java.util.UUID;
  */
 @Service
 @Transactional
-public class UserService {
+public class LobbyService {
 
-  private final Logger log = LoggerFactory.getLogger(UserService.class);
+  private final Logger log = LoggerFactory.getLogger(LobbyService.class);
 
   private final UserRepository userRepository;
-
+    private final LobbyRepository lobbyRepository;
+    private final TeamRepository teamRepository;
   @Autowired
-  public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository, TeamRepository teamRepository) {
+  public LobbyService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository, TeamRepository teamRepository) {
     this.userRepository = userRepository;
-
+      this.lobbyRepository = lobbyRepository;
+      this.teamRepository = teamRepository;
   }
 
   public List<User> getUsers() {
     return this.userRepository.findAll();
   }
-
+  public Team getTeam(int teamId){return this.teamRepository.findById(teamId);}
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
@@ -57,7 +62,36 @@ public class UserService {
     return newUser;
   }
 
+    public Lobby createLobby(User leader) {
+      leader = userRepository.findByUsername(leader.getUsername());
+      Lobby newLobby = new Lobby();
+      newLobby.setAccessCode();
+      newLobby.setLobbyLeader(leader);
+      newLobby.setSettings(new Settings());
+        // saves the given entity but data is only persisted in the database once
+        // flush() is called
+        newLobby = lobbyRepository.save(newLobby);
+        lobbyRepository.flush();
 
+        log.debug("Created Information for Lobby: {}", newLobby);
+        return newLobby;
+    }
+    //updates the team at the end of a round with the points they amde and switches the roles
+    public Team updateTeam(int points,Team team){
+      team.setPoints(team.getPoints()+points);
+      int teamSize = team.getPlayers().size();
+      if (team.getIdxClueGiver()<teamSize){
+          team.setIdxClueGiver(team.getIdxClueGiver()+1);
+      }else{
+          team.setIdxClueGiver(0);
+      }
+      if (team.getaRole()== Role.BUZZINGTEAM){
+          team.setaRole(Role.GUESSINGTEAM);
+      }else{
+          team.setaRole(Role.BUZZINGTEAM);
+      }
+      return team;
+    }
 
   /**
    * This is a helper method that will check the uniqueness criteria of the
@@ -66,7 +100,7 @@ public class UserService {
    * and throw an error otherwise.
    *
    * @param userToBeCreated
-   * @throws org.springframework.web.server.ResponseStatusException
+   * @throws ResponseStatusException
    * @see User
    */
   private void validateUsername(User userToBeCreated) {

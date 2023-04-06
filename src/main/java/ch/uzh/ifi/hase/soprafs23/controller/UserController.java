@@ -45,15 +45,7 @@ public class UserController {
     }
     return userGetDTOs;
   }
-    @GetMapping("/teams/{teamId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public TeamGetDTO getTeam(@PathVariable("teamId")int teamId) {
-        // fetch all users in the internal representation
-        Team team = userService.getTeam(teamId);
 
-        return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
-    }
 
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED)
@@ -67,28 +59,6 @@ public class UserController {
     // convert internal representation of user back to API
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
   }
-
-    @PostMapping("/lobbies")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public LobbyGetDTO createLobby(@RequestBody UserPostDTO userPostDTO) {
-        // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
-
-        // create lobby
-        Lobby createdLobby = userService.createLobby(userInput);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
-    }
-    @PutMapping ("/teams/{teamId}/points/{points}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public TeamGetDTO updateTeam(@PathVariable int points,@PathVariable int teamId) {
-        Team team = userService.getTeam(teamId);
-        userService.updateTeam(points, team);
-
-        return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
-    }
 }
 
 
