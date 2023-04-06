@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
+import ch.uzh.ifi.hase.soprafs23.custom.Settings;
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
 import org.slf4j.Logger;
@@ -24,9 +26,6 @@ public class TeamService {
 
 
   public Team getTeam(int teamId){return this.teamRepository.findById(teamId);}
-
-
-
     //updates the team at the end of a round with the points they made and switches the roles
     public Team updateTeam(int points,Team team){
       team.setPoints(team.getPoints()+points);
@@ -43,6 +42,16 @@ public class TeamService {
       }
       return team;
     }
+    public Team createTeam() {
+        Team newTeam = new Team();
+        newTeam.setPoints(0);
+        // saves the given entity but data is only persisted in the database once
+        // flush() is called
+        newTeam = teamRepository.save(newTeam);
+        teamRepository.flush();
 
+        log.debug("Created Information for Lobby: {}", newTeam);
+        return newTeam;
+    }
 
 }
