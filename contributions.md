@@ -12,3 +12,6 @@ Before each meeting, each team member is required to manually append the two dev
 - [#87](https://github.com/sopra-fs23-group-05/Server/issues/87): Store a new user in the database. 12 files changed.
 - [#86](https://github.com/sopra-fs23-group-05/Server/issues/86): Implement code to catch non-unique/non-empty usernames.
 
+## Tom
+- [#75](https://github.com/sopra-fs23-group-05/Server/issues/75): Wrote a get request for Team. Implementet Team entity, a Player class, TeamGetDto, a Role enum and changed all the depending classes.
+- [#76](https://github.com/sopra-fs23-group-05/Server/issues/76): Implemented the put request for a team to update it especially at the end of every round.
