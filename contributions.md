@@ -8,4 +8,4 @@ Before each meeting, each team member is required to manually append the two dev
 - Issue 41: Implement functionality, that buttons "start game" & "settings" are only visible for the lobby leader: https://github.com/sopra-fs23-group-05/Client/issues/41
 - added necessary field isLeader to User in client; felix edited user entity in server (issue 85): https://github.com/sopra-fs23-group-05/Server/issues/85
 ## Felix
--[Issue 87](https://github.com/sopra-fs23-group-05/Server/issues/87): Store a new user in the database. 12 files changed.
+- [Issue 87](https://github.com/sopra-fs23-group-05/Server/issues/87): Store a new user in the database. 12 files changed.
