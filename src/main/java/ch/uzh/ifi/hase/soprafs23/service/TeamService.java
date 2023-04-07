@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
@@ -11,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -45,6 +49,8 @@ public class TeamService {
     public Team createTeam() {
         Team newTeam = new Team();
         newTeam.setPoints(0);
+        List<Player> team = new ArrayList<>();
+        newTeam.setPlayers(team);
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         newTeam = teamRepository.save(newTeam);
