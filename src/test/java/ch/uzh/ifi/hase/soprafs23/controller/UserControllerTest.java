@@ -114,7 +114,7 @@ public class UserControllerTest {
 
 
 
-        given(userService.createLobby()).willReturn(lobby);
+        given(lobbyService.createLobby()).willReturn(lobby);
 
 
         // when/then -> do the request + validate the result
