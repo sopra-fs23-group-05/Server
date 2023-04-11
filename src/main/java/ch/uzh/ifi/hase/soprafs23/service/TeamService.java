@@ -2,10 +2,10 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
-import ch.uzh.ifi.hase.soprafs23.custom.Settings;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,11 @@ public class TeamService {
   private final Logger log = LoggerFactory.getLogger(TeamService.class);
 
   private final TeamRepository teamRepository;
+  private final UserRepository userRepository;
   @Autowired
-  public TeamService(@Qualifier("teamRepository") TeamRepository teamRepository) {
+  public TeamService(@Qualifier("teamRepository") TeamRepository teamRepository, UserRepository userRepository) {
       this.teamRepository = teamRepository;
+      this.userRepository = userRepository;
   }
 
 
@@ -46,10 +48,17 @@ public class TeamService {
       }
       return team;
     }
-    public Team createTeam() {
+    public Team createTeam(List<User> users) {
         Team newTeam = new Team();
         newTeam.setPoints(0);
         List<Player> team = new ArrayList<>();
+
+        for (int i =0 ; i < users.size(); i++){
+            User temp = users.get(i);
+            Player player = convertUserToPlayer(temp.getId());
+            team.add(player);
+        }
+
         newTeam.setPlayers(team);
         // saves the given entity but data is only persisted in the database once
         // flush() is called
@@ -58,6 +67,14 @@ public class TeamService {
 
         log.debug("Created Information for Lobby: {}", newTeam);
         return newTeam;
+    }
+    public Player convertUserToPlayer(long userId){
+        User user = userRepository.findById(userId);
+        Player player = new Player();
+        player.setName(user.getUsername());
+        player.setLeader(user.isLeader());
+        player.setPersonalScore(0);
+        return player;
     }
 
 }

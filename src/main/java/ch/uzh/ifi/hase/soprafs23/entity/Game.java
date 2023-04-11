@@ -17,9 +17,9 @@ public class Game {
 
     @Embedded
     private Settings settings;
-
+    @Column
     private int roundsPlayed;
-
+    @Column
     private Turn turn;
 
     @OneToOne

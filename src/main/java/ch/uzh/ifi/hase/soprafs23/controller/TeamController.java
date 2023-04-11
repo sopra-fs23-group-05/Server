@@ -29,15 +29,6 @@ public class TeamController {
       this.teamService = teamService;
 
   }
-  @PostMapping("/teams")
-  @ResponseStatus(HttpStatus.CREATED)
-  @ResponseBody
-  public TeamGetDTO createTeam() {
-      // create lobby
-      Team createdTeam = teamService.createTeam();
-      // convert internal representation of user back to API
-      return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(createdTeam);
-  }
 
   @GetMapping("/teams/{teamId}")
   @ResponseStatus(HttpStatus.OK)

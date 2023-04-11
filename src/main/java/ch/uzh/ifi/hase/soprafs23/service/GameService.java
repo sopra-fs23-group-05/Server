@@ -3,9 +3,11 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +29,13 @@ public class GameService {
     private final GameRepository gameRepository;
     private final TeamService teamService;
     private final UserRepository userRepository;
+    private final LobbyRepository lobbyRepository;
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, UserRepository userRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, UserRepository userRepository, LobbyRepository lobbyRepository) {
         this.gameRepository = gameRepository;
         this.teamService = teamService;
         this.userRepository = userRepository;
+        this.lobbyRepository = lobbyRepository;
     }
 
 
@@ -40,10 +44,13 @@ public class GameService {
 
     public Game createGame(int accessCode) {
         Game newGame = new Game();
-        newGame.setSettings(new Settings());
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+
+        newGame.setSettings(lobby.getSettings());
         newGame.setAccessCode(accessCode);
-        Team team1 = teamService.createTeam();
-        Team team2 = teamService.createTeam();
+
+        Team team1 = teamService.createTeam(lobby.getTeam1());
+        Team team2 = teamService.createTeam(lobby.getTeam2());
         newGame.setTeam1(team1);
         newGame.setTeam2(team2);
         // saves the given entity but data is only persisted in the database once
@@ -55,34 +62,7 @@ public class GameService {
         return newGame;
     }
 
-    public Game addPlayer(int accessCode, int teamId, int userID){
-        Game game = gameRepository.findByAccessCode(accessCode);
 
-        if (teamId==1){
-            Team team = game.getTeam1();
-            List<Player> players = team.getPlayers();
-            players.add(convertUserToPlayer(userID));
-            team.setPlayers(players);
-            game.setTeam1(team);
-        }else if (teamId == 2) {
-            Team team = game.getTeam2();
-            List<Player> players = team.getPlayers();
-            players.add(convertUserToPlayer(userID));
-            team.setPlayers(players);
-            game.setTeam2(team);
-        }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The team with the access code provided does not exist. Therefore, the user could not be added from the lobby!");
-        }
-        return game;
-    }
 
-    public Player convertUserToPlayer(int userId){
-        User user = userRepository.findById(userId);
-        Player player = new Player();
-        player.setName(user.getUsername());
-        player.setLeader(user.isLeader());
-        player.setPersonalScore(0);
-        return player;
-    }
 
 }

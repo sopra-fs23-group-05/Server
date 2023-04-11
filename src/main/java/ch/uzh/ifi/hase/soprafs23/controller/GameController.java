@@ -33,20 +33,8 @@ public class GameController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameGetDTO createGame(@PathVariable int accessCode) {
-        // create lobby
         Game createdGame = gameService.createGame(accessCode);
-        // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(createdGame);
-    }
-
-    @PutMapping ("/games/{accessCode}/additions/teams/{teamID}/users/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public GameGetDTO addPlayerToTeam(@PathVariable int accessCode,@PathVariable int teamID, @PathVariable int userId) {
-        // join lobby
-        Game game = gameService.addPlayer(accessCode, teamID,userId);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
     }
 
 
