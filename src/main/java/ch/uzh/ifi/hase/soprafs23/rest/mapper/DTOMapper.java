@@ -1,12 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.TeamGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -44,8 +42,16 @@ public interface DTOMapper {
   @Mapping(source = "status", target = "status")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
-    @Mapping(source = "accessCode", target = "accessCode")
-    @Mapping(source = "team1", target = "team1")
-    @Mapping(source = "team2", target = "team2")
-    LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+  @Mapping(source = "accessCode", target = "accessCode")
+  @Mapping(source = "team1", target = "team1")
+  @Mapping(source = "team2", target = "team2")
+  LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+
+  @Mapping(source = "accessCode", target = "accessCode")
+  @Mapping(source = "settings", target = "settings")
+  @Mapping(source = "roundsPlayed", target = "roundsPlayed")
+  @Mapping(source = "turn", target = "turn")
+  @Mapping(source = "team1", target = "team1")
+  @Mapping(source = "team2", target = "team2")
+  GameGetDTO convertEntityToGameGetDTO(Game game);
 }

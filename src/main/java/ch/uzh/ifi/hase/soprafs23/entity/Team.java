@@ -11,23 +11,24 @@ import java.util.List;
 @Entity
 @Table(name = "TEAM")
 public class Team {
+    @GeneratedValue
     @Id
     private int teamId;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String teamName;
 
-    @Column(nullable = false)
+    @Column
     private Role aRole;
 
-    @Column(nullable = false)
+    @Column
     private int points;
 
     @ElementCollection
-    @Column(nullable = false)
+    @Column
     private List<Player> players;
 
-    @Column(nullable = false)
+    @Column
     private int idxClueGiver;
 
     public void setIdxClueGiver(int idxClueGiver) {this.idxClueGiver = idxClueGiver;}
