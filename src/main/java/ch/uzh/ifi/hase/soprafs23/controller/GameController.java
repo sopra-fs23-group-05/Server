@@ -1,13 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.GameGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.TeamGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
-import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +30,15 @@ public class GameController {
     @ResponseBody
     public GameGetDTO createGame(@PathVariable int accessCode) {
         Game createdGame = gameService.createGame(accessCode);
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(createdGame);
+    }
+    @GetMapping("/games/{accessCode}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameGetDTO getGame(@PathVariable int accessCode) {
+        // create lobby
+        Game createdGame = gameService.getGame(accessCode);
+        // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(createdGame);
     }
 

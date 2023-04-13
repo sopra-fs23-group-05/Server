@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 public class UserPostDTO {
+    private Long id;
 
   private String username;
 
@@ -20,5 +21,13 @@ public class UserPostDTO {
 
     public void setLeader(boolean isLeader) {
         this.isLeader = isLeader;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
