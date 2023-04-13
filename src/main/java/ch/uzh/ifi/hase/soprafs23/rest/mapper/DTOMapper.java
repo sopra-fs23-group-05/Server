@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
@@ -31,7 +32,8 @@ public interface DTOMapper {
   @Mapping(source = "players", target = "players")
   @Mapping(source = "idxClueGiver", target = "idxClueGiver")
   TeamGetDTO convertEntityToTeamGetDTO(Team team);
-
+  @Mapping(source = "settings", target = "settings")
+  Settings convertSettingsPutDTOtoEntity(SettingsPutDTO settingsPutDTO);
   @Mapping(source = "username", target = "username")
   @Mapping(source = "leader", target = "leader")
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
@@ -39,7 +41,6 @@ public interface DTOMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "leader", target = "leader")
-  @Mapping(source = "status", target = "status")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
   @Mapping(source = "accessCode", target = "accessCode")
