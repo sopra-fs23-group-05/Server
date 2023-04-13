@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -28,12 +26,6 @@ public class User implements Serializable {
   @Column(nullable = false, unique = true)
   private String username;
 
-  @Column(nullable = false, unique = true)
-  private String token;
-
-  @Column(nullable = false)
-  private UserStatus status;
-
   @Column(nullable = false)
   private boolean isLeader;
 
@@ -53,26 +45,9 @@ public class User implements Serializable {
     this.username = username;
   }
 
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
-  }
-
-  public UserStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(UserStatus status) {
-    this.status = status;
-  }
-
-    public void setLeader(boolean isLeader) {
+  public void setLeader(boolean isLeader) {
         this.isLeader = isLeader;
     }
-
     public boolean isLeader() {
         return isLeader;
     }
