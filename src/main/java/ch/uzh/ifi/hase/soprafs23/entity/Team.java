@@ -31,6 +31,18 @@ public class Team {
     @Column
     private int idxClueGiver;
 
+    public Team() {
+        idxClueGiver = 0;
+        points = 0;
+    }
+
+    public Team(List<Player> players, Role startingRole){
+        this.players = players;
+        aRole = startingRole;
+        idxClueGiver = 0;
+        points = 0;
+    }
+
     public void setIdxClueGiver(int idxClueGiver) {this.idxClueGiver = idxClueGiver;}
 
     public int getIdxClueGiver() {
@@ -51,6 +63,15 @@ public class Team {
 
     public Role getaRole() {
         return aRole;
+    }
+
+    public void changeRole() {
+        if (aRole == Role.GUESSINGTEAM) {
+            aRole = Role.BUZZINGTEAM;
+        } else {
+            aRole = Role.GUESSINGTEAM;
+            idxClueGiver = (idxClueGiver + 1) % players.size();
+        }
     }
 
     public void setTeamId(int teamId) {

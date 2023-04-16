@@ -42,6 +42,16 @@ public class GameService {
     public Game getGame(int accessCode){return this.gameRepository.findByAccessCode( accessCode);}
     //updates the team at the end of a round with the points they made and switches the roles
 
+    /*
+    * 1 Calling an empty constructor and immediately after four different setter methods makes no sense.
+    * Pass all this data into a constructor.
+    *
+    * 2 When initializing the teams, immediately set them up for the game. At this point we have
+    * all the information we need to play. So store the information in the team object.
+    * E.g. already assign which team will be the guesser in the first round. Set the points to zero.
+    * Set the index of the clue-giver. To state the obvious: do it in the constructor of the Team.
+    * Not by calling five separate setter methods for each team.
+    * */
     public Game createGame(int accessCode) {
         Game newGame = new Game();
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);

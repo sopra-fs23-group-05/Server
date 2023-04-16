@@ -28,6 +28,19 @@ public class Game {
     @OneToOne
     private Team team2;
 
+    public Game(){
+        this.roundsPlayed = 1;
+    }
+
+    public Game(int accessCode, Settings settings, Team team1, Team team2){
+        this.accessCode = accessCode;
+        this.settings = settings;
+        this.team1 = team1;
+        this.team2 = team2;
+        turn = new Turn();
+        this.roundsPlayed = 1;
+    }
+
     public int getAccessCode() {
         return accessCode;
     }
@@ -74,5 +87,10 @@ public class Game {
 
     public void setTurn(Turn turn) {
         this.turn = turn;
+    }
+
+    public void changeTurn(){
+        team1.changeRole();
+        team2.changeRole();
     }
 }
