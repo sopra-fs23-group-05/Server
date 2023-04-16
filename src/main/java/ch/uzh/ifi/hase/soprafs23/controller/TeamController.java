@@ -38,15 +38,6 @@ public class TeamController {
 
       return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
   }
-  @PutMapping ("/teams/{teamId}/points/{points}")
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public TeamGetDTO updateTeam(@PathVariable int points,@PathVariable int teamId) {
-        Team team = teamService.getTeam(teamId);
-        teamService.updateTeam(points, team);
-
-        return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
-  }
 }
 
 

@@ -1,11 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-import ch.uzh.ifi.hase.soprafs23.custom.Settings;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,9 +41,6 @@ public class UserControllerTest {
 
   @MockBean
   private UserService userService;
-
-    @MockBean
-    private LobbyService lobbyService;
 
   @Test
   public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
@@ -98,35 +91,6 @@ public class UserControllerTest {
         .andExpect(jsonPath("$.leader", is(user.isLeader())))
         .andExpect(jsonPath("$.username", is(user.getUsername())));
   }
-
-  // Test POST for lobby
-    @Test
-    public void createLobby_validInput_lobbyCreated() throws Exception {
-        // given
-
-        Lobby lobby = new Lobby();
-        lobby.setSettings(new Settings());
-
-
-
-        given(lobbyService.createLobby()).willReturn(lobby);
-
-
-        // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest = post("/lobbies");
-
-        mockMvc.perform(postRequest)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode())))
-                .andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader())))
-                .andExpect(jsonPath("$.lobbyUsers", is(lobby.getLobbyUsers())))
-                .andExpect(jsonPath("$.team1", is(lobby.getTeam1())))
-                .andExpect(jsonPath("$.team2", is(lobby.getTeam2())))
-                .andExpect(jsonPath("$.settings.rounds", is(7)))
-                .andExpect(jsonPath("$.settings.roundTime", is(120)))
-                .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
-
-    }
 
   /**
    * Helper Method to convert userPostDTO into a JSON string such that the input
