@@ -1,13 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 
-import ch.uzh.ifi.hase.soprafs23.constant.Role;
-import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.custom.Turn;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "GAME")
@@ -69,8 +66,8 @@ public class Game {
         this.accessCode = accessCode;
     }
 
-    public void setRoundsPlayed(int roundsPlayed) {
-        this.roundsPlayed = roundsPlayed;
+    public void incrementRoundsPlayed() {
+        roundsPlayed++;
     }
 
     public void setSettings(Settings settings) {
@@ -89,8 +86,5 @@ public class Game {
         this.turn = turn;
     }
 
-    public void changeTurn(){
-        team1.changeRole();
-        team2.changeRole();
-    }
+
 }

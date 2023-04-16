@@ -10,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,4 +79,29 @@ public class TeamService {
         return player;
     }
 
+    public void changeTurn(int teamId1, int teamId2, int scoredPoints) {
+      Team team1 = teamRepository.findById(teamId1);
+      Team team2 = teamRepository.findById(teamId2);
+      if(team1 == null){
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team1 not found");
+      }else if(team2 == null) {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team2 not found");
+      }
+
+      if(team1.getaRole() == Role.GUESSINGTEAM) {
+          team1.addPoints(scoredPoints);
+          team1.setaRole(Role.BUZZINGTEAM);
+          team2.setaRole(Role.GUESSINGTEAM);
+      }else{
+          team2.addPoints(scoredPoints);
+          team2.setaRole(Role.BUZZINGTEAM);
+          team1.setaRole(Role.GUESSINGTEAM);
+      }
+
+        teamRepository.save(team1);
+        teamRepository.save(team2);
+        // Do we need to flush here?
+        teamRepository.flush();
+        log.debug("Updated points for guessing team and switched roles.");
+    }
 }
