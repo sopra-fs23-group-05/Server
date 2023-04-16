@@ -1,3 +1,4 @@
+/*
 package ch.uzh.ifi.hase.soprafs23.custom;
 
 import java.util.Collections;
@@ -23,3 +24,4 @@ public class Deck {
         return cards.isEmpty();
     }
 }
+*/

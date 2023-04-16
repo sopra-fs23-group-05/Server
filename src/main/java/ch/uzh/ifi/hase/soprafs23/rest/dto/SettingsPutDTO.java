@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs23.rest.dto;
+/*package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 
@@ -12,4 +12,4 @@ public class SettingsPutDTO {
     public void setSettings(Settings settings) {
         this.settings = settings;
     }
-}
+}*/

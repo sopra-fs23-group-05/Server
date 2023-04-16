@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Turn {
-    private final Deck deck;
+    /*private final Deck deck;
 
     // private Timer timer;    do we need a timer class in the backend? like it is in our class diagram
 
@@ -36,5 +36,5 @@ public class Turn {
     }
     public void buzz(){
 
-    }
+    }*/
 }
