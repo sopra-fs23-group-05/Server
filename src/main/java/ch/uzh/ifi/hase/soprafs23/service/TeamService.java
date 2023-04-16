@@ -34,22 +34,7 @@ public class TeamService {
 
 
   public Team getTeam(int teamId){return this.teamRepository.findById(teamId);}
-    //updates the team at the end of a round with the points they made and switches the roles
-    public Team updateTeam(int points,Team team){
-      team.setPoints(team.getPoints()+points);
-      int teamSize = team.getPlayers().size();
-      if (team.getIdxClueGiver()<teamSize){
-          team.setIdxClueGiver(team.getIdxClueGiver()+1);
-      }else{
-          team.setIdxClueGiver(0);
-      }
-      if (team.getaRole()== Role.BUZZINGTEAM){
-          team.setaRole(Role.GUESSINGTEAM);
-      }else{
-          team.setaRole(Role.BUZZINGTEAM);
-      }
-      return team;
-    }
+
     public Team createTeam(List<User> users) {
         Team newTeam = new Team();
         newTeam.setPoints(0);
