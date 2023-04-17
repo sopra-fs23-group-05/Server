@@ -35,20 +35,17 @@ public class TeamService {
 
   public Team getTeam(int teamId){return this.teamRepository.findById(teamId);}
 
-    public Team createTeam(List<User> users) {
-        Team newTeam = new Team();
-        newTeam.setPoints(0);
-        List<Player> team = new ArrayList<>();
-
-        for (int i =0 ; i < users.size(); i++){
-            User temp = users.get(i);
+    public Team createTeam(List<User> users, Role role) {
+      List<Player> players = new ArrayList<>();
+      for (User temp : users) {
             Player player = convertUserToPlayer(temp.getId());
-            team.add(player);
-        }
+            players.add(player);
+      }
 
-        newTeam.setPlayers(team);
-        // saves the given entity but data is only persisted in the database once
-        // flush() is called
+      Team newTeam = new Team(players,role);
+
+
+      // saves the given entity but data is only persisted in the database once// flush() is called
         newTeam = teamRepository.save(newTeam);
         teamRepository.flush();
 
