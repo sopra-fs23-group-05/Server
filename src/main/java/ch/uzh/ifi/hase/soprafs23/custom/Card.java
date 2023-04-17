@@ -1,22 +1,24 @@
 package ch.uzh.ifi.hase.soprafs23.custom;
 
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class Card {
 
-    private final  String word;
+    private  String word;
 
-    private final String taboo1;
+    private String taboo1;
 
-    private final String taboo2;
+    private String taboo2;
 
-    private final String taboo3;
+    private String taboo3;
 
-    private final String taboo4;
+    private String taboo4;
 
-    private final String taboo5;
+    private String taboo5;
 
-    private final String definition;
+    private String definition;
 
     public Card(String word, String taboo1, String taboo2, String taboo3, String taboo4, String taboo5, String definition){
         this.word = word;
@@ -28,6 +30,9 @@ public class Card {
         this.definition = definition;
     }
 
+    public Card() {
+    }
+
     public boolean isCorrectGuess(String guess){
         return Objects.equals(guess, word);
     }
@@ -35,8 +40,12 @@ public class Card {
     public boolean isTaboo(String taboo){
         return Objects.equals(taboo, taboo1) || Objects.equals(taboo, taboo2) || Objects.equals(taboo, taboo3) || Objects.equals(taboo, taboo4) || Objects.equals(taboo, taboo5);
     }
-    public String getDefinition(){
+
+    public String getDefinition() {
         return definition;
     }
 
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
 }
