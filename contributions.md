@@ -20,3 +20,7 @@ Before each meeting, each team member is required to manually append the two dev
 ## Tom
 - [#75](https://github.com/sopra-fs23-group-05/Server/issues/75): Wrote a get request for Team. Implementet Team entity, a Player class, TeamGetDto, a Role enum and changed all the depending classes.
 - [#76](https://github.com/sopra-fs23-group-05/Server/issues/76): Implemented the put request for a team to update it especially at the end of every round.
+
+# Meeting 20.04.2023 - Week 09
+## Tom
+- [#75](https://github.com/sopra-fs23-group-05/Server/issues/75): Wrote a get request for Team. Implementet Team entity, a Player class, TeamGetDto, a Role enum and changed all the depending classes.
