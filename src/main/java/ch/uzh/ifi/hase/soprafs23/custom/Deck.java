@@ -1,10 +1,12 @@
-/*
+
 package ch.uzh.ifi.hase.soprafs23.custom;
 
+import javax.persistence.Embedded;
 import java.util.Collections;
 import java.util.List;
 
 public class Deck {
+    @Embedded
     private final List<Card> cards;
 
     public Deck(List<Card> cards){
@@ -24,4 +26,4 @@ public class Deck {
         return cards.isEmpty();
     }
 }
-*/
+

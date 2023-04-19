@@ -1,10 +1,12 @@
 package ch.uzh.ifi.hase.soprafs23.custom;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 @Embeddable
 public class Turn {
-    /*private final Deck deck;
+    @Embedded
+    private final Deck deck;
 
     // private Timer timer;    do we need a timer class in the backend? like it is in our class diagram
 
@@ -36,5 +38,5 @@ public class Turn {
     }
     public void buzz(){
 
-    }*/
+    }
 }

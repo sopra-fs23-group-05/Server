@@ -1,8 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
@@ -38,27 +38,9 @@ public class GameService {
     public Game getGame(int accessCode){return this.gameRepository.findByAccessCode( accessCode);}
     //updates the team at the end of a round with the points they made and switches the roles
 
-    /*
-    * 1 Calling an empty constructor and immediately after four different setter methods makes no sense.
-    * Pass all this data into a constructor.
-    *
-    * 2 When initializing the teams, immediately set them up for the game. At this point we have
-    * all the information we need to play. So store the information in the team object.
-    * E.g. already assign which team will be the guesser in the first round. Set the points to zero.
-    * Set the index of the clue-giver. To state the obvious: do it in the constructor of the Team.
-    * Not by calling five separate setter methods for each team.
-    * */
     public Game createGame(int accessCode) {
-        Game newGame = new Game();
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
-
-        newGame.setSettings(lobby.getSettings());
-        newGame.setAccessCode(accessCode);
-
-        Team team1 = teamService.createTeam(lobby.getTeam1());
-        Team team2 = teamService.createTeam(lobby.getTeam2());
-        newGame.setTeam1(team1);
-        newGame.setTeam2(team2);
+        Game newGame = new Game(lobby.getAccessCode(),lobby.getSettings(),teamService.createTeam(lobby.getTeam1(), Role.GUESSINGTEAM),teamService.createTeam(lobby.getTeam2(),Role.BUZZINGTEAM));
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         newGame = gameRepository.save(newGame);
