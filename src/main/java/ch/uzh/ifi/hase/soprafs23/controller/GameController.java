@@ -1,5 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
+import ch.uzh.ifi.hase.soprafs23.constant.Role;
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
@@ -47,6 +50,16 @@ public class GameController {
     @ResponseBody
     public void nextTurn(@PathVariable int accessCode, @PathVariable int scoredPoints) {
         gameService.nextTurn(accessCode, scoredPoints);
+    }
+    @GetMapping("/games/{accessCode}/user/{playerName}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public PlayerRole getPlayerRole(@PathVariable int accessCode, @PathVariable String playerName) {
+        // create lobby
+        PlayerRole role = gameService.getPlayerRole(accessCode,playerName);
+
+        // convert internal representation of user back to API
+        return role;
     }
 }
 
