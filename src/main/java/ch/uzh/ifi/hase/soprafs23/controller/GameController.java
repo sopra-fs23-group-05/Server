@@ -51,15 +51,13 @@ public class GameController {
     public void nextTurn(@PathVariable int accessCode, @PathVariable int scoredPoints) {
         gameService.nextTurn(accessCode, scoredPoints);
     }
-    @GetMapping("/games/{accessCode}/user/{playerName}")
+    @GetMapping("/games/{accessCode}/users/{playerName}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public PlayerRole getPlayerRole(@PathVariable int accessCode, @PathVariable String playerName) {
         // create lobby
-        PlayerRole role = gameService.getPlayerRole(accessCode,playerName);
-
         // convert internal representation of user back to API
-        return role;
+        return gameService.getPlayerRole(accessCode,playerName);
     }
 }
 
