@@ -21,7 +21,7 @@ Before each meeting, each team member is required to manually append the two dev
 - [#75](https://github.com/sopra-fs23-group-05/Server/issues/75): Wrote a get request for Team. Implementet Team entity, a Player class, TeamGetDto, a Role enum and changed all the depending classes.
 - [#76](https://github.com/sopra-fs23-group-05/Server/issues/76): Implemented the put request for a team to update it especially at the end of every round.
 
-# Meeting 20.04.2023 - Week 09
+# Meeting 20.04.2023 - Week 08
 ## Daniel
 - [#43](https://github.com/sopra-fs23-group-05/Client/issues/43) Create the invite page with invite link and QR code.
 - [#96](https://github.com/sopra-fs23-group-05/Server/issues/96) Automatically insert the access code into field after using invite link or QR Code.
@@ -36,8 +36,8 @@ Before each meeting, each team member is required to manually append the two dev
 - [#67](https://github.com/sopra-fs23-group-05/Server/issues/67) Created the Deck class 
 - [#66](https://github.com/sopra-fs23-group-05/Server/issues/66) Created the Card class
 - [#73](https://github.com/sopra-fs23-group-05/Server/issues/73) Created the Turn class
-- [#79](https://github.com/sopra-fs23-group-05/Server/issues/79) Implemented a team POST request (changed it that teams are automaticly created with the game)
-- [#54](https://github.com/sopra-fs23-group-05/Server/issues/54) PUT request for lobby to update the new individual settings (changed it that settings are automaticly changed with the game)
+- [#79](https://github.com/sopra-fs23-group-05/Server/issues/79) Implemented a team POST request
+- [#54](https://github.com/sopra-fs23-group-05/Server/issues/54) PUT request for lobby to update the new individual settings
 - [#24](https://github.com/sopra-fs23-group-05/Client/issues/24) Created a PreGame Screen that shows before every Turn
 - [#47](https://github.com/sopra-fs23-group-05/Server/issues/47) Created Game and Players with the roles
 - [#23](https://github.com/sopra-fs23-group-05/Client/issues/23) Get Accescode and Settings for the Game
@@ -47,3 +47,12 @@ Before each meeting, each team member is required to manually append the two dev
 - [#50](https://github.com/sopra-fs23-group-05/Server/issues/50) Implement the whole backend for storing the points to the database after a turn.
 - [#60](https://github.com/sopra-fs23-group-05/Client/issues/60) Create the chat component including the input field and the send button.
 - Most of my time I spent setting up the websocket. It works locally. But at the moment it does not work online. The according tasks are in progress, but not yet completed.
+
+## Melea
+- [#37](https://github.com/sopra-fs23-group-05/Client/issues/37) Implement redirect to Login Page for lobby leaders
+- [#45](https://github.com/sopra-fs23-group-05/Client/issues/45) If Login fails, display error and reload Login page
+- [#56](https://github.com/sopra-fs23-group-05/Client/issues/56) Create Game page
+- [#57](https://github.com/sopra-fs23-group-05/Client/issues/57) Create Card component with Buttons for Skip and Word
+- [#58](https://github.com/sopra-fs23-group-05/Client/issues/58) Create Card component without Buttons
+- [#59](https://github.com/sopra-fs23-group-05/Client/issues/59) Create Timer/Score component
+- [#61](https://github.com/sopra-fs23-group-05/Client/issues/61) Create the Buzzer component 
