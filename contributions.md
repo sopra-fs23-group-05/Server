@@ -41,3 +41,9 @@ Before each meeting, each team member is required to manually append the two dev
 - [#24](https://github.com/sopra-fs23-group-05/Client/issues/24) Created a PreGame Screen that shows before every Turn
 - [#47](https://github.com/sopra-fs23-group-05/Server/issues/47) Created Game and Players with the roles
 - [#23](https://github.com/sopra-fs23-group-05/Client/issues/23) Get Accescode and Settings for the Game
+
+## Felix
+- [#48](https://github.com/sopra-fs23-group-05/Server/issues/48) Implement the whole backend for handling the assignment of new roles before a turn.
+- [#50](https://github.com/sopra-fs23-group-05/Server/issues/50) Implement the whole backend for storing the points to the database after a turn.
+- [#60](https://github.com/sopra-fs23-group-05/Client/issues/60) Create the chat component including the input field and the send button.
+- Most of my time I spent setting up the websocket. It works locally. But at the moment it does not work online. The according tasks are in progress, but not yet completed.
