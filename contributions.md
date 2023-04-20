@@ -36,8 +36,8 @@ Before each meeting, each team member is required to manually append the two dev
 - [#67](https://github.com/sopra-fs23-group-05/Server/issues/67) Created the Deck class 
 - [#66](https://github.com/sopra-fs23-group-05/Server/issues/66) Created the Card class
 - [#73](https://github.com/sopra-fs23-group-05/Server/issues/73) Created the Turn class
-- [#79](https://github.com/sopra-fs23-group-05/Server/issues/79) Implemented a team POST request
-- [#54](https://github.com/sopra-fs23-group-05/Server/issues/54) PUT request for lobby to update the new individual settings
+- [#79](https://github.com/sopra-fs23-group-05/Server/issues/79) Implemented a team POST request (changed it that teams are automaticly created with the game)
+- [#54](https://github.com/sopra-fs23-group-05/Server/issues/54) PUT request for lobby to update the new individual settings (changed it that settings are automaticly changed with the game)
 - [#24](https://github.com/sopra-fs23-group-05/Client/issues/24) Created a PreGame Screen that shows before every Turn
 - [#47](https://github.com/sopra-fs23-group-05/Server/issues/47) Created Game and Players with the roles
 - [#23](https://github.com/sopra-fs23-group-05/Client/issues/23) Get Accescode and Settings for the Game
