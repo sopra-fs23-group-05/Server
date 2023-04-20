@@ -23,12 +23,12 @@ Before each meeting, each team member is required to manually append the two dev
 
 # Meeting 20.04.2023 - Week 09
 ## Daniel
-- [#43] (https://github.com/sopra-fs23-group-05/Client/issues/43): Create the invite page with invite link and QR code.
-- [#48] (https://github.com/sopra-fs23-group-05/Client/issues/48): Create settings page where the lobby leader can modify the settings.
-- [#49] (https://github.com/sopra-fs23-group-05/Client/issues/49): Add functionality to edit number of rounds, timer per round and the topic of words.
-- [#10] (https://github.com/sopra-fs23-group-05/Client/issues/10): Create the endscreen with the final score and winner displayed.
-- [#11] (https://github.com/sopra-fs23-group-05/Client/issues/11): Add a back button which will allow players to go back to the home page.
-- [#12] (https://github.com/sopra-fs23-group-05/Client/issues/11): Add a share button which will allow players to share the final score on Twitter.
+- [#43](https://github.com/sopra-fs23-group-05/Client/issues/43) Create the invite page with invite link and QR code.
+- [#48](https://github.com/sopra-fs23-group-05/Client/issues/48) Create settings page where the lobby leader can modify the settings.
+- [#49](https://github.com/sopra-fs23-group-05/Client/issues/49) Add functionality to edit number of rounds, timer per round and the topic of words.
+- [#10](https://github.com/sopra-fs23-group-05/Client/issues/10) Create the endscreen with the final score and winner displayed.
+- [#11](https://github.com/sopra-fs23-group-05/Client/issues/11) Add a back button which will allow players to go back to the home page.
+- [#12](https://github.com/sopra-fs23-group-05/Client/issues/11) Add a share button which will allow players to share the final score on Twitter.
 
 
 ## Tom
