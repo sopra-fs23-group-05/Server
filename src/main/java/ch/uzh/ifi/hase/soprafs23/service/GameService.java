@@ -61,4 +61,12 @@ public class GameService {
         gameRepository.save(existingGame);
         gameRepository.flush();
     }
+
+    public boolean guess(int accessCode, String guess){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        return existingGame.getTurn().guess(guess);
+    }
 }
