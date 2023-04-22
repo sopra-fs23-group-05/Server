@@ -10,6 +10,7 @@ public class Message {
     private MessageType type;
 
     public Message(int accessCode, long senderId, String content, MessageType type) {
+        this.accessCode = accessCode;
         this.senderId = senderId;
         this.content = content;
         this.type = type;
