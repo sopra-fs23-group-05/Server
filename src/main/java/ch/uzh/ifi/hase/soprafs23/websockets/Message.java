@@ -3,11 +3,13 @@ package ch.uzh.ifi.hase.soprafs23.websockets;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 
 public class Message {
+
+    private int accessCode;
     private long senderId;
     private String content;
     private MessageType type;
 
-    public Message(long senderId, String content, MessageType type) {
+    public Message(int accessCode, long senderId, String content, MessageType type) {
         this.senderId = senderId;
         this.content = content;
         this.type = type;
@@ -35,5 +37,13 @@ public class Message {
 
     public void setType(MessageType type) {
         this.type = type;
+    }
+
+    public int getAccessCode() {
+        return accessCode;
+    }
+
+    public void setAccessCode(int accessCode) {
+        this.accessCode = accessCode;
     }
 }

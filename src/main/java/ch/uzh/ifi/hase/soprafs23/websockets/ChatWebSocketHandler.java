@@ -43,25 +43,16 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     private Message convertTextMessageToMessage(TextMessage message){
         String textMessageString = message.getPayload();
+        textMessageString = textMessageString.substring(1, textMessageString.length()-1);   // Remove curly braces
+        String[] messageParts = textMessageString.split(",");
 
-        // Convert user string to user
-        String userString = textMessageString.substring(textMessageString.indexOf('{')+1, textMessageString.indexOf('}')+1);
-        String userIdString = userString.substring(userString.indexOf("id")+4, userString.indexOf("username")-2);
-        long userId = -1;
-        if(!userIdString.equals("null")){
-            userId = Long.parseLong(userIdString);
-        }
+        // Extract access code, userId, content
+        int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 2, messageParts[0].length() - 1));
+        long userId = Long.parseLong(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
+        String content = messageParts[2].substring(messageParts[2].indexOf(':') + 2, messageParts[2].length() - 1);
 
-        // Extract content and type of message
-        String messageAndTypeString = textMessageString.substring(textMessageString.indexOf('}') + 2, textMessageString.length() - 1);
-        String contentString = messageAndTypeString.substring(0, messageAndTypeString.indexOf(','));
-        String typeString = messageAndTypeString.substring(messageAndTypeString.indexOf(',') + 1);
-
-        // Extract content from content string
-        contentString = contentString.substring(contentString.indexOf(':') + 2, contentString.length() - 1);
-
-        // Convert type string to MessageType
-        typeString = typeString.substring(typeString.indexOf(':') + 2, typeString.length() - 1);
+        // Extract type and convert to MessageType
+        String typeString = messageParts[3].substring(messageParts[3].indexOf(':') + 2, messageParts[3].length() - 1);
         MessageType msgType;
         if(typeString.equals("description")){
             msgType = MessageType.DESCRIPTION;
@@ -70,6 +61,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
 
         // Create new Message object
-        return new Message(userId, contentString, msgType);
+        return new Message(accessCode, userId, content, msgType);
     }
 }
