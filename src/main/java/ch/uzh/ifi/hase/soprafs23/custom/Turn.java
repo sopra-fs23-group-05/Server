@@ -41,6 +41,10 @@ public class Turn {
     }
 
     public boolean guess(String guess){
-        return drawnCard.isCorrectGuess(guess);
+        boolean isCorrect = drawnCard.isCorrectGuess(guess);
+        if(isCorrect){
+            turnPoints++;
+        }
+        return isCorrect;
     }
 }
