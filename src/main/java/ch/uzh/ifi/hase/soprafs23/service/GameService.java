@@ -70,6 +70,7 @@ public class GameService {
         }
         // TODO Send a new card to the front end in case the following method returns true
         existingGame.getTurn().guess(guess.getContent());
+        gameRepository.flush(); // I might have changed the turn points, so I need to flush.
 
         // Idea: This method could return a boolean for a true guess. If it does, I could clear the chat.
     }
