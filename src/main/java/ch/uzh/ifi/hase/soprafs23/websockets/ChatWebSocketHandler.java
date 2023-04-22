@@ -32,6 +32,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             System.out.println("Sending message: " + message.getPayload());
             Message msg = convertTextMessageToMessage(message);
             // Call game service to guess the word
+            if(msg.getType() == MessageType.GUESS){
+                gameService.guessWord(msg);
+            }
             webSocketSession.sendMessage(message);
         }
     }

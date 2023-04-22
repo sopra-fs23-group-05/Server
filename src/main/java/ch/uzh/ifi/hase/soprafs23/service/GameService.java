@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,11 +63,14 @@ public class GameService {
         gameRepository.flush();
     }
 
-    public boolean guess(int accessCode, String guess){
-        Game existingGame = gameRepository.findByAccessCode(accessCode);
+    public void guessWord(Message guess){
+        Game existingGame = gameRepository.findByAccessCode(guess.getAccessCode());
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + guess.getAccessCode() + " does not exist");
         }
-        return existingGame.getTurn().guess(guess);
+        // TODO Send a new card to the front end in case the following method returns true
+        existingGame.getTurn().guess(guess.getContent());
+
+        // Idea: This method could return a boolean for a true guess. If it does, I could clear the chat.
     }
 }
