@@ -1,19 +1,24 @@
 package ch.uzh.ifi.hase.soprafs23.websockets;
 
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 
 public class Message {
-    private User sender;
+    private long senderId;
     private String content;
     private MessageType type;
 
-    public User getSender() {
-        return sender;
+    public Message(long senderId, String content, MessageType type) {
+        this.senderId = senderId;
+        this.content = content;
+        this.type = type;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public long getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
     }
 
     public String getContent() {
