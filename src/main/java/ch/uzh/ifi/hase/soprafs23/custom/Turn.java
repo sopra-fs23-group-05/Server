@@ -39,4 +39,8 @@ public class Turn {
     public void buzz(){
 
     }
+
+    public boolean guess(String guess){
+        return drawnCard.isCorrectGuess(guess);
+    }
 }
