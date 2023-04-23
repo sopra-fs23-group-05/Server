@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.websockets;
 
+import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
@@ -12,7 +13,13 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final static String CHAT_ENDPOINT = "/chat";
-    private final static String CARD_ENDPOINT = "/games/{accessCode}/cards";
+    private final static String CARD_ENDPOINT = "/cards";
+
+    private final GameService gameService;
+
+    public WebSocketConfig(GameService gameService) {
+        this.gameService = gameService;
+    }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
@@ -23,7 +30,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
 
     private WebSocketHandler getCardWebSocketHandler() {
-        return new CardWebSocketHandler();
+        return new CardWebSocketHandler(gameService);
     }
 
     @Bean
