@@ -54,6 +54,10 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
         }
     }
 
+    /* Send new card to all clients after a correct guess.
+    * I could have a method that sends stuff to clients without first receiving a message to trigger it.
+    * I would inject this CardWebSocketHandler into the gameService and call this method from there. */
+
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         webSocketSessions.remove(session);
