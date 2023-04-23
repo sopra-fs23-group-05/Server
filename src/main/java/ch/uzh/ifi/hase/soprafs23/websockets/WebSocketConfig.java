@@ -12,11 +12,18 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final static String CHAT_ENDPOINT = "/chat";
+    private final static String CARD_ENDPOINT = "/games/{accessCode}/cards";
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), CHAT_ENDPOINT)
                 .setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getCardWebSocketHandler(), CARD_ENDPOINT)
+                .setAllowedOrigins("*");
+    }
+
+    private WebSocketHandler getCardWebSocketHandler() {
+        return new CardWebSocketHandler();
     }
 
     @Bean
