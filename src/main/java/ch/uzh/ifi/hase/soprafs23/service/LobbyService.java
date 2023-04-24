@@ -33,6 +33,8 @@ public class LobbyService {
     private final UserRepository userRepository;
     private final LobbyRepository lobbyRepository;
 
+    private final Random random = new Random();
+
     @Autowired
     public LobbyService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository) {
         this.userRepository = userRepository;
@@ -53,32 +55,25 @@ public class LobbyService {
     }
 
     public int createAccessCode() {
-        Random random = new Random();
         int min = 100000;
         int max = 999999;
 
         // Generate a unique access code
 
         while (true) {
-            int code = random.nextInt((max - min) + 1) + min;
+            int accessCode = random.nextInt((max - min) + 1) + min;
             // Check if the access code already exists in the database/collection
             // Replace this with your own logic to check for uniqueness
-            if (!checkIfLobbyExists(code)) {
-                int accessCode = code;
+            if (!checkIfLobbyExists(accessCode)) {
                 return accessCode;
             }
         }
     }
 
-    private boolean checkIfLobbyExists(int accessCode){
-        Lobby lobbyByAccessCode = lobbyRepository.findByAccessCode(accessCode);
-        if(lobbyByAccessCode != null){
-            return true;
-        }
-        else{
-            return false;
-        }
+    private boolean checkIfLobbyExists(int accessCode) {
+        return lobbyRepository.findByAccessCode(accessCode) != null;
     }
+
 
     public Lobby joinLobbyTeam(int accessCode, int teamNr, int userId) {
         Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
