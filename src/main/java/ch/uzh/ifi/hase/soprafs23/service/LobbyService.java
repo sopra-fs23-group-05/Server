@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import java.util.List;
 
 /**
  * User Service
@@ -57,6 +58,21 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be added to the lobby team!");
         }else if (!existingLobby.isUserInLobby(userInput)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided is not in the lobby. Therefore, the user could not be added to the lobby team!");
+        }
+
+        //check if user already is in a team
+        List<User> team1 = existingLobby.getTeam1();
+        List<User> team2 = existingLobby.getTeam2();
+
+        for (User user : team1) {
+            if (userId == user.getId()) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The user already joined a team. Therefore, the user could not be added to the team.");
+            }
+        }
+        for (User user : team2) {
+            if (userId == user.getId()) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The user already joined a team. Therefore, the user could not be added to the team.");
+            }
         }
 
         if(teamNr == 1){
