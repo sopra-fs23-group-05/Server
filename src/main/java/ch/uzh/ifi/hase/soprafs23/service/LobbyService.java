@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 
 /**
  * User Service
@@ -33,7 +33,7 @@ public class LobbyService {
     private final UserRepository userRepository;
     private final LobbyRepository lobbyRepository;
 
-    private final Random random = new Random();
+    private final SecureRandom random = new SecureRandom();
 
     @Autowired
     public LobbyService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository) {
