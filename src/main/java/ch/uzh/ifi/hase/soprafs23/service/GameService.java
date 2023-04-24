@@ -63,17 +63,17 @@ public class GameService {
     }
     public PlayerRole getPlayerRole(int accessCode,String userName){
         Game existingGame = gameRepository.findByAccessCode(accessCode);
-        if (teamService.isInTeam(1,userName)){
+        if (teamService.isInTeam(existingGame.getTeam1().getTeamId(),userName)){
             if(existingGame.getTeam1().getaRole()==Role.BUZZINGTEAM){
                 return PlayerRole.BUZZER;
-            }else if (teamService.isClueGiver(1,userName)){
+            }else if (teamService.isClueGiver(existingGame.getTeam1().getTeamId(),userName)){
                 return PlayerRole.CLUEGIVER;
             }
             return PlayerRole.GUESSER;
         }else {
             if(existingGame.getTeam2().getaRole()==Role.BUZZINGTEAM){
                 return PlayerRole.BUZZER;
-            }else if (teamService.isClueGiver(2,userName)){
+            }else if (teamService.isClueGiver(existingGame.getTeam2().getTeamId(),userName)){
                 return PlayerRole.CLUEGIVER;
             }
             return PlayerRole.GUESSER;
