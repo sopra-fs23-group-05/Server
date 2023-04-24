@@ -5,12 +5,12 @@ import ch.uzh.ifi.hase.soprafs23.constant.Topic;
 public class Settings {
     private int rounds;
     private int roundTime;   // in seconds
-    private Topic Topic;
+    private Topic topic;
 
     public Settings() {
         rounds = 7;
         roundTime = 120;
-        Topic = ch.uzh.ifi.hase.soprafs23.constant.Topic.MOVIES;
+        topic = ch.uzh.ifi.hase.soprafs23.constant.Topic.MOVIES;
     }
 
     public int getRounds() {
@@ -22,7 +22,7 @@ public class Settings {
     }
 
     public Topic getTopic() {
-        return Topic;
+        return topic;
     }
 
     public void setRounds(int rounds) {
@@ -33,7 +33,7 @@ public class Settings {
         this.roundTime = time;
     }
 
-    public void setTopic(Topic Topic) {
-        this.Topic = Topic;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 }
