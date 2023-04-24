@@ -47,7 +47,7 @@ class LobbyControllerTest {
                 .andExpect(jsonPath("$.team2", is(lobby.getTeam2())))
                 .andExpect(jsonPath("$.settings.rounds", is(7)))
                 .andExpect(jsonPath("$.settings.roundTime", is(120)))
-                .andExpect(jsonPath("$.settings.Topic", is("MOVIES")));
+                .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
 
     }
 }
