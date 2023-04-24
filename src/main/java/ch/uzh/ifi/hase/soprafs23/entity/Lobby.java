@@ -56,8 +56,6 @@ public class Lobby {
         int max = 999999;
         accessCode = random.nextInt((max - min) + 1) + min;
 
-        // Get predictable behaviour for testing with postman
-        accessCode = 123456;
     }
 
     public void setLobbyLeader(User lobbyLeader) {
