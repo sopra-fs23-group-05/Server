@@ -1,15 +1,29 @@
-/*package ch.uzh.ifi.hase.soprafs23.rest.dto;
+package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs23.custom.Settings;
+import ch.uzh.ifi.hase.soprafs23.constant.Topic;
 
 public class SettingsPutDTO {
-    private Settings settings;
+    private int rounds;
+    private int roundTime;   // in seconds
+    private Topic topic;
 
-    public Settings getSettings() {
-        return settings;
+    public int getRounds() {
+        return rounds;
     }
 
-    public void setSettings(Settings settings) {
-        this.settings = settings;
+    public int getRoundTime() {
+        return roundTime;
     }
-}*/
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
+    public void setRounds(int rounds) {
+        this.rounds = rounds;
+    }
+}
