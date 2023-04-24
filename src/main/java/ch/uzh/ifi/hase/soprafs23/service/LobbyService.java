@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * User Service
  * This class is the "worker" and responsible for all functionality related to
@@ -25,20 +28,21 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional
 public class LobbyService {
 
-  private final Logger log = LoggerFactory.getLogger(LobbyService.class);
+    private final Logger log = LoggerFactory.getLogger(LobbyService.class);
 
-  private final UserRepository userRepository;
-  private final LobbyRepository lobbyRepository;
+    private final UserRepository userRepository;
+    private final LobbyRepository lobbyRepository;
 
-  @Autowired
-  public LobbyService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository) {
-      this.userRepository = userRepository;
-      this.lobbyRepository = lobbyRepository;
-  }
+    @Autowired
+    public LobbyService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository) {
+        this.userRepository = userRepository;
+        this.lobbyRepository = lobbyRepository;
+    }
 
     public Lobby createLobby() {
         Lobby newLobby = new Lobby();
         newLobby.setSettings(new Settings());
+        newLobby.setAccessCode(createAccessCode());
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         newLobby = lobbyRepository.save(newLobby);
@@ -47,6 +51,35 @@ public class LobbyService {
         log.debug("Created Information for Lobby: {}", newLobby);
         return newLobby;
     }
+
+    public int createAccessCode() {
+        Random random = new Random();
+        int min = 100000;
+        int max = 999999;
+
+        // Generate a unique access code
+
+        while (true) {
+            int code = random.nextInt((max - min) + 1) + min;
+            // Check if the access code already exists in the database/collection
+            // Replace this with your own logic to check for uniqueness
+            if (!checkIfLobbyExists(code)) {
+                int accessCode = code;
+                return accessCode;
+            }
+        }
+    }
+
+    private boolean checkIfLobbyExists(int accessCode){
+        Lobby lobbyByAccessCode = lobbyRepository.findByAccessCode(accessCode);
+        if(lobbyByAccessCode != null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public Lobby joinLobbyTeam(int accessCode, int teamNr, int userId) {
         Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
         User userInput = userRepository.findById(userId);
@@ -133,5 +166,9 @@ public class LobbyService {
 
     public Lobby getLobby(int accessCode) {
         return lobbyRepository.findByAccessCode(accessCode);
+    }
+
+    public List<Lobby> getLobbies() {
+        return this.lobbyRepository.findAll();
     }
 }
