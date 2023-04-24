@@ -1,16 +1,16 @@
 package ch.uzh.ifi.hase.soprafs23.custom;
 
-import ch.uzh.ifi.hase.soprafs23.constant.aTopic;
+import ch.uzh.ifi.hase.soprafs23.constant.Topic;
 
 public class Settings {
     private int rounds;
     private int roundTime;   // in seconds
-    private aTopic aTopic;
+    private Topic Topic;
 
     public Settings() {
         rounds = 7;
         roundTime = 120;
-        aTopic = ch.uzh.ifi.hase.soprafs23.constant.aTopic.MOVIES;
+        Topic = ch.uzh.ifi.hase.soprafs23.constant.Topic.MOVIES;
     }
 
     public int getRounds() {
@@ -21,8 +21,8 @@ public class Settings {
         return roundTime;
     }
 
-    public aTopic getaTopic() {
-        return aTopic;
+    public Topic getTopic() {
+        return Topic;
     }
 
     public void setRounds(int rounds) {
@@ -33,7 +33,7 @@ public class Settings {
         this.roundTime = time;
     }
 
-    public void setaTopic(aTopic aTopic) {
-        this.aTopic = aTopic;
+    public void setTopic(Topic Topic) {
+        this.Topic = Topic;
     }
 }

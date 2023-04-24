@@ -1,12 +1,12 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs23.constant.aTopic;
+import ch.uzh.ifi.hase.soprafs23.constant.Topic;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 
 public class SettingsPutDTO {
     private int rounds;
     private int roundTime;   // in seconds
-    private aTopic aTopic;
+    private Topic Topic;
 
     public int getRounds() {
         return rounds;
@@ -16,12 +16,12 @@ public class SettingsPutDTO {
         return roundTime;
     }
 
-    public aTopic getaTopic() {
-        return aTopic;
+    public Topic getTopic() {
+        return Topic;
     }
 
-    public void setaTopic(aTopic aTopic) {
-        this.aTopic = aTopic;
+    public void setTopic(Topic Topic) {
+        this.Topic = Topic;
     }
 
     public void setRounds(int rounds) {

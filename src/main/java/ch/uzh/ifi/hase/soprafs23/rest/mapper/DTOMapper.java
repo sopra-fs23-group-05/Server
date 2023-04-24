@@ -33,7 +33,7 @@ public interface DTOMapper {
   @Mapping(source = "idxClueGiver", target = "idxClueGiver")
   TeamGetDTO convertEntityToTeamGetDTO(Team team);
   @Mapping(source = "rounds", target = "rounds")
-  @Mapping(source = "aTopic", target = "aTopic")
+  @Mapping(source = "topic", target = "topic")
   @Mapping(source = "roundTime", target = "roundTime")
   Settings convertSettingsPutDTOtoEntity(SettingsPutDTO settingsPutDTO);
   @Mapping(source = "username", target = "username")
