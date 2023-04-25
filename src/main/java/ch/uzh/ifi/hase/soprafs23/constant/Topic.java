@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.constant;
 
-public enum aTopic {
+public enum Topic {
     ANIMALS,
     SPORTS,
     MOVIES,

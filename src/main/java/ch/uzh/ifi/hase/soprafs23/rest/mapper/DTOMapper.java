@@ -24,40 +24,39 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface DTOMapper {
 
-    DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
+  DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-    @Mapping(source = "teamId", target = "teamId")
-    @Mapping(source = "teamName", target = "teamName")
-    @Mapping(source = "aRole", target = "aRole")
-    @Mapping(source = "points", target = "points")
-    @Mapping(source = "players", target = "players")
-    @Mapping(source = "idxClueGiver", target = "idxClueGiver")
-    TeamGetDTO convertEntityToTeamGetDTO(Team team);
+  @Mapping(source = "teamId", target = "teamId")
+  @Mapping(source = "teamName", target = "teamName")
+  @Mapping(source = "aRole", target = "aRole")
+  @Mapping(source = "points", target = "points")
+  @Mapping(source = "players", target = "players")
+  @Mapping(source = "idxClueGiver", target = "idxClueGiver")
+  TeamGetDTO convertEntityToTeamGetDTO(Team team);
+  @Mapping(source = "rounds", target = "rounds")
+  @Mapping(source = "topic", target = "topic")
+  @Mapping(source = "roundTime", target = "roundTime")
+  Settings convertSettingsPutDTOtoEntity(SettingsPutDTO settingsPutDTO);
+  @Mapping(source = "username", target = "username")
+  @Mapping(source = "leader", target = "leader")
+  User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
-    @Mapping(source = "rounds", target = "rounds")
-    @Mapping(source = "aTopic", target = "aTopic")
-    @Mapping(source = "roundTime", target = "roundTime")
-    Settings convertSettingsPutDTOtoEntity(SettingsPutDTO settingsPutDTO);
+  @Mapping(source = "id", target = "id")
+  @Mapping(source = "username", target = "username")
+  @Mapping(source = "leader", target = "leader")
+  UserGetDTO convertEntityToUserGetDTO(User user);
 
-    @Mapping(source = "username", target = "username")
-    @Mapping(source = "leader", target = "leader")
-    User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
+  @Mapping(source = "accessCode", target = "accessCode")
+  @Mapping(source = "team1", target = "team1")
+  @Mapping(source = "team2", target = "team2")
+  LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "username", target = "username")
-    @Mapping(source = "leader", target = "leader")
-    UserGetDTO convertEntityToUserGetDTO(User user);
+  @Mapping(source = "accessCode", target = "accessCode")
+  @Mapping(source = "settings", target = "settings")
+  @Mapping(source = "roundsPlayed", target = "roundsPlayed")
+  @Mapping(source = "turn", target = "turn")
+  @Mapping(source = "team1", target = "team1")
+  @Mapping(source = "team2", target = "team2")
+  GameGetDTO convertEntityToGameGetDTO(Game game);
 
-    @Mapping(source = "accessCode", target = "accessCode")
-    @Mapping(source = "team1", target = "team1")
-    @Mapping(source = "team2", target = "team2")
-    LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
-
-    @Mapping(source = "accessCode", target = "accessCode")
-    @Mapping(source = "settings", target = "settings")
-    @Mapping(source = "roundsPlayed", target = "roundsPlayed")
-    @Mapping(source = "turn", target = "turn")
-    @Mapping(source = "team1", target = "team1")
-    @Mapping(source = "team2", target = "team2")
-    GameGetDTO convertEntityToGameGetDTO(Game game);
 }

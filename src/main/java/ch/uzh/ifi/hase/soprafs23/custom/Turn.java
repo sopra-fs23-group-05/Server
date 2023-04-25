@@ -39,4 +39,12 @@ public class Turn {
     public void buzz(){
 
     }
+
+    public boolean guess(String guess){
+        boolean isCorrect = drawnCard.isCorrectGuess(guess);
+        if(isCorrect){
+            turnPoints++;
+        }
+        return isCorrect;
+    }
 }

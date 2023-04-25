@@ -34,7 +34,7 @@ public class Card {
     }
 
     public boolean isCorrectGuess(String guess){
-        return Objects.equals(guess, word);
+        return word.equalsIgnoreCase(guess);
     }
 
     public boolean isTaboo(String taboo){
