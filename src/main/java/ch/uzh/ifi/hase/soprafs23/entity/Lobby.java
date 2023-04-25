@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
+import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,8 +32,8 @@ public class Lobby {
     @OneToMany
     private List<User> team2;
 
+
     public Lobby() {
-        setAccessCode();
         lobbyUsers = new ArrayList<>();
         team1 = new ArrayList<>();
         team2 = new ArrayList<>();
@@ -50,14 +51,8 @@ public class Lobby {
         return aSettings;
     }
 
-    public void setAccessCode() {
-        Random random = new Random();
-        int min = 100000;
-        int max = 999999;
-        accessCode = random.nextInt((max - min) + 1) + min;
-
-        // Get predictable behaviour for testing with postman
-        accessCode = 123456;
+    public void setAccessCode(int accessCode) {
+        this.accessCode = accessCode;
     }
 
     public void setLobbyLeader(User lobbyLeader) {
