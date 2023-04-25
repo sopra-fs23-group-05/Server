@@ -66,24 +66,27 @@ public class GameService {
         gameRepository.flush();
     }
 
-    public PlayerRole getPlayerRole(int accessCode,String userName){
+    public PlayerRole getPlayerRole(int accessCode,String userName) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
-        if (teamService.isInTeam(existingGame.getTeam1().getTeamId(),userName)){
-            if(existingGame.getTeam1().getaRole()==Role.BUZZINGTEAM){
+        if (teamService.isInTeam(existingGame.getTeam1().getTeamId(), userName)) {
+            if (existingGame.getTeam1().getaRole() == Role.BUZZINGTEAM) {
                 return PlayerRole.BUZZER;
-            }else if (teamService.isClueGiver(existingGame.getTeam1().getTeamId(),userName)){
-                return PlayerRole.CLUEGIVER;
             }
-            return PlayerRole.GUESSER;
-        }else {
-            if(existingGame.getTeam2().getaRole()==Role.BUZZINGTEAM){
-                return PlayerRole.BUZZER;
-            }else if (teamService.isClueGiver(existingGame.getTeam2().getTeamId(),userName)){
+            else if (teamService.isClueGiver(existingGame.getTeam1().getTeamId(), userName)) {
                 return PlayerRole.CLUEGIVER;
             }
             return PlayerRole.GUESSER;
         }
-
+        else {
+            if (existingGame.getTeam2().getaRole() == Role.BUZZINGTEAM) {
+                return PlayerRole.BUZZER;
+            }
+            else if (teamService.isClueGiver(existingGame.getTeam2().getTeamId(), userName)) {
+                return PlayerRole.CLUEGIVER;
+            }
+            return PlayerRole.GUESSER;
+        }
+    }
 
 
     public void guessWord(Message guess){
