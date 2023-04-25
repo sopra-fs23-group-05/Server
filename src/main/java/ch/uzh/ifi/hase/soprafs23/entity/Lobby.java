@@ -11,7 +11,6 @@ import java.util.Random;
 @Entity
 @Table(name = "LOBBY")
 public class Lobby {
-    // TODO implement serializable to generate an access code.
 
     @Id
     private int accessCode;
