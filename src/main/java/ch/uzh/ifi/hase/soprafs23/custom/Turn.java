@@ -34,6 +34,7 @@ public class Turn {
         buzzCounter++;
         if(buzzCounter == 2){
             buzzCounter = 0;
+            turnPoints--;
             return drawCard();
         }
         return drawnCard;
