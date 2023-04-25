@@ -44,7 +44,7 @@ public class TeamService {
       }
 
       if (players.size() < 2) {
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "One team must at least contain two players");
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Each team must at least contain two players");
       }
 
       Team newTeam = new Team(players,role);
