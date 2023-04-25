@@ -66,12 +66,12 @@ public class LobbyService {
 
         for (User user : team1) {
             if (userId == user.getId()) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "The user already joined a team. Therefore, the user could not be added to the team.");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The user already joined team 1. Therefore, the user could not be added to the team.");
             }
         }
         for (User user : team2) {
             if (userId == user.getId()) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "The user already joined a team. Therefore, the user could not be added to the team.");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The user already joined team 2. Therefore, the user could not be added to the team.");
             }
         }
 
