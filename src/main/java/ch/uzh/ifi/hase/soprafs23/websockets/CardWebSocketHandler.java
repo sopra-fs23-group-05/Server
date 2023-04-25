@@ -29,7 +29,7 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
     // Handle the client requesting a card
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        // I expect a message of the form "{"accessCode":"123456", "action":"draw"}" or "{"accessCode":"123456", "action":"buzz"}"
+        // I expect a message of the form "{"accessCode":"123456", "action":"draw"}", "{"accessCode":"123456", "action":"skip"}" or "{"accessCode":"123456", "action":"buzz"}"
         String messageString = message.getPayload();
 
         // Extract the access code (it is at index 15 to 21)
@@ -40,6 +40,9 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
         try {
             if (messageString.contains("draw")) {
                 outCard = gameService.drawCard(accessCode);
+            }
+            else if(messageString.contains("skip")){
+                outCard = gameService.skip(accessCode);
             }
             else if (messageString.contains("buzz")) {
                 outCard = gameService.buzz(accessCode);

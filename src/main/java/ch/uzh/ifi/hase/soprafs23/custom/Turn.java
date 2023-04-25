@@ -30,6 +30,12 @@ public class Turn {
         drawnCard = deck.draw();
         return drawnCard;
     }
+
+    public Card skip() {
+        turnPoints--;
+        return drawCard();
+    }
+
     public Card buzz(){
         buzzCounter++;
         if(buzzCounter == 2){
