@@ -14,30 +14,29 @@ public class Turn {
 
     private Card drawnCard;
 
-
+    private int buzzCounter = 0;
 
     public Turn(Deck deck) {
         this.deck = deck;
         this.turnPoints = 0;
         this.drawnCard=deck.draw();
-
     }
 
     public Turn() {
         this.deck = null;
     }
 
-
-    public void describe(String s){
-
+    public Card drawCard(){
+        drawnCard = deck.draw();
+        return drawnCard;
     }
-    public Card skipCard(){
-        Card card =deck.draw();
-        drawnCard = card;
-        return card;
-    }
-    public void buzz(){
-
+    public Card buzz(){
+        buzzCounter++;
+        if(buzzCounter == 2){
+            buzzCounter = 0;
+            return drawCard();
+        }
+        return drawnCard;
     }
 
     public boolean guess(String guess){

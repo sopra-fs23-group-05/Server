@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
+import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
@@ -66,6 +67,27 @@ public class GameService {
         gameRepository.flush();
     }
 
+
+    public Card drawCard(int accessCode){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Card outCard = existingGame.getTurn().drawCard();
+        gameRepository.flush();
+        return outCard;
+    }
+
+    public Card buzz(int accessCode){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Card outCard = existingGame.getTurn().buzz();
+        gameRepository.flush();
+        return outCard;
+    }
+
     public PlayerRole getPlayerRole(int accessCode,String userName) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (teamService.isInTeam(existingGame.getTeam1().getTeamId(), userName)) {
@@ -87,7 +109,6 @@ public class GameService {
             return PlayerRole.GUESSER;
         }
     }
-
 
     public void guessWord(Message guess){
         Game existingGame = gameRepository.findByAccessCode(guess.getAccessCode());
