@@ -35,25 +35,25 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
         // Extract the access code (it is at index 15 to 21)
         int accessCode = Integer.parseInt(messageString.substring(15, 21));
 
-        /* TODO Activate for prod
         // Execute buzz or draw
         Card outCard;
-        if(messageString.contains("draw")){
-            outCard = gameService.drawCard(accessCode);
-        } else if(messageString.contains("buzz")){
-            outCard = gameService.buzz(accessCode);
-        } else {
-            throw new Exception("Invalid action");
+        try {
+            if (messageString.contains("draw")) {
+                outCard = gameService.drawCard(accessCode);
+            }
+            else if (messageString.contains("buzz")) {
+                outCard = gameService.buzz(accessCode);
+            }
+            else {
+                throw new Exception("Invalid action");
+            }
+        }catch (NullPointerException e) {
+            outCard = new Card("NA", "NA", "NA", "NA", "NA", "NA");
         }
-
-         */
 
         // Convert it to a TextMessage object
         // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null"}
-        /* TODO substitute the hard coded outMessage with this commented one prod
         TextMessage outMessage = new TextMessage(outCard.toString());
-         */
-        TextMessage outMessage = new TextMessage(new Card("Big Mac", "McDonalds", "hamburger", "pattie", "salad", "null").toString());
 
         for(WebSocketSession webSocketSession : webSocketSessions){
             webSocketSession.sendMessage(outMessage);
