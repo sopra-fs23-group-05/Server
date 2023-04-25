@@ -29,25 +29,31 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
     // Handle the client requesting a card
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        // I expect a message of the form "{"action":"draw", "accessCode":123456}" or "{"action":"buzz", "accessCode":123456}"
+        // I expect a message of the form "{"accessCode":"123456", "action":"draw"}" or "{"accessCode":"123456", "action":"buzz"}"
         String messageString = message.getPayload();
 
-        // Extract the access code
-        int accessCode = Integer.parseInt(messageString.substring(messageString.indexOf("accessCode")+12, messageString.indexOf("}")));
+        // Extract the access code (it is at index 15 to 21)
+        int accessCode = Integer.parseInt(messageString.substring(15, 21));
 
+        /* TODO Activate for prod
         // Execute buzz or draw
         Card outCard;
-        if(messageString.contains("{draw}")){
+        if(messageString.contains("draw")){
             outCard = gameService.drawCard(accessCode);
-        } else if(messageString.contains("{buzz}")){
+        } else if(messageString.contains("buzz")){
             outCard = gameService.buzz(accessCode);
         } else {
             throw new Exception("Invalid action");
         }
 
+         */
+
         // Convert it to a TextMessage object
         // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null"}
+        /* TODO substitute the hard coded outMessage with this commented one prod
         TextMessage outMessage = new TextMessage(outCard.toString());
+         */
+        TextMessage outMessage = new TextMessage(new Card("Big Mac", "McDonalds", "hamburger", "pattie", "salad", "null").toString());
 
         for(WebSocketSession webSocketSession : webSocketSessions){
             webSocketSession.sendMessage(outMessage);
