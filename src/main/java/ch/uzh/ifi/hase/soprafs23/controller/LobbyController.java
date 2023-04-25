@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
 //import ch.uzh.ifi.hase.soprafs23.rest.dto.SettingsPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.SettingsPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
@@ -88,10 +89,10 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(joinedLobby);
 
     }
-  /*  @PutMapping ("/lobbies/{accessCode}/settings")
+   @PutMapping ("/lobbies/{accessCode}/settings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO changeSettings(@RequestBody SettingsPutDTO settingsPutDTO ,@PathVariable int accessCode ) {
+    public LobbyGetDTO changeSettings(@RequestBody SettingsPutDTO settingsPutDTO , @PathVariable int accessCode ) {
         // change settings
         Settings settingsInput = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
         Lobby lobby = lobbyService.getLobby(accessCode);
@@ -100,7 +101,7 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
 
     }
-*/
+
 }
 
 

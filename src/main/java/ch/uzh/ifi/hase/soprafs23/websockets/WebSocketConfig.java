@@ -21,6 +21,12 @@ public class WebSocketConfig implements WebSocketConfigurer {
         this.gameService = gameService;
     }
 
+    private final GameService gameService;
+
+    public WebSocketConfig(GameService gameService) {
+        this.gameService = gameService;
+    }
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), CHAT_ENDPOINT)
@@ -35,6 +41,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public WebSocketHandler getChatWebSocketHandler(){
-        return new ChatWebSocketHandler();
+        return new ChatWebSocketHandler(gameService);
     }
 }
