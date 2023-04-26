@@ -137,4 +137,13 @@ public class GameService {
         gameRepository.flush();
         return outCard;
     }
+
+    public void createCard(int accessCode, Card card){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        existingGame.getTurn().addCard(card);
+        gameRepository.flush();
+    }
 }
