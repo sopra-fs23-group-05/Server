@@ -190,6 +190,17 @@ class LobbyServiceTest {
         assertThrows(ResponseStatusException.class, () -> lobbyService.changeSettings(123123,settings));
 
     }
+    @Test
+    void getLobby_validInput() {
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+
+        Lobby lobby = lobbyService.getLobby(testLobby.getAccessCode());
+
+        assertEquals(lobby,testLobby);
+    }
+
+
+
 
 
 

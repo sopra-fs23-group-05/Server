@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,4 +51,27 @@ class LobbyControllerTest {
                 .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
 
     }
+    @Test
+    void getLobby_validInput() throws Exception {
+        Lobby lobby = new Lobby();
+        lobby.setSettings(new Settings());
+        lobby.setAccessCode(123456);
+
+        given(lobbyService.getLobby(123456)).willReturn(lobby);
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/123456");
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode())))
+                .andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader())))
+                .andExpect(jsonPath("$.lobbyUsers", is(lobby.getLobbyUsers())))
+                .andExpect(jsonPath("$.team1", is(lobby.getTeam1())))
+                .andExpect(jsonPath("$.team2", is(lobby.getTeam2())))
+                .andExpect(jsonPath("$.settings.rounds", is(7)))
+                .andExpect(jsonPath("$.settings.roundTime", is(120)))
+                .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
+    }
+
 }

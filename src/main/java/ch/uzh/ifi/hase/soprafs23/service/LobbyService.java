@@ -62,8 +62,7 @@ public class LobbyService {
 
         while (true) {
             int accessCode = random.nextInt((max - min) + 1) + min;
-            // Check if the access code already exists in the database/collection
-            // Replace this with your own logic to check for uniqueness
+
             if (!checkIfLobbyExists(accessCode)) {
                 return accessCode;
             }

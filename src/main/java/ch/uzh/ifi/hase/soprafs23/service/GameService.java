@@ -45,7 +45,7 @@ public class GameService {
         this.cardWebSocketHandler = cardWebSocketHandler;
     }
 
-    public Game getGame(int accessCode){return this.gameRepository.findByAccessCode( accessCode);}
+    public Game getGame(int accessCode){return this.gameRepository.findByAccessCode(accessCode);}
     //updates the team at the end of a round with the points they made and switches the roles
 
     public Game createGame(int accessCode) {
