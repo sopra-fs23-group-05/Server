@@ -30,4 +30,5 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> gameService.nextTurn(123456, 3));
     }
+
 }
