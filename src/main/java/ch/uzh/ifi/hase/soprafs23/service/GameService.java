@@ -121,4 +121,14 @@ public class GameService {
 
         // Idea: This method could return a boolean for a true guess. If it does, I could clear the chat.
     }
+
+    public Card skip(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Card outCard = existingGame.getTurn().skip();
+        gameRepository.flush();
+        return outCard;
+    }
 }
