@@ -28,7 +28,7 @@ public class Turn {
     }
 
     public Turn() {
-        this.deck = null;
+        this.deck = new Deck();
     }
 
     public Card drawCard(){
@@ -63,5 +63,13 @@ public class Turn {
             return true;
         }
         return false;
+    }
+
+    public void addCard(Card card) {
+        deck.addCard(card);
+    }
+
+    public Deck getDeck() {
+        return deck;
     }
 }

@@ -2,8 +2,10 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
+import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.CardDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
@@ -58,6 +60,14 @@ public class GameController {
         // create lobby
         // convert internal representation of user back to API
         return gameService.getPlayerRole(accessCode,playerName);
+    }
+
+    @PostMapping("/games/{accessCode}/cards")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void createCard(@PathVariable int accessCode, @RequestBody CardDTO cardDTO) {
+      Card inputCard = DTOMapper.INSTANCE.convertCardDTOtoEntity(cardDTO);
+      gameService.createCard(accessCode, inputCard);
     }
 }
 
