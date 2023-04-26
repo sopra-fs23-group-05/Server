@@ -80,7 +80,7 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
                 webSocketSession.sendMessage(outMessage);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("IOException in CardWebSocketHandler: Sending TextMessage objects failed.");
         }
     }
 
