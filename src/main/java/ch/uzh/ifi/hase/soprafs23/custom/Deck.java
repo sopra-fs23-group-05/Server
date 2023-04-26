@@ -13,8 +13,6 @@ public class Deck {
     @ElementCollection
     private final List<Card> cards;
 
-    private int mockCounter = 0;
-
     public Deck(List<Card> cards){
         this.cards = cards;
     }
@@ -30,8 +28,7 @@ public class Deck {
     public Card draw(){
 
         if(cards.size() == 0){
-            String s = "mock" + valueOf(mockCounter);
-            mockCounter++;
+            String s = "mock";
             return new Card(s, s, s, s, s, s);
         }
 
