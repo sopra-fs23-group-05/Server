@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.String.valueOf;
+
 public class Deck {
     @ElementCollection
     private final List<Card> cards;
@@ -24,6 +26,12 @@ public class Deck {
     }
 
     public Card draw(){
+
+        if(cards.size() == 0){
+            String s = "mock";
+            return new Card(s, s, s, s, s, s);
+        }
+
         Card card = cards.get(0);
         cards.remove(0);
         return card;
