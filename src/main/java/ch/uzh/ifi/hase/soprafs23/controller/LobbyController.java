@@ -108,13 +108,10 @@ public class LobbyController {
     @PutMapping ("/lobbies/{accessCode}/settings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO changeSettings(@RequestBody SettingsPutDTO settingsPutDTO , @PathVariable int accessCode ) {
+    public void changeSettings(@RequestBody SettingsPutDTO settingsPutDTO , @PathVariable int accessCode ) {
         // change settings
         Settings settingsInput = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
-        Lobby lobby = lobbyService.getLobby(accessCode);
-        lobby.setSettings(settingsInput);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+        lobbyService.changeSettings(accessCode,settingsInput);
 
     }
 

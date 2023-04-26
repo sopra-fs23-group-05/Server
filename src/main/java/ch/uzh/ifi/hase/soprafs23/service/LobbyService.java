@@ -163,7 +163,18 @@ public class LobbyService {
         return lobbyRepository.findByAccessCode(accessCode);
     }
 
+    public void changeSettings(int accessCode, Settings settings){
+      Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        if (lobby == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+      lobby.setSettings(settings);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+
+    }
     public List<Lobby> getLobbies() {
         return this.lobbyRepository.findAll();
+
     }
 }

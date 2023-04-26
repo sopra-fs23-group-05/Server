@@ -50,8 +50,10 @@ public class Lobby {
         return aSettings;
     }
 
+
     public void setAccessCode(int accessCode) {
         this.accessCode = accessCode;
+
     }
 
     public void setLobbyLeader(User lobbyLeader) {
