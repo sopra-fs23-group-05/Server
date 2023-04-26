@@ -8,7 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 
-import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.websockets.CardWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 
 import org.slf4j.Logger;
@@ -32,6 +32,8 @@ public class GameService {
     private final TeamService teamService;
 
     private final LobbyRepository lobbyRepository;
+
+    private CardWebSocketHandler cardWebSocketHandler;
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService , LobbyRepository lobbyRepository) {
         this.gameRepository = gameRepository;
@@ -39,6 +41,9 @@ public class GameService {
         this.lobbyRepository = lobbyRepository;
     }
 
+    public void initializeCardWebSocketHandler(CardWebSocketHandler cardWebSocketHandler){
+        this.cardWebSocketHandler = cardWebSocketHandler;
+    }
 
     public Game getGame(int accessCode){return this.gameRepository.findByAccessCode( accessCode);}
     //updates the team at the end of a round with the points they made and switches the roles
@@ -115,11 +120,12 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + guess.getAccessCode() + " does not exist");
         }
-        // TODO Send a new card to the front end in case the following method returns true
-        existingGame.getTurn().guess(guess.getContent());
-        gameRepository.flush(); // I might have changed the turn points, so I need to flush.
 
-        // Idea: This method could return a boolean for a true guess. If it does, I could clear the chat.
+        // Send a new card to the front end in case the guess is correct
+        if(existingGame.getTurn().guess(guess.getContent())){
+            cardWebSocketHandler.callBack(existingGame.getTurn().drawCard());
+        }
+        gameRepository.flush(); // I might have changed the turn points and drawn a new card, so I need to flush.
     }
 
     public Card skip(int accessCode) {

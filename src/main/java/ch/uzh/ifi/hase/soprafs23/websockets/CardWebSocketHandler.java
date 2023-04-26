@@ -7,6 +7,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,10 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
     // Inject dependency to GameService
     private final GameService gameService;
 
+    // Register the handler as an observer of the GameService
     public CardWebSocketHandler(GameService gameService) {
         this.gameService = gameService;
+        gameService.initializeCardWebSocketHandler(this);
     }
 
     @Override
@@ -66,6 +69,20 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
     /* Send new card to all clients after a correct guess.
     * I could have a method that sends stuff to clients without first receiving a message to trigger it.
     * I would inject this CardWebSocketHandler into the gameService and call this method from there. */
+
+    /* Make a method that observes the Turn and realizes, when a new card is drawn. */
+    public void callBack(Card outCard){
+        // Convert the card to a TextMessage object
+        // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null"}
+        TextMessage outMessage = new TextMessage(outCard.toString());
+        try {
+            for (WebSocketSession webSocketSession : webSocketSessions) {
+                webSocketSession.sendMessage(outMessage);
+            }
+        } catch (IOException e) {
+            System.out.println("IOException in CardWebSocketHandler: Sending TextMessage objects failed.");
+        }
+    }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
