@@ -111,4 +111,5 @@ public class Lobby {
     public List<User> getTeam2() {
         return team2;
     }
+
 }
