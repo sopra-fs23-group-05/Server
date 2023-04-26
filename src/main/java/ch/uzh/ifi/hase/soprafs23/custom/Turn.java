@@ -32,12 +32,6 @@ public class Turn {
     }
 
     public Card drawCard(){
-        if(deck == null){
-            String s = "mock" + valueOf(mockCounter);
-            drawnCard = new Card(s, s, s, s, s, s);
-            mockCounter++;
-            return drawnCard;
-        }
         drawnCard = deck.draw();
         return drawnCard;
     }
