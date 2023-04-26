@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
@@ -17,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -85,5 +87,27 @@ public class TeamService {
         // Do we need to flush here?
         teamRepository.flush();
         log.debug("Updated points for guessing team and switched roles.");
+    }
+
+    public boolean isInTeam(int teamId, String userName) {
+        Team team = teamRepository.findById(teamId);
+        for (int i = 0; i < team.getPlayers().size(); i++) {
+            Player player = team.getPlayers().get(i);
+            if (Objects.equals(player.getName(), userName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isClueGiver(int teamId, String userName){
+        Team team = teamRepository.findById(teamId);
+        for (int i = 0; i < team.getPlayers().size(); i++) {
+            Player player = team.getPlayers().get(i);
+            if (Objects.equals(player.getName(), userName) && i==team.getIdxClueGiver() ) {
+                return true;
+            }
+        }
+        return false;
+
     }
 }

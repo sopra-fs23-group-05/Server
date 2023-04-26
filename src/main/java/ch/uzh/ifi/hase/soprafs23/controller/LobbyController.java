@@ -10,6 +10,9 @@ import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * User Controller
@@ -21,11 +24,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class LobbyController {
 
-  private final LobbyService lobbyService;
+    private final LobbyService lobbyService;
 
-  LobbyController(LobbyService lobbyService) {
-    this.lobbyService = lobbyService;
-  }
+    LobbyController(LobbyService lobbyService) {
+        this.lobbyService = lobbyService;
+    }
 
 
     @PostMapping("/lobbies")
@@ -48,6 +51,19 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
 
+    @GetMapping("/lobbies")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<LobbyGetDTO> getAllLobbies() {
+
+        List<Lobby> lobbies = lobbyService.getLobbies();
+        List<LobbyGetDTO> lobbyGetDTOS = new ArrayList<>();
+
+        for(Lobby lobby : lobbies){
+            lobbyGetDTOS.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby));
+        }
+        return lobbyGetDTOS;
+    }
 
     @PutMapping ("/lobbies/{accessCode}/additions/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
@@ -89,7 +105,7 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(joinedLobby);
 
     }
-   @PutMapping ("/lobbies/{accessCode}/settings")
+    @PutMapping ("/lobbies/{accessCode}/settings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void changeSettings(@RequestBody SettingsPutDTO settingsPutDTO , @PathVariable int accessCode ) {
