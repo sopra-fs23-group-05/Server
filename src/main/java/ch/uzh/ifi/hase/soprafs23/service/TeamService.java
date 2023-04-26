@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
@@ -42,6 +41,10 @@ public class TeamService {
       for (User temp : users) {
             Player player = convertUserToPlayer(temp.getId());
             players.add(player);
+      }
+
+      if (players.size() < 2) {
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Each team must at least contain two players");
       }
 
       Team newTeam = new Team(players,role);
