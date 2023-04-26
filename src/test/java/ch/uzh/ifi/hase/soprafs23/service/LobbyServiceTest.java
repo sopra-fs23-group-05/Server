@@ -55,7 +55,7 @@ class LobbyServiceTest {
     }
 
     @Test
-    public void createAccessCode_noDuplicate() {
+    void createAccessCode_noDuplicate() {
         int testCode1 = lobbyService.createAccessCode();
         int testCode2 = lobbyService.createAccessCode();
         int testCode3 = lobbyService.createAccessCode();
@@ -73,17 +73,17 @@ class LobbyServiceTest {
 
     }
     @Test
-    public void joinLobbyTeam_LobbyDoesntExist() {
+    void joinLobbyTeam_LobbyDoesntExist() {
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123445, 1, 1));
     }
     @Test
-    public void joinLobbyTeam_UserDoesntExist() {
+    void joinLobbyTeam_UserDoesntExist() {
         Lobby lobby = new Lobby();
         int code = lobby.getAccessCode();
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(code, 1, 1));
     }
     @Test
-    public void joinLobbyTeam_UserNotInLobby() {
+    void joinLobbyTeam_UserNotInLobby() {
         Lobby lobby = new Lobby();
         User user =new User();
         Long id = user.getId();
@@ -91,7 +91,7 @@ class LobbyServiceTest {
         assertThrows(NullPointerException.class, () -> lobbyService.joinLobbyTeam(code, 1, Math.toIntExact(id)));
     }
     @Test
-    public void joinLobbyTeam_joinTeam1ValidInput() {
+    void joinLobbyTeam_joinTeam1ValidInput() {
         List<User> users = new ArrayList<>();
         users.add(testUser);
 
@@ -103,7 +103,7 @@ class LobbyServiceTest {
         assertEquals(testLobby.getTeam1(),users);
     }
     @Test
-    public void joinLobbyTeam_joinTeam2ValidInput() {
+    void joinLobbyTeam_joinTeam2ValidInput() {
         List<User> users = new ArrayList<>();
         users.add(testUser);
 
@@ -115,7 +115,7 @@ class LobbyServiceTest {
         assertEquals(testLobby.getTeam2(),users);
     }
     @Test
-    public void leaveTeam_team2() {
+    void leaveTeam_team2() {
         List<User> users = new ArrayList<>();
         users.add(testUser);
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
@@ -129,7 +129,7 @@ class LobbyServiceTest {
         assertEquals(testLobby.getTeam2(),users);
     }
     @Test
-    public void leaveTeam_team1() {
+    void leaveTeam_team1() {
         List<User> users = new ArrayList<>();
         users.add(testUser);
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
@@ -143,7 +143,7 @@ class LobbyServiceTest {
         assertEquals(testLobby.getTeam1(),users);
     }
     @Test
-    public void joinLobby_validInput() {
+    void joinLobby_validInput() {
         List<User> users = new ArrayList<>();
         users.add(testUser);
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
@@ -154,7 +154,7 @@ class LobbyServiceTest {
 
     }
     @Test
-    public void leaveLobby_validInput() {
+    void leaveLobby_validInput() {
         List<User> users = new ArrayList<>();
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
         Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
@@ -167,7 +167,7 @@ class LobbyServiceTest {
 
     }
     @Test
-    public void changeSettings_validInput() {
+    void changeSettings_validInput() {
         Settings settings = new Settings();
         settings.setRounds(2);
         settings.setTopic(Topic.FOOD);
@@ -181,7 +181,7 @@ class LobbyServiceTest {
 
     }
     @Test
-    public void changeSettings_invalidLobby() {
+    void changeSettings_invalidLobby() {
         Settings settings = new Settings();
         settings.setRounds(2);
         settings.setTopic(Topic.FOOD);

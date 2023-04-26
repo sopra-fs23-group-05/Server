@@ -135,8 +135,8 @@ class TeamServiceTest {
         Mockito.verify(teamRepository, Mockito.times(2)).save(Mockito.any());
         assertEquals(testTeam.getaRole(),Role.BUZZINGTEAM);
         assertEquals(testTeam1.getaRole(),Role.GUESSINGTEAM);
-        assertEquals(testTeam.getPoints(),5);
-        assertEquals(testTeam1.getPoints(),0);
+        assertEquals(5,testTeam.getPoints());
+        assertEquals(0,testTeam1.getPoints());
 
     }
     @Test
@@ -154,8 +154,8 @@ class TeamServiceTest {
         Mockito.verify(teamRepository, Mockito.times(2)).save(Mockito.any());
         assertEquals(testTeam.getaRole(),Role.GUESSINGTEAM);
         assertEquals(testTeam1.getaRole(),Role.BUZZINGTEAM);
-        assertEquals(testTeam.getPoints(),0);
-        assertEquals(testTeam1.getPoints(),5);
+        assertEquals(0,testTeam.getPoints());
+        assertEquals(5,testTeam1.getPoints());
 
     }
 
