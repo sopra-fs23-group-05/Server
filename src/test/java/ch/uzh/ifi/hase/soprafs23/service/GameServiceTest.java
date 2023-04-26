@@ -1,13 +1,14 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.*;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
+
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
-import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.ArrayList;
 
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +35,6 @@ class GameServiceTest {
     @InjectMocks
     private TeamService teamService;
 
-
     private Team testTeam;
     private Team testTeam2;
 
@@ -46,6 +45,9 @@ class GameServiceTest {
 
         testTeam = new Team();
         List<Player> players = new ArrayList<>();
+        Player p1 = new Player();
+        p1.setName("testName");
+        players.add(p1);
         testTeam.setPlayers(players);
         testTeam.setaRole(Role.GUESSINGTEAM);
         testTeam.setTeamId(1);
@@ -63,9 +65,9 @@ class GameServiceTest {
 
 
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(testTeam);
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(testTeam2);
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
     }
+
 
     // #50, Test if the nextTurn method throws an exception when the game is not found
 
@@ -74,6 +76,13 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> gameService.nextTurn(123456, 3));
     }
+   /* @Test
+    void getPlayerRole_validInput(){
+        Mockito.when(gameRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testGame);
+        Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(testTeam);
 
 
+        PlayerRole role = gameService.getPlayerRole(testGame.getAccessCode(),"testName");
+        assertEquals(PlayerRole.CLUEGIVER,role);
+    }*/
 }
