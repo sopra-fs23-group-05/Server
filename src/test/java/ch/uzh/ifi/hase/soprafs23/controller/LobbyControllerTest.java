@@ -94,19 +94,11 @@ class LobbyControllerTest {
 
         given(lobbyService.joinLobbyTeam(123456, 1,1)).willReturn(lobby);
 
-        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/teams/1/additions/users/1");
 
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk());
     }
-    private String asJsonString(final Object object) {
-        try {
-            return new ObjectMapper().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("The request body could not be created.%s", e.toString()));
-        }
-    }
+
 }
