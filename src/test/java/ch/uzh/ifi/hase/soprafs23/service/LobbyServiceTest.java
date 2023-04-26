@@ -64,6 +64,15 @@ class LobbyServiceTest {
         assertNotEquals(testCode3,testCode2);
     }
     @Test
+    void createLobby_validInput(){
+        Lobby lobby = lobbyService.createLobby();
+        Mockito.verify(lobbyRepository, Mockito.times(1)).save(Mockito.any());
+
+        assertEquals(lobby.getSettings(),testLobby.getSettings());
+        assertEquals(lobby.getAccessCode(),testLobby.getAccessCode());
+
+    }
+    @Test
     public void joinLobbyTeam_LobbyDoesntExist() {
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123445, 1, 1));
     }
