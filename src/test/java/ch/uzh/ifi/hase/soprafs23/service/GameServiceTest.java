@@ -1,17 +1,16 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.*;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
 
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
 
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -40,7 +39,7 @@ class GameServiceTest {
     @Mock
     private TeamRepository teamRepository;
 
-    @InjectMocks
+    @Mock
     private TeamService teamService;
     private Lobby testLobby;
 
@@ -48,9 +47,15 @@ class GameServiceTest {
 
     private Team testTeam2;
     private Game testGame;
+
+    private UserRepository userRepository;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+
+
+        testTeam2 = new Team();
 
         testTeam = new Team();
         List<Player> players = new ArrayList<>();
@@ -81,6 +86,13 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
         assertThrows(NullPointerException.class, () -> gameService.nextTurn(123456));
     }
+    /*@Test
+    void nextTurn_validInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        testGame.getTurn().
+        gameService.nextTurn(123456);
+        assertEquals(Role.BUZZINGTEAM, testTeam.getaRole());
+    }*/
 
     @Test
     void getGame_validInputs_success() {

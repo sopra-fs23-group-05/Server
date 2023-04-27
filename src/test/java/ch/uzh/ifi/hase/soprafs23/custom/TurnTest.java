@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TurnTest {
+class TurnTest {
     @Test
     void addCard() {
         Turn turn = new Turn();

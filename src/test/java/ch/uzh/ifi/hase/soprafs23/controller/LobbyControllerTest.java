@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
@@ -91,14 +92,14 @@ class LobbyControllerTest {
         user.setId(1L);
         lobby.getLobbyUsers().add(user);
 
-
         given(lobbyService.joinLobbyTeam(123456, 1,1)).willReturn(lobby);
-
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/teams/1/additions/users/1");
 
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk());
+
+
     }
 
 }

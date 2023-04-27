@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.constant.Topic;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * DTOMapperTest
@@ -110,4 +112,68 @@ public class DTOMapperTest {
         assertEquals(gameGetDTO.getTurn(),game.getTurn());
         assertEquals(gameGetDTO.getSettings(),game.getSettings());
     }
+    @Test
+    void convertEntityToTeamGetDTO_invalidInput_null(){
+        Team team = null;
+        TeamGetDTO teamGetDTO = DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
+        assertNull(teamGetDTO);
+    }
+    @Test
+    void convertEntityToLobbyGetDTO_invalidInput_null(){
+        Lobby lobby = null;
+        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+        assertNull(lobbyGetDTO);
+    }
+    @Test
+    void convertEntityToGameGetDTO_invalidInput_null(){
+        Game game = null;
+        GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+        assertNull(gameGetDTO);
+    }
+    @Test
+    void convertEntityToUserGetDTO_invalidInput_null(){
+        User user = null;
+        UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+        assertNull(userGetDTO);
+    }
+    @Test
+    void testCard_fromCard_toCardGetDTO(){
+        CardDTO card = new CardDTO();
+        card.setTaboo1("taboo1");
+        card.setTaboo2("taboo2");
+        card.setTaboo3("taboo3");
+        card.setTaboo4("taboo4");
+        card.setTaboo5("taboo5");
+        card.setWord("word");
+
+
+        Card testCard = DTOMapper.INSTANCE.convertCardDTOtoEntity(card);
+
+        assertEquals(card.getTaboo1(),testCard.getTaboo1());
+        assertEquals(card.getTaboo2(),testCard.getTaboo2());
+        assertEquals(card.getTaboo3(),testCard.getTaboo3());
+        assertEquals(card.getTaboo4(),testCard.getTaboo4());
+        assertEquals(card.getTaboo5(),testCard.getTaboo5());
+        assertEquals(card.getWord(),testCard.getWord());
+    }
+    @Test
+    void convertCardDTOtoEntity_invalidInput_null(){
+        CardDTO card = null;
+        Card testCard = DTOMapper.INSTANCE.convertCardDTOtoEntity(card);
+        assertNull(testCard);
+    }
+    @Test
+    void convertSettingsPutDTOtoEntity_invalidInput_null(){
+        SettingsPutDTO settingsPutDTO = null;
+        Settings settings = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
+        assertNull(settings);
+    }
+    @Test
+    void convertUserPostDTOtoEntity_invalidInput_null(){
+        UserPostDTO userPostDTO = null;
+        User user = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        assertNull(user);
+    }
+
+
 }

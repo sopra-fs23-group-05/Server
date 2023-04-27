@@ -80,7 +80,7 @@ public class LobbyController {
     @ResponseBody
     public void leaveLobby(@PathVariable int accessCode, @PathVariable int userId) {
         // leave lobby
-        Lobby leftLobby = lobbyService.leaveLobby(accessCode, userId);
+        lobbyService.leaveLobby(accessCode, userId);
     }
 
     @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/additions/users/{userId}")
@@ -88,7 +88,7 @@ public class LobbyController {
     @ResponseBody
     public void joinLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
         // join lobby team
-        Lobby lobbyOfTeam = lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
+       lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
     }
 
     @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/removals/users/{userId}")
@@ -96,7 +96,7 @@ public class LobbyController {
     @ResponseBody
     public void leaveLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
         // join lobby
-        Lobby joinedLobby = lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
+        lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
 
     }
     @PutMapping ("/lobbies/{accessCode}/settings")
