@@ -2,11 +2,8 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,10 +26,6 @@ class TeamServiceTest {
     @InjectMocks
     private TeamService teamService;
     @Mock
-    private GameRepository gameRepository;
-
-    @InjectMocks
-    private GameService gameService;
 
     private Team testTeam;
 
@@ -114,7 +107,13 @@ class TeamServiceTest {
     void changeTurn_validInputTeam1Guessing() {
         Team testTeam1 = new Team();
         testTeam1.setTeamId(2);
+        List<Player> players = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {   // 2 players
+            players.add(new Player());
+        }
         testTeam1.setaRole(Role.BUZZINGTEAM);
+        testTeam1.setPlayers(players);
+        testTeam.setPlayers(players);
         Mockito.when(teamRepository.findById(2)).thenReturn(testTeam1);
         Mockito.when(teamRepository.findById(1)).thenReturn(testTeam);
 
@@ -131,21 +130,27 @@ class TeamServiceTest {
     @Test
     void changeTurn_validInputTeam2Guessing() {
         Team testTeam1 = new Team();
-        testTeam1.setTeamId(2);
-        testTeam1.setaRole(Role.GUESSINGTEAM);
-        Team testTeam2 = new Team();
         testTeam1.setTeamId(1);
-        testTeam1.setaRole(Role.BUZZINGTEAM);
+        testTeam1.setaRole(Role.GUESSINGTEAM);
+        List<Player> players = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {   // 2 players
+            players.add(new Player());
+        }
+        testTeam1.setPlayers(players);
+
+        Team testTeam2 = new Team();
+        testTeam2.setTeamId(2);
+        testTeam2.setaRole(Role.BUZZINGTEAM);
+        testTeam2.setPlayers(players);
         Mockito.when(teamRepository.findById(1)).thenReturn(testTeam1);
         Mockito.when(teamRepository.findById(2)).thenReturn(testTeam2);
 
         teamService.changeTurn(2, 1, 5);
         Mockito.verify(teamRepository, Mockito.times(2)).save(Mockito.any());
-        assertEquals(testTeam.getaRole(), Role.GUESSINGTEAM);
+        assertEquals(testTeam2.getaRole(), Role.GUESSINGTEAM);
         assertEquals(testTeam1.getaRole(), Role.BUZZINGTEAM);
-        assertEquals(0, testTeam.getPoints());
+        assertEquals(0, testTeam2.getPoints());
         assertEquals(5, testTeam1.getPoints());
-
     }
 
 
