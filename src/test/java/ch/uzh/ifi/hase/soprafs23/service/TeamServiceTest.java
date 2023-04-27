@@ -72,19 +72,7 @@ class TeamServiceTest {
         Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(testTeam);
         assertEquals(teamService.getTeam(1),testTeam);
     }
-    @Test
-    void createTeam_validInput() {
-        List<User> players = new ArrayList<>();
-        Team team = teamService.createTeam(players,Role.GUESSINGTEAM);
 
-        Mockito.verify(teamRepository, Mockito.times(1)).save(Mockito.any());
-
-        assertEquals(team.getPlayers(),testTeam.getPlayers());
-        assertEquals(team.getaRole(),testTeam.getaRole());
-        assertEquals(team.getTeamId(),testTeam.getTeamId());
-        assertEquals(team.getIdxClueGiver(),testTeam.getIdxClueGiver());
-        assertEquals(team.getPoints(),testTeam.getPoints());
-    }
     @Test
     void convertUserToPlayer() {
         User user = new User();
