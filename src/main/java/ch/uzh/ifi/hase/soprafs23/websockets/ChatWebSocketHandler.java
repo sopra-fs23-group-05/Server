@@ -49,13 +49,18 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         textMessageString = textMessageString.substring(1, textMessageString.length() - 1);   // Remove curly braces
         String[] messageParts = textMessageString.split(",");
 
+        for(int i = 0; i < messageParts.length; i++) {
+            System.out.println(messageParts[i]);
+        }
+
         // Extract access code, userId, content
         int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 2, messageParts[0].length() - 1));
         long userId = Long.parseLong(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
         String content = messageParts[2].substring(messageParts[2].indexOf(':') + 2, messageParts[2].length() - 1);
 
         // Extract type and convert to MessageType
-        String typeString = messageParts[3].substring(messageParts[3].indexOf(':') + 2, messageParts[3].length() - 1);
+        String typeString = messageParts[3].substring(messageParts[3].indexOf(':') + 2, messageParts[3].length());
+        System.out.println(typeString);
         MessageType msgType;
         if (typeString.equals("description")) {
             msgType = MessageType.DESCRIPTION;
