@@ -35,21 +35,15 @@ class GameServiceTest {
     @Mock
     private LobbyRepository lobbyRepository;
 
-    @InjectMocks
-    private LobbyService lobbyService;
     @Mock
     private TeamRepository teamRepository;
 
-    @Mock
-    private TeamService teamService;
     private Lobby testLobby;
 
     private Team testTeam;
 
     private Team testTeam2;
     private Game testGame;
-
-    private UserRepository userRepository;
 
     @BeforeEach
     public void setup() {

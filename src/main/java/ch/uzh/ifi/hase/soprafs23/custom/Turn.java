@@ -16,16 +16,9 @@ public class Turn {
 
     private int buzzCounter = 0;
 
-    private int mockCounter = 0;
-
-    public Turn(Deck deck) {
-        this.deck = deck;
-        this.turnPoints = 0;
-        this.drawnCard = deck.draw();
-    }
-
     public Turn() {
         this.deck = new Deck();
+        this.turnPoints = 0;
     }
 
     public Card drawCard() {

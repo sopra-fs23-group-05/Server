@@ -14,6 +14,7 @@ public class UserRepositoryIntegrationTest {
     private UserRepository userRepository;
 
     /* I delete the field user.name
+    * But I keep this test for reference
     @Test
     public void findByName_success() {
         // given

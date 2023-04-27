@@ -10,10 +10,6 @@ public class Deck {
     @ElementCollection
     private final List<Card> cards;
 
-    public Deck(List<Card> cards) {
-        this.cards = cards;
-    }
-
     public Deck() {
         this.cards = new ArrayList<>();
     }
