@@ -64,8 +64,9 @@ public class Team {
         return aRole;
     }
 
-    public void changeRole() {
+    public void changeTurn(int scoredPoints) {
         if (aRole == Role.GUESSINGTEAM) {
+            addPoints(scoredPoints);
             aRole = Role.BUZZINGTEAM;
         } else {
             aRole = Role.GUESSINGTEAM;

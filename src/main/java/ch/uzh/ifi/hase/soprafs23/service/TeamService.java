@@ -75,15 +75,8 @@ public class TeamService {
           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team2 not found");
       }
 
-      if(team1.getaRole() == Role.GUESSINGTEAM) {
-          team1.addPoints(scoredPoints);
-          team1.setaRole(Role.BUZZINGTEAM);
-          team2.setaRole(Role.GUESSINGTEAM);
-      }else{
-          team2.addPoints(scoredPoints);
-          team2.setaRole(Role.BUZZINGTEAM);
-          team1.setaRole(Role.GUESSINGTEAM);
-      }
+      team1.changeTurn(scoredPoints);
+      team2.changeTurn(scoredPoints);
 
         teamRepository.save(team1);
         teamRepository.save(team2);

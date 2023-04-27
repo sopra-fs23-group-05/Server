@@ -20,14 +20,14 @@ class TeamTest {
         for (int i = 0; i < 2; i++) {
             players.add(new Player());
         }
+        int scoredPoints = 1;
         Team team = new Team(players, Role.GUESSINGTEAM);   // Player 0 should be clue giver
-        team.changeRole();
-        team.changeRole();  // Player 1 should be clue giver
-        team.changeRole();
-        team.changeRole();  // Player 0 should be clue giver
-        team.changeRole();
-        team.changeRole();  // Player 1 should be clue giver
+        for(int i = 0; i < 6; i ++){
+            team.changeTurn(scoredPoints);
+        }
+        // After six turns/three rounds the following assertions should hold.
         assertEquals(Role.GUESSINGTEAM, team.getaRole());
         assertEquals(1, team.getIdxClueGiver());
+        assertEquals(3, team.getPoints());
     }
 }
