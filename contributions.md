@@ -72,3 +72,13 @@ Before each meeting, each team member is required to manually append the two dev
 - [#54](https://github.com/sopra-fs23-group-05/Server/issues/54) Write PUT request for lobbies. Update the lobby with the new settings
 - [#9](https://github.com/sopra-fs23-group-05/Client/issues/9)Implement a function which displays the timer, the player’s new role for the next turn and the scoreboard of both teams.
 - [#140](https://github.com/sopra-fs23-group-05/Server/issues/140)Add turn points to guesser teams total points after a round.
+
+## Melea
+- [#21](https://github.com/sopra-fs23-group-05/Client/issues/21) Update the component displaying the players name in the team he chose.
+- [#13](https://github.com/sopra-fs23-group-05/Client/issues/13) Create one box for each team, with a text field indicating each team's name.
+- [#14](https://github.com/sopra-fs23-group-05/Client/issues/14) Display the players that already joined a team.
+- [#35](https://github.com/sopra-fs23-group-05/Server/issues/35) Disable the start game button based on the condition that both teams need at least two players.
+- [#15](https://github.com/sopra-fs23-group-05/Client/issues/15) Create a join button that sends a request to the backend for a user to join a team.
+- [#68](https://github.com/sopra-fs23-group-05/Server/issues/68) Connect the Taboo database to our app. 
+- [#62](https://github.com/sopra-fs23-group-05/Client/issues/62) Display the components depending on the players role.
+- [#150](https://github.com/sopra-fs23-group-05/Server/issues/150) Make sure a user can only join one team.
