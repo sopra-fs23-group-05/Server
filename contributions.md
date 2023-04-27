@@ -73,13 +73,13 @@ Before each meeting, each team member is required to manually append the two dev
 - [#140](https://github.com/sopra-fs23-group-05/Server/issues/140) Add turn points to guesser teams total points after a round.
 
 ## Felix
-- [#115](https://github.com/sopra-fs23-group-05/Server/issues/115), [#118](https://github.com/sopra-fs23-group-05/Server/issues/118), [#45](https://github.com/sopra-fs23-group-05/Server/issues/45), [#46](https://github.com/sopra-fs23-group-05/Server/issues/46), [#31](https://github.com/sopra-fs23-group-05/Client/issues/31), [#63](https://github.com/sopra-fs23-group-05/Client/issues/63), [#64](https://github.com/sopra-fs23-group-05/Client/issues/64), [#65](https://github.com/sopra-fs23-group-05/Client/issues/65), [#66](https://github.com/sopra-fs23-group-05/Client/issues/66), Implement the chat for the game view using a websocket
+- [#115](https://github.com/sopra-fs23-group-05/Server/issues/115), [#118](https://github.com/sopra-fs23-group-05/Server/issues/118), [#45](https://github.com/sopra-fs23-group-05/Server/issues/45), [#46](https://github.com/sopra-fs23-group-05/Server/issues/46), [#31](https://github.com/sopra-fs23-group-05/Client/issues/31), [#63](https://github.com/sopra-fs23-group-05/Client/issues/63), [#64](https://github.com/sopra-fs23-group-05/Client/issues/64), [#65](https://github.com/sopra-fs23-group-05/Client/issues/65), [#66](https://github.com/sopra-fs23-group-05/Client/issues/66) Implement the chat for the game view using a websocket
 
-- [#31](https://github.com/sopra-fs23-group-05/Server/issues/31), [#70](https://github.com/sopra-fs23-group-05/Server/issues/70), [#120](https://github.com/sopra-fs23-group-05/Server/issues/120), [#29](https://github.com/sopra-fs23-group-05/Client/issues/29), Implement a websocket for sending and receiving cards between the client and the server.
+- [#31](https://github.com/sopra-fs23-group-05/Server/issues/31), [#70](https://github.com/sopra-fs23-group-05/Server/issues/70), [#120](https://github.com/sopra-fs23-group-05/Server/issues/120), [#29](https://github.com/sopra-fs23-group-05/Client/issues/29) Implement a websocket for sending and receiving cards between the client and the server.
 
-- [#3](https://github.com/sopra-fs23-group-05/Client/issues/3), [#4](https://github.com/sopra-fs23-group-05/Client/issues/4), [#28](https://github.com/sopra-fs23-group-05/Server/issues/28), [#29](https://github.com/sopra-fs23-group-05/Server/issues/29), [#32](https://github.com/sopra-fs23-group-05/Server/issues/32), Enable skipping a card and buzzing.
+- [#3](https://github.com/sopra-fs23-group-05/Client/issues/3), [#4](https://github.com/sopra-fs23-group-05/Client/issues/4), [#28](https://github.com/sopra-fs23-group-05/Server/issues/28), [#29](https://github.com/sopra-fs23-group-05/Server/issues/29), [#32](https://github.com/sopra-fs23-group-05/Server/issues/32) Enable skipping a card and buzzing.
 
-- [#120](https://github.com/sopra-fs23-group-05/Server/issues/120), Connect the chat websocket with the card websocket. The use case is, when a guess entered via the chat, the client needs a new card.
+- [#120](https://github.com/sopra-fs23-group-05/Server/issues/120) Connect the chat websocket with the card websocket. The use case is, when a guess entered via the chat, the client needs a new card.
 
 ## Melea
  - [#21](https://github.com/sopra-fs23-group-05/Client/issues/21) Update the component displaying the players name in the team he chose.
