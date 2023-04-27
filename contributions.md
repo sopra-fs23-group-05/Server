@@ -68,6 +68,6 @@ Before each meeting, each team member is required to manually append the two dev
 - [#91](https://github.com/sopra-fs23-group-05/Server/issues/91) Implement a mechanism for generating unique access codes for each lobby.
 
 ## Tom
--[#54](https://github.com/sopra-fs23-group-05/Server/issues/54) Write PUT request for lobbies. Update the lobby with the new settings
--[#9](https://github.com/sopra-fs23-group-05/Client/issues/9)Implement a function which displays the timer, the player’s new role for the next turn and the scoreboard of both teams.
--[#140](https://github.com/sopra-fs23-group-05/Server/issues/140)Add turn points to guesser teams total points after a round.
+- [#54](https://github.com/sopra-fs23-group-05/Server/issues/54) Write PUT request for lobbies. Update the lobby with the new settings
+- [#9](https://github.com/sopra-fs23-group-05/Client/issues/9)Implement a function which displays the timer, the player’s new role for the next turn and the scoreboard of both teams.
+- [#140](https://github.com/sopra-fs23-group-05/Server/issues/140)Add turn points to guesser teams total points after a round.
