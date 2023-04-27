@@ -1,12 +1,7 @@
-package ch.uzh.ifi.hase.soprafs23.custom;
+package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import javax.persistence.Embeddable;
-import java.util.Objects;
-
-@Embeddable
-public class Card {
-
-    private  String word;
+public class CardDTO {
+    private String word;
 
     private String taboo1;
 
@@ -17,34 +12,6 @@ public class Card {
     private String taboo4;
 
     private String taboo5;
-
-    public Card(String word, String taboo1, String taboo2, String taboo3, String taboo4, String taboo5){
-        this.word = word;
-        this.taboo1 = taboo1;
-        this.taboo2 = taboo2;
-        this.taboo3 = taboo3;
-        this.taboo4 = taboo4;
-        this.taboo5 = taboo5;
-    }
-
-    public Card() {
-    }
-
-    public boolean isCorrectGuess(String guess){
-        return word.equalsIgnoreCase(guess);
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "\"word\":\"" + word + '\"' +
-                ", \"taboo1\":\"" + taboo1 + '\"' +
-                ", \"taboo2\":\"" + taboo2 + '\"' +
-                ", \"taboo3\":\"" + taboo3 + '\"' +
-                ", \"taboo4\":\"" + taboo4 + '\"' +
-                ", \"taboo5\":\"" + taboo5 + '\"' +
-                '}';
-    }
 
     public String getWord() {
         return word;

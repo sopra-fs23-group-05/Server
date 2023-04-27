@@ -2,6 +2,9 @@ package ch.uzh.ifi.hase.soprafs23.custom;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import java.util.ArrayList;
+
+import static java.lang.String.valueOf;
 
 @Embeddable
 public class Turn {
@@ -14,37 +17,56 @@ public class Turn {
 
     private Card drawnCard;
 
+    private int buzzCounter = 0;
 
+    private int mockCounter = 0;
 
     public Turn(Deck deck) {
         this.deck = deck;
         this.turnPoints = 0;
         this.drawnCard=deck.draw();
-
     }
 
     public Turn() {
-        this.deck = null;
+        this.deck = new Deck();
     }
 
-
-    public void describe(String s){
-
+    public Card drawCard(){
+        drawnCard = deck.draw();
+        return drawnCard;
     }
-    public Card skipCard(){
-        Card card =deck.draw();
-        drawnCard = card;
-        return card;
-    }
-    public void buzz(){
 
+    public Card skip() {
+        turnPoints--;
+        return drawCard();
+    }
+
+    public Card buzz(){
+        buzzCounter++;
+        if(buzzCounter == 2){
+            buzzCounter = 0;
+            turnPoints--;
+            return drawCard();
+        }
+        return drawnCard;
     }
 
     public boolean guess(String guess){
-        boolean isCorrect = drawnCard.isCorrectGuess(guess);
-        if(isCorrect){
+        if(drawnCard.isCorrectGuess(guess)){
             turnPoints++;
+            return true;
         }
-        return isCorrect;
+        return false;
+    }
+
+    public void addCard(Card card) {
+        deck.addCard(card);
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+    public int getTurnPoints() {
+        return turnPoints;
     }
 }

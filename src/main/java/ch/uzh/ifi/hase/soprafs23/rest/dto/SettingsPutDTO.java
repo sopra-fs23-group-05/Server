@@ -7,6 +7,10 @@ public class SettingsPutDTO {
     private int roundTime;   // in seconds
     private Topic topic;
 
+    public void setRoundTime(int roundTime) {
+        this.roundTime = roundTime;
+    }
+
     public int getRounds() {
         return rounds;
     }

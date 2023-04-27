@@ -1,12 +1,16 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
+import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
-import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+
+import ch.uzh.ifi.hase.soprafs23.websockets.CardWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 
+
 @Service
 @Transactional
 public class GameService {
@@ -25,18 +30,22 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final TeamService teamService;
-    private final UserRepository userRepository;
+
     private final LobbyRepository lobbyRepository;
+
+    private CardWebSocketHandler cardWebSocketHandler;
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, UserRepository userRepository, LobbyRepository lobbyRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService , LobbyRepository lobbyRepository) {
         this.gameRepository = gameRepository;
         this.teamService = teamService;
-        this.userRepository = userRepository;
         this.lobbyRepository = lobbyRepository;
     }
 
+    public void initializeCardWebSocketHandler(CardWebSocketHandler cardWebSocketHandler){
+        this.cardWebSocketHandler = cardWebSocketHandler;
+    }
 
-    public Game getGame(int accessCode){return this.gameRepository.findByAccessCode( accessCode);}
+    public Game getGame(int accessCode){return this.gameRepository.findByAccessCode(accessCode);}
     //updates the team at the end of a round with the points they made and switches the roles
 
     public Game createGame(int accessCode) {
@@ -52,8 +61,9 @@ public class GameService {
     }
 
 
-    public void nextTurn(int accessCode, int scoredPoints) {
+    public void nextTurn(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
+        int scoredPoints = existingGame.getTurn().getTurnPoints();
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
@@ -63,15 +73,78 @@ public class GameService {
         gameRepository.flush();
     }
 
+
+    public Card drawCard(int accessCode){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Card outCard = existingGame.getTurn().drawCard();
+        gameRepository.flush();
+        return outCard;
+    }
+
+    public Card buzz(int accessCode){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Card outCard = existingGame.getTurn().buzz();
+        gameRepository.flush();
+        return outCard;
+    }
+
+    public PlayerRole getPlayerRole(int accessCode,String userName) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (teamService.isInTeam(existingGame.getTeam1().getTeamId(), userName)) {
+            if (existingGame.getTeam1().getaRole() == Role.BUZZINGTEAM) {
+                return PlayerRole.BUZZER;
+            }
+            else if (teamService.isClueGiver(existingGame.getTeam1().getTeamId(), userName)) {
+                return PlayerRole.CLUEGIVER;
+            }
+            return PlayerRole.GUESSER;
+        }
+        else {
+            if (existingGame.getTeam2().getaRole() == Role.BUZZINGTEAM) {
+                return PlayerRole.BUZZER;
+            }
+            else if (teamService.isClueGiver(existingGame.getTeam2().getTeamId(), userName)) {
+                return PlayerRole.CLUEGIVER;
+            }
+            return PlayerRole.GUESSER;
+        }
+    }
+
     public void guessWord(Message guess){
         Game existingGame = gameRepository.findByAccessCode(guess.getAccessCode());
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + guess.getAccessCode() + " does not exist");
         }
-        // TODO Send a new card to the front end in case the following method returns true
-        existingGame.getTurn().guess(guess.getContent());
-        gameRepository.flush(); // I might have changed the turn points, so I need to flush.
 
-        // Idea: This method could return a boolean for a true guess. If it does, I could clear the chat.
+        // Send a new card to the front end in case the guess is correct
+        if(existingGame.getTurn().guess(guess.getContent())){
+            cardWebSocketHandler.callBack(existingGame.getTurn().drawCard());
+        }
+        gameRepository.flush(); // I might have changed the turn points and drawn a new card, so I need to flush.
+    }
+
+    public Card skip(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Card outCard = existingGame.getTurn().skip();
+        gameRepository.flush();
+        return outCard;
+    }
+
+    public void createCard(int accessCode, Card card){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        existingGame.getTurn().addCard(card);
+        gameRepository.flush();
     }
 }

@@ -1,6 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
+import ch.uzh.ifi.hase.soprafs23.constant.Role;
+import ch.uzh.ifi.hase.soprafs23.custom.Card;
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.CardDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
@@ -42,11 +47,27 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(createdGame);
     }
 
-    @PutMapping("/games/{accessCode}/turns/{scoredPoints}")
+    @PutMapping("/games/{accessCode}/turns")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void nextTurn(@PathVariable int accessCode, @PathVariable int scoredPoints) {
-        gameService.nextTurn(accessCode, scoredPoints);
+    public void nextTurn(@PathVariable int accessCode) {
+        gameService.nextTurn(accessCode);
+    }
+    @GetMapping("/games/{accessCode}/users/{playerName}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public PlayerRole getPlayerRole(@PathVariable int accessCode, @PathVariable String playerName) {
+        // create lobby
+        // convert internal representation of user back to API
+        return gameService.getPlayerRole(accessCode,playerName);
+    }
+
+    @PostMapping("/games/{accessCode}/cards")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void createCard(@PathVariable int accessCode, @RequestBody CardDTO cardDTO) {
+      Card inputCard = DTOMapper.INSTANCE.convertCardDTOtoEntity(cardDTO);
+      gameService.createCard(accessCode, inputCard);
     }
 }
 

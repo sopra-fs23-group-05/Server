@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
@@ -57,4 +58,13 @@ public interface DTOMapper {
   @Mapping(source = "team1", target = "team1")
   @Mapping(source = "team2", target = "team2")
   GameGetDTO convertEntityToGameGetDTO(Game game);
+
+  @Mapping(source = "word", target = "word")
+    @Mapping(source = "taboo1", target = "taboo1")
+    @Mapping(source = "taboo2", target = "taboo2")
+    @Mapping(source = "taboo3", target = "taboo3")
+    @Mapping(source = "taboo4", target = "taboo4")
+    @Mapping(source = "taboo5", target = "taboo5")
+  Card convertCardDTOtoEntity(CardDTO cardPostDTO);
+
 }

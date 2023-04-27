@@ -10,6 +10,9 @@ import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * User Controller
@@ -21,11 +24,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class LobbyController {
 
-  private final LobbyService lobbyService;
+    private final LobbyService lobbyService;
 
-  LobbyController(LobbyService lobbyService) {
-    this.lobbyService = lobbyService;
-  }
+    LobbyController(LobbyService lobbyService) {
+        this.lobbyService = lobbyService;
+    }
 
 
     @PostMapping("/lobbies")
@@ -48,6 +51,19 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
 
+    @GetMapping("/lobbies")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<LobbyGetDTO> getAllLobbies() {
+
+        List<Lobby> lobbies = lobbyService.getLobbies();
+        List<LobbyGetDTO> lobbyGetDTOS = new ArrayList<>();
+
+        for(Lobby lobby : lobbies){
+            lobbyGetDTOS.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby));
+        }
+        return lobbyGetDTOS;
+    }
 
     @PutMapping ("/lobbies/{accessCode}/additions/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
@@ -62,43 +78,34 @@ public class LobbyController {
     @PutMapping ("/lobbies/{accessCode}/removals/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO leaveLobby(@PathVariable int accessCode, @PathVariable int userId) {
+    public void leaveLobby(@PathVariable int accessCode, @PathVariable int userId) {
         // leave lobby
-        Lobby leftLobby = lobbyService.leaveLobby(accessCode, userId);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(leftLobby);
+        lobbyService.leaveLobby(accessCode, userId);
     }
 
     @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/additions/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO joinLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
+    public void joinLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
         // join lobby team
-        Lobby lobbyOfTeam = lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyOfTeam);
+       lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
     }
 
     @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/removals/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO leaveLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
+    public void leaveLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
         // join lobby
-        Lobby joinedLobby = lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(joinedLobby);
+        lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
 
     }
-   @PutMapping ("/lobbies/{accessCode}/settings")
+    @PutMapping ("/lobbies/{accessCode}/settings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO changeSettings(@RequestBody SettingsPutDTO settingsPutDTO , @PathVariable int accessCode ) {
+    public void changeSettings(@RequestBody SettingsPutDTO settingsPutDTO , @PathVariable int accessCode ) {
         // change settings
         Settings settingsInput = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
-        Lobby lobby = lobbyService.getLobby(accessCode);
-        lobby.setSettings(settingsInput);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+        lobbyService.changeSettings(accessCode,settingsInput);
 
     }
 

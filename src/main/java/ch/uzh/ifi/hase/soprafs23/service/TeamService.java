@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -40,6 +41,10 @@ public class TeamService {
       for (User temp : users) {
             Player player = convertUserToPlayer(temp.getId());
             players.add(player);
+      }
+
+      if (players.size() < 2) {
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Each team must at least contain two players");
       }
 
       Team newTeam = new Team(players,role);
@@ -85,5 +90,27 @@ public class TeamService {
         // Do we need to flush here?
         teamRepository.flush();
         log.debug("Updated points for guessing team and switched roles.");
+    }
+
+    public boolean isInTeam(int teamId, String userName) {
+        Team team = teamRepository.findById(teamId);
+        for (int i = 0; i < team.getPlayers().size(); i++) {
+            Player player = team.getPlayers().get(i);
+            if (Objects.equals(player.getName(), userName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isClueGiver(int teamId, String userName){
+        Team team = teamRepository.findById(teamId);
+        for (int i = 0; i < team.getPlayers().size(); i++) {
+            Player player = team.getPlayers().get(i);
+            if (Objects.equals(player.getName(), userName) && i==team.getIdxClueGiver() ) {
+                return true;
+            }
+        }
+        return false;
+
     }
 }
