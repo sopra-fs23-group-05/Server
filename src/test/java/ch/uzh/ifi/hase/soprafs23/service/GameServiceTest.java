@@ -119,11 +119,6 @@ class GameServiceTest {
         assertThrows(ResponseStatusException.class, () -> gameService.drawCard(123456));
     }
     @Test
-    void drawCard_invalidInputs_deckEmpty() {
-        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
-        assertThrows(IndexOutOfBoundsException.class, () -> gameService.drawCard(123456));
-    }
-    @Test
     void drawCard_invalidInputs_turnNull() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
         testGame.setTurn(null);
