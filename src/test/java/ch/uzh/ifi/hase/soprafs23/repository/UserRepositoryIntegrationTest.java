@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @DataJpaTest
 public class UserRepositoryIntegrationTest {
 
-  @Autowired
-  private TestEntityManager entityManager;
+    @Autowired
+    private TestEntityManager entityManager;
 
-  @Autowired
-  private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
   /* I delete the field user.name
   @Test

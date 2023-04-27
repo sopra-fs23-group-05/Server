@@ -38,7 +38,7 @@ class LobbyControllerTest {
 
     // Test POST for lobby
     @Test
-    void createLobby_validInput_lobbyCreated() throws Exception{
+    void createLobby_validInput_lobbyCreated() throws Exception {
         // given
         Lobby lobby = new Lobby();
         lobby.setSettings(new Settings());
@@ -60,6 +60,7 @@ class LobbyControllerTest {
                 .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
 
     }
+
     @Test
     void getLobby_validInput() throws Exception {
         Lobby lobby = new Lobby();
@@ -82,6 +83,7 @@ class LobbyControllerTest {
                 .andExpect(jsonPath("$.settings.roundTime", is(120)))
                 .andExpect(jsonPath("$.settings.topic", is("MOVIES")));
     }
+
     @Test
     void joinLobbyTeam_validInput() throws Exception {
         Lobby lobby = new Lobby();
@@ -92,7 +94,7 @@ class LobbyControllerTest {
         user.setId(1L);
         lobby.getLobbyUsers().add(user);
 
-        given(lobbyService.joinLobbyTeam(123456, 1,1)).willReturn(lobby);
+        given(lobbyService.joinLobbyTeam(123456, 1, 1)).willReturn(lobby);
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/teams/1/additions/users/1");
 

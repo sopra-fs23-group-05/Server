@@ -1,4 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.custom;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,6 +11,7 @@ class TurnTest {
         turn.addCard(new Card());
         assertEquals(1, turn.getDeck().getCards().size());
     }
+
     @Test
     void correctGuess() {
         Turn turn = new Turn();
@@ -19,6 +21,7 @@ class TurnTest {
         turn.guess("apple");
         assertEquals(1, turn.getTurnPoints());
     }
+
     @Test
     void wrongGuess() {
         Turn turn = new Turn();
@@ -28,6 +31,7 @@ class TurnTest {
         turn.guess("banana");
         assertEquals(0, turn.getTurnPoints());
     }
+
     @Test
     void buzz() {
         Turn turn = new Turn();
@@ -37,6 +41,7 @@ class TurnTest {
         turn.buzz();
         assertEquals(0, turn.getTurnPoints());
     }
+
     @Test
     void twoBuzz() {
         Turn turn = new Turn();
@@ -49,6 +54,7 @@ class TurnTest {
         turn.buzz();
         assertEquals(-1, turn.getTurnPoints());
     }
+
     @Test
     void skip() {
         Turn turn = new Turn();

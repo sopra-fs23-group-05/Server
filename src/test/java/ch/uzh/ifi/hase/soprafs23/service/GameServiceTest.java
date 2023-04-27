@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -67,7 +68,7 @@ class GameServiceTest {
         testTeam.setTeamId(1);
 
 
-        testGame = new Game(123456,new Settings(),testTeam,testTeam2);
+        testGame = new Game(123456, new Settings(), testTeam, testTeam2);
 
         testLobby = new Lobby();
         testLobby.setAccessCode(123456);
@@ -104,6 +105,7 @@ class GameServiceTest {
         assertEquals(testGame.getTeam2(), game.getTeam2());
         assertEquals(testGame.getTurn(), game.getTurn());
     }
+
     @Test
     void getGame_invalidInputs_gameNotFound() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
@@ -125,11 +127,13 @@ class GameServiceTest {
         assertEquals(testCard, card);
 
     }
+
     @Test
     void drawCard_invalidInputs_gameNotFound() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> gameService.drawCard(123456));
     }
+
     @Test
     void drawCard_invalidInputs_turnNull() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);

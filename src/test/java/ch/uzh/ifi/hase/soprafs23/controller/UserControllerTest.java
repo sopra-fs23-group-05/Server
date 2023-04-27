@@ -36,76 +36,77 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-  @MockBean
-  private UserService userService;
+    @MockBean
+    private UserService userService;
 
-  @Test
-  public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
-    // given
-    User user = new User();
-    user.setLeader(true);
-    user.setUsername("firstname@lastname");
+    @Test
+    public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
+        // given
+        User user = new User();
+        user.setLeader(true);
+        user.setUsername("firstname@lastname");
 
-    List<User> allUsers = Collections.singletonList(user);
+        List<User> allUsers = Collections.singletonList(user);
 
-    // this mocks the UserService -> we define above what the userService should
-    // return when getUsers() is called
-    given(userService.getUsers()).willReturn(allUsers);
+        // this mocks the UserService -> we define above what the userService should
+        // return when getUsers() is called
+        given(userService.getUsers()).willReturn(allUsers);
 
-    // when
-    MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON);
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON);
 
-    // then
-    mockMvc.perform(getRequest).andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].leader", is(user.isLeader())))
-        .andExpect(jsonPath("$[0].username", is(user.getUsername())));
-  }
-
-  @Test
-  public void createUser_validInput_userCreated() throws Exception {
-    // given
-    User user = new User();
-    user.setId(1L);
-    user.setLeader(true);
-    user.setUsername("testUsername");
-
-    UserPostDTO userPostDTO = new UserPostDTO();
-    userPostDTO.setLeader(true);
-    userPostDTO.setUsername("testUsername");
-
-    given(userService.createUser(Mockito.any())).willReturn(user);
-
-    // when/then -> do the request + validate the result
-    MockHttpServletRequestBuilder postRequest = post("/users")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(asJsonString(userPostDTO));
-
-    // then
-    mockMvc.perform(postRequest)
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-        .andExpect(jsonPath("$.leader", is(user.isLeader())))
-        .andExpect(jsonPath("$.username", is(user.getUsername())));
-  }
-
-  /**
-   * Helper Method to convert userPostDTO into a JSON string such that the input
-   * can be processed
-   * Input will look like this: {"name": "Test User", "username": "testUsername"}
-   * 
-   * @param object
-   * @return string
-   */
-  private String asJsonString(final Object object) {
-    try {
-      return new ObjectMapper().writeValueAsString(object);
-    } catch (JsonProcessingException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          String.format("The request body could not be created.%s", e.toString()));
+        // then
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].leader", is(user.isLeader())))
+                .andExpect(jsonPath("$[0].username", is(user.getUsername())));
     }
-  }
+
+    @Test
+    public void createUser_validInput_userCreated() throws Exception {
+        // given
+        User user = new User();
+        user.setId(1L);
+        user.setLeader(true);
+        user.setUsername("testUsername");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setLeader(true);
+        userPostDTO.setUsername("testUsername");
+
+        given(userService.createUser(Mockito.any())).willReturn(user);
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPostDTO));
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$.leader", is(user.isLeader())))
+                .andExpect(jsonPath("$.username", is(user.getUsername())));
+    }
+
+    /**
+     * Helper Method to convert userPostDTO into a JSON string such that the input
+     * can be processed
+     * Input will look like this: {"name": "Test User", "username": "testUsername"}
+     *
+     * @param object
+     * @return string
+     */
+    private String asJsonString(final Object object) {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        }
+        catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("The request body could not be created.%s", e.toString()));
+        }
+    }
 }
