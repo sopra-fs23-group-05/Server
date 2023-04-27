@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.custom;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TurnTest {
     @Test

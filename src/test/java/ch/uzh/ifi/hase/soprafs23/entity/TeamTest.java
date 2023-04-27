@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TeamTest {
 
@@ -23,7 +23,7 @@ class TeamTest {
         int scoredPoints = 1;
         Team team = new Team(players, Role.GUESSINGTEAM);   // Player 0 should be clue giver
 
-        for(int i = 0; i < 6; i ++){
+        for (int i = 0; i < 6; i++) {
             team.changeTurn(scoredPoints);
         }
         // After six turns/three rounds the following assertions should hold.

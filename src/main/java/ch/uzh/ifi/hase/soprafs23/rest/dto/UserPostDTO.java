@@ -3,17 +3,17 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto;
 public class UserPostDTO {
     private Long id;
 
-  private String username;
+    private String username;
 
-  private boolean isLeader;
+    private boolean isLeader;
 
-  public String getUsername() {
-    return username;
-  }
+    public String getUsername() {
+        return username;
+    }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public boolean isLeader() {
         return isLeader;

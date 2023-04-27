@@ -4,14 +4,14 @@ import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardWebSocketHandler extends TextWebSocketHandler{
+public class CardWebSocketHandler extends TextWebSocketHandler {
 
     private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
             if (messageString.contains("draw")) {
                 outCard = gameService.drawCard(accessCode);
             }
-            else if(messageString.contains("skip")){
+            else if (messageString.contains("skip")) {
                 outCard = gameService.skip(accessCode);
             }
             else if (messageString.contains("buzz")) {
@@ -53,7 +53,8 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
             else {
                 throw new Exception("Invalid action");
             }
-        }catch (NullPointerException e) {
+        }
+        catch (NullPointerException e) {
             outCard = new Card("NA", "NA", "NA", "NA", "NA", "NA");
         }
 
@@ -61,17 +62,17 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
         // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null"}
         TextMessage outMessage = new TextMessage(outCard.toString());
 
-        for(WebSocketSession webSocketSession : webSocketSessions){
+        for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(outMessage);
         }
     }
 
     /* Send new card to all clients after a correct guess.
-    * I could have a method that sends stuff to clients without first receiving a message to trigger it.
-    * I would inject this CardWebSocketHandler into the gameService and call this method from there. */
+     * I could have a method that sends stuff to clients without first receiving a message to trigger it.
+     * I would inject this CardWebSocketHandler into the gameService and call this method from there. */
 
     /* Make a method that observes the Turn and realizes, when a new card is drawn. */
-    public void callBack(Card outCard){
+    public void callBack(Card outCard) {
         // Convert the card to a TextMessage object
         // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null"}
         TextMessage outMessage = new TextMessage(outCard.toString());
@@ -79,7 +80,8 @@ public class CardWebSocketHandler extends TextWebSocketHandler{
             for (WebSocketSession webSocketSession : webSocketSessions) {
                 webSocketSession.sendMessage(outMessage);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.out.println("IOException in CardWebSocketHandler: Sending TextMessage objects failed.");
         }
     }

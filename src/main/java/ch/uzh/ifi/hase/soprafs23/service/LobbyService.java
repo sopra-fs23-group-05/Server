@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import java.util.List;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -78,12 +77,13 @@ public class LobbyService {
     public Lobby joinLobbyTeam(int accessCode, int teamNr, int userId) {
         Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
         User userInput = userRepository.findById(userId);
-        if(existingLobby == null){
+        if (existingLobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby with the access code provided does not exist. Therefore, the user could not be added to the lobby team!");
         }
-        if(userInput == null){
+        if (userInput == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be added to the lobby team!");
-        }else if (!existingLobby.isUserInLobby(userInput)) {
+        }
+        else if (!existingLobby.isUserInLobby(userInput)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided is not in the lobby. Therefore, the user could not be added to the lobby team!");
         }
 
@@ -102,11 +102,13 @@ public class LobbyService {
             }
         }
 
-        if(teamNr == 1){
+        if (teamNr == 1) {
             existingLobby.addUserToTeam1(userInput);
-        }else if(teamNr == 2){
+        }
+        else if (teamNr == 2) {
             existingLobby.addUserToTeam2(userInput);
-        }else{
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The team number provided is not valid. Therefore, the user could not be added to the lobby team!");
         }
         existingLobby = lobbyRepository.save(existingLobby);
@@ -119,18 +121,22 @@ public class LobbyService {
         Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
         User userInput = userRepository.findById(userId);
         // Check if lobby exists
-        if(existingLobby == null){
+        if (existingLobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby with the access code provided does not exist. Therefore, the user could not be removed from the lobby team!");
-        }else if(userInput == null) {
+        }
+        else if (userInput == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be removed from the lobby team!");
         }
-        if(teamNr != 1 && teamNr != 2){
+        if (teamNr != 1 && teamNr != 2) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The team number provided is not valid. Therefore, the user could not be removed from the lobby team!");
-        }else if(teamNr == 1 && existingLobby.isUserInTeam1(userInput)){
+        }
+        else if (teamNr == 1 && existingLobby.isUserInTeam1(userInput)) {
             existingLobby.removeUserFromTeam1(userInput);
-        }else if(teamNr == 2 && existingLobby.isUserInTeam2(userInput)){
+        }
+        else if (teamNr == 2 && existingLobby.isUserInTeam2(userInput)) {
             existingLobby.removeUserFromTeam2(userInput);
-        }else{
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user with the id provided is not in a lobby team.");
         }
         existingLobby = lobbyRepository.save(existingLobby);
@@ -143,12 +149,13 @@ public class LobbyService {
         Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
         User existingUser = userRepository.findById(userId);
 
-        if(existingLobby == null){
+        if (existingLobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby with the access code provided does not exist. Therefore, the user could not be added to the lobby!");
-        }else if(existingUser == null) {
+        }
+        else if (existingUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be added to the lobby!");
         }
-        if(existingLobby.getLobbyLeader() == null && existingUser.isLeader()){
+        if (existingLobby.getLobbyLeader() == null && existingUser.isLeader()) {
             existingLobby.setLobbyLeader(existingUser);
         }
         existingLobby.addUserToLobby(existingUser);
@@ -162,9 +169,10 @@ public class LobbyService {
         Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
         User existingUser = userRepository.findById(userId);
 
-        if(existingLobby == null){
+        if (existingLobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby with the access code provided does not exist. Therefore, the user could not be removed from the lobby!");
-        }else if(existingUser == null) {
+        }
+        else if (existingUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be removed from the lobby!");
         }
         existingLobby.removeUserFromLobby(existingUser);
@@ -178,16 +186,17 @@ public class LobbyService {
         return lobbyRepository.findByAccessCode(accessCode);
     }
 
-    public void changeSettings(int accessCode, Settings settings){
-      Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+    public void changeSettings(int accessCode, Settings settings) {
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         if (lobby == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
-      lobby.setSettings(settings);
+        lobby.setSettings(settings);
         lobbyRepository.save(lobby);
         lobbyRepository.flush();
 
     }
+
     public List<Lobby> getLobbies() {
         return this.lobbyRepository.findAll();
 
