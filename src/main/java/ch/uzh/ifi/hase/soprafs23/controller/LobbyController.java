@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
-//import ch.uzh.ifi.hase.soprafs23.rest.dto.SettingsPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.SettingsPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
@@ -59,13 +58,13 @@ public class LobbyController {
         List<Lobby> lobbies = lobbyService.getLobbies();
         List<LobbyGetDTO> lobbyGetDTOS = new ArrayList<>();
 
-        for(Lobby lobby : lobbies){
+        for (Lobby lobby : lobbies) {
             lobbyGetDTOS.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby));
         }
         return lobbyGetDTOS;
     }
 
-    @PutMapping ("/lobbies/{accessCode}/additions/users/{userId}")
+    @PutMapping("/lobbies/{accessCode}/additions/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LobbyGetDTO joinLobby(@PathVariable int accessCode, @PathVariable int userId) {
@@ -75,7 +74,7 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(joinedLobby);
     }
 
-    @PutMapping ("/lobbies/{accessCode}/removals/users/{userId}")
+    @PutMapping("/lobbies/{accessCode}/removals/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void leaveLobby(@PathVariable int accessCode, @PathVariable int userId) {
@@ -83,15 +82,15 @@ public class LobbyController {
         lobbyService.leaveLobby(accessCode, userId);
     }
 
-    @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/additions/users/{userId}")
+    @PutMapping("/lobbies/{accessCode}/teams/{teamNr}/additions/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void joinLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
         // join lobby team
-       lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
+        lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
     }
 
-    @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/removals/users/{userId}")
+    @PutMapping("/lobbies/{accessCode}/teams/{teamNr}/removals/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void leaveLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
@@ -99,13 +98,14 @@ public class LobbyController {
         lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
 
     }
-    @PutMapping ("/lobbies/{accessCode}/settings")
+
+    @PutMapping("/lobbies/{accessCode}/settings")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void changeSettings(@RequestBody SettingsPutDTO settingsPutDTO , @PathVariable int accessCode ) {
+    public void changeSettings(@RequestBody SettingsPutDTO settingsPutDTO, @PathVariable int accessCode) {
         // change settings
         Settings settingsInput = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
-        lobbyService.changeSettings(accessCode,settingsInput);
+        lobbyService.changeSettings(accessCode, settingsInput);
 
     }
 

@@ -1,12 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.custom;
 
 import javax.persistence.Embeddable;
-import java.util.Objects;
 
 @Embeddable
 public class Card {
 
-    private  String word;
+    private String word;
 
     private String taboo1;
 
@@ -18,7 +17,7 @@ public class Card {
 
     private String taboo5;
 
-    public Card(String word, String taboo1, String taboo2, String taboo3, String taboo4, String taboo5){
+    public Card(String word, String taboo1, String taboo2, String taboo3, String taboo4, String taboo5) {
         this.word = word;
         this.taboo1 = taboo1;
         this.taboo2 = taboo2;
@@ -30,7 +29,7 @@ public class Card {
     public Card() {
     }
 
-    public boolean isCorrectGuess(String guess){
+    public boolean isCorrectGuess(String guess) {
         return word.equalsIgnoreCase(guess);
     }
 

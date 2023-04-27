@@ -25,11 +25,11 @@ public class Game {
     @OneToOne
     private Team team2;
 
-    public Game(){
+    public Game() {
         this.roundsPlayed = 1;
     }
 
-    public Game(int accessCode, Settings settings, Team team1, Team team2){
+    public Game(int accessCode, Settings settings, Team team1, Team team2) {
         this.accessCode = accessCode;
         this.settings = settings;
         this.team1 = team1;

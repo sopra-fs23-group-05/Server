@@ -7,7 +7,8 @@ import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -24,47 +25,49 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface DTOMapper {
 
-  DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
+    DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "teamId", target = "teamId")
-  @Mapping(source = "teamName", target = "teamName")
-  @Mapping(source = "aRole", target = "aRole")
-  @Mapping(source = "points", target = "points")
-  @Mapping(source = "players", target = "players")
-  @Mapping(source = "idxClueGiver", target = "idxClueGiver")
-  TeamGetDTO convertEntityToTeamGetDTO(Team team);
-  @Mapping(source = "rounds", target = "rounds")
-  @Mapping(source = "topic", target = "topic")
-  @Mapping(source = "roundTime", target = "roundTime")
-  Settings convertSettingsPutDTOtoEntity(SettingsPutDTO settingsPutDTO);
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "leader", target = "leader")
-  User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
+    @Mapping(source = "teamId", target = "teamId")
+    @Mapping(source = "teamName", target = "teamName")
+    @Mapping(source = "aRole", target = "aRole")
+    @Mapping(source = "points", target = "points")
+    @Mapping(source = "players", target = "players")
+    @Mapping(source = "idxClueGiver", target = "idxClueGiver")
+    TeamGetDTO convertEntityToTeamGetDTO(Team team);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "leader", target = "leader")
-  UserGetDTO convertEntityToUserGetDTO(User user);
+    @Mapping(source = "rounds", target = "rounds")
+    @Mapping(source = "topic", target = "topic")
+    @Mapping(source = "roundTime", target = "roundTime")
+    Settings convertSettingsPutDTOtoEntity(SettingsPutDTO settingsPutDTO);
 
-  @Mapping(source = "accessCode", target = "accessCode")
-  @Mapping(source = "team1", target = "team1")
-  @Mapping(source = "team2", target = "team2")
-  LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "leader", target = "leader")
+    User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
-  @Mapping(source = "accessCode", target = "accessCode")
-  @Mapping(source = "settings", target = "settings")
-  @Mapping(source = "roundsPlayed", target = "roundsPlayed")
-  @Mapping(source = "turn", target = "turn")
-  @Mapping(source = "team1", target = "team1")
-  @Mapping(source = "team2", target = "team2")
-  GameGetDTO convertEntityToGameGetDTO(Game game);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "leader", target = "leader")
+    UserGetDTO convertEntityToUserGetDTO(User user);
 
-  @Mapping(source = "word", target = "word")
+    @Mapping(source = "accessCode", target = "accessCode")
+    @Mapping(source = "team1", target = "team1")
+    @Mapping(source = "team2", target = "team2")
+    LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+
+    @Mapping(source = "accessCode", target = "accessCode")
+    @Mapping(source = "settings", target = "settings")
+    @Mapping(source = "roundsPlayed", target = "roundsPlayed")
+    @Mapping(source = "turn", target = "turn")
+    @Mapping(source = "team1", target = "team1")
+    @Mapping(source = "team2", target = "team2")
+    GameGetDTO convertEntityToGameGetDTO(Game game);
+
+    @Mapping(source = "word", target = "word")
     @Mapping(source = "taboo1", target = "taboo1")
     @Mapping(source = "taboo2", target = "taboo2")
     @Mapping(source = "taboo3", target = "taboo3")
     @Mapping(source = "taboo4", target = "taboo4")
     @Mapping(source = "taboo5", target = "taboo5")
-  Card convertCardDTOtoEntity(CardDTO cardPostDTO);
+    Card convertCardDTOtoEntity(CardDTO cardPostDTO);
 
 }

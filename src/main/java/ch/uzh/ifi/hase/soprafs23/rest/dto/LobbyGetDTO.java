@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 
@@ -55,6 +54,7 @@ public class LobbyGetDTO {
     public List<User> getTeam1() {
         return team1;
     }
+
     public void setTeam1(List<User> team1) {
         this.team1 = team1;
     }

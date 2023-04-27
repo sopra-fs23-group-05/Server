@@ -31,10 +31,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         System.out.println("Sending message: " + message.getPayload());
         Message msg = convertTextMessageToMessage(message);
         // Call game service to guess the word
-        if(msg.getType() == MessageType.GUESS){
+        if (msg.getType() == MessageType.GUESS) {
             gameService.guessWord(msg);
         }
-        for(WebSocketSession webSocketSession : webSocketSessions){
+        for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(message);
         }
     }
@@ -44,9 +44,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         webSocketSessions.remove(session);
     }
 
-    private Message convertTextMessageToMessage(TextMessage message){
+    private Message convertTextMessageToMessage(TextMessage message) {
         String textMessageString = message.getPayload();
-        textMessageString = textMessageString.substring(1, textMessageString.length()-1);   // Remove curly braces
+        textMessageString = textMessageString.substring(1, textMessageString.length() - 1);   // Remove curly braces
         String[] messageParts = textMessageString.split(",");
 
         // Extract access code, userId, content
@@ -57,9 +57,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         // Extract type and convert to MessageType
         String typeString = messageParts[3].substring(messageParts[3].indexOf(':') + 2, messageParts[3].length() - 1);
         MessageType msgType;
-        if(typeString.equals("description")){
+        if (typeString.equals("description")) {
             msgType = MessageType.DESCRIPTION;
-        }else{
+        }
+        else {
             msgType = MessageType.GUESS;
         }
 

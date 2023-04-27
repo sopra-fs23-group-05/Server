@@ -1,15 +1,15 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
-import ch.uzh.ifi.hase.soprafs23.custom.*;
+import ch.uzh.ifi.hase.soprafs23.custom.Card;
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
+import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
-
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
-
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,13 +17,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GameServiceTest {
 
@@ -35,21 +36,15 @@ class GameServiceTest {
     @Mock
     private LobbyRepository lobbyRepository;
 
-    @InjectMocks
-    private LobbyService lobbyService;
     @Mock
     private TeamRepository teamRepository;
 
-    @Mock
-    private TeamService teamService;
     private Lobby testLobby;
 
     private Team testTeam;
 
     private Team testTeam2;
     private Game testGame;
-
-    private UserRepository userRepository;
 
     @BeforeEach
     public void setup() {
@@ -85,7 +80,7 @@ class GameServiceTest {
     @Test
     void nextTurn_invalidInputs_gameNotFound() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
-        assertThrows(NullPointerException.class, () -> gameService.nextTurn(123456));
+        assertThrows(ResponseStatusException.class, () -> gameService.nextTurn(123456));
     }
     /*@Test
     void nextTurn_validInputs_success() {

@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.constant.Topic;
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;

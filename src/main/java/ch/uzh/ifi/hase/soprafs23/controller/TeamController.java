@@ -1,16 +1,12 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.TeamGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.TeamService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 
 
 /**
@@ -23,21 +19,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TeamController {
 
-  private final TeamService teamService;
+    private final TeamService teamService;
 
-  TeamController( TeamService teamService) {
-      this.teamService = teamService;
+    TeamController(TeamService teamService) {
+        this.teamService = teamService;
 
-  }
+    }
 
-  @GetMapping("/teams/{teamId}")
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public TeamGetDTO getTeam(@PathVariable("teamId")int teamId) {
-      Team team = teamService.getTeam(teamId);
+    @GetMapping("/teams/{teamId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public TeamGetDTO getTeam(@PathVariable("teamId") int teamId) {
+        Team team = teamService.getTeam(teamId);
 
-      return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
-  }
+        return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
+    }
 }
 
 

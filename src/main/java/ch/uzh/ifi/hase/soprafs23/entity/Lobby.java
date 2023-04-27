@@ -1,12 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
-import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 @Table(name = "LOBBY")

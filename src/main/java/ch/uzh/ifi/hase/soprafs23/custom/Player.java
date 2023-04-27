@@ -9,7 +9,6 @@ public class Player {
     private boolean leader;
 
 
-
     public int getPersonalScore() {
         return personalScore;
     }
@@ -26,11 +25,15 @@ public class Player {
         return leader;
     }
 
-    public void setPersonalScore(int personalScore) {this.personalScore = personalScore;}
+    public void setPersonalScore(int personalScore) {
+        this.personalScore = personalScore;
+    }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void increaseScoreBy(int points){this.personalScore += points;}
+    public void increaseScoreBy(int points) {
+        this.personalScore += points;
+    }
 }

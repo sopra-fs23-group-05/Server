@@ -34,7 +34,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
 
     @Bean
-    public WebSocketHandler getChatWebSocketHandler(){
+    public WebSocketHandler getChatWebSocketHandler() {
         return new ChatWebSocketHandler(gameService);
     }
 }

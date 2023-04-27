@@ -35,14 +35,16 @@ public class Team {
         points = 0;
     }
 
-    public Team(List<Player> players, Role startingRole){
+    public Team(List<Player> players, Role startingRole) {
         this.players = players;
         aRole = startingRole;
         idxClueGiver = 0;
         points = 0;
     }
 
-    public void setIdxClueGiver(int idxClueGiver) {this.idxClueGiver = idxClueGiver;}
+    public void setIdxClueGiver(int idxClueGiver) {
+        this.idxClueGiver = idxClueGiver;
+    }
 
     public int getIdxClueGiver() {
         return idxClueGiver;
@@ -68,7 +70,8 @@ public class Team {
         if (aRole == Role.GUESSINGTEAM) {
             addPoints(scoredPoints);
             aRole = Role.BUZZINGTEAM;
-        } else {
+        }
+        else {
             aRole = Role.GUESSINGTEAM;
             idxClueGiver = (idxClueGiver + 1) % players.size();
         }

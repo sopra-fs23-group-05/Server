@@ -23,41 +23,45 @@ import java.util.Objects;
 @Transactional
 public class TeamService {
 
-  private final Logger log = LoggerFactory.getLogger(TeamService.class);
+    private final Logger log = LoggerFactory.getLogger(TeamService.class);
 
-  private final TeamRepository teamRepository;
-  private final UserRepository userRepository;
-  @Autowired
-  public TeamService(@Qualifier("teamRepository") TeamRepository teamRepository, UserRepository userRepository) {
-      this.teamRepository = teamRepository;
-      this.userRepository = userRepository;
-  }
+    private final TeamRepository teamRepository;
+    private final UserRepository userRepository;
+
+    @Autowired
+    public TeamService(@Qualifier("teamRepository") TeamRepository teamRepository, UserRepository userRepository) {
+        this.teamRepository = teamRepository;
+        this.userRepository = userRepository;
+    }
 
 
-  public Team getTeam(int teamId){return this.teamRepository.findById(teamId);}
+    public Team getTeam(int teamId) {
+        return this.teamRepository.findById(teamId);
+    }
 
     public Team createTeam(List<User> users, Role role) {
-      List<Player> players = new ArrayList<>();
-      for (User temp : users) {
+        List<Player> players = new ArrayList<>();
+        for (User temp : users) {
             Player player = convertUserToPlayer(temp.getId());
             players.add(player);
-      }
+        }
 
-      if (players.size() < 2) {
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Each team must at least contain two players");
-      }
+        if (players.size() < 2) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Each team must at least contain two players");
+        }
 
-      Team newTeam = new Team(players,role);
+        Team newTeam = new Team(players, role);
 
 
-      // saves the given entity but data is only persisted in the database once// flush() is called
+        // saves the given entity but data is only persisted in the database once// flush() is called
         newTeam = teamRepository.save(newTeam);
         teamRepository.flush();
 
         log.debug("Created Information for Lobby: {}", newTeam);
         return newTeam;
     }
-    public Player convertUserToPlayer(long userId){
+
+    public Player convertUserToPlayer(long userId) {
         User user = userRepository.findById(userId);
         Player player = new Player();
         player.setName(user.getUsername());
@@ -67,16 +71,17 @@ public class TeamService {
     }
 
     public void changeTurn(int teamId1, int teamId2, int scoredPoints) {
-      Team team1 = teamRepository.findById(teamId1);
-      Team team2 = teamRepository.findById(teamId2);
-      if(team1 == null){
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team1 not found");
-      }else if(team2 == null) {
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team2 not found");
-      }
+        Team team1 = teamRepository.findById(teamId1);
+        Team team2 = teamRepository.findById(teamId2);
+        if (team1 == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team1 not found");
+        }
+        else if (team2 == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team2 not found");
+        }
 
-      team1.changeTurn(scoredPoints);
-      team2.changeTurn(scoredPoints);
+        team1.changeTurn(scoredPoints);
+        team2.changeTurn(scoredPoints);
 
         teamRepository.save(team1);
         teamRepository.save(team2);
@@ -95,11 +100,12 @@ public class TeamService {
         }
         return false;
     }
-    public boolean isClueGiver(int teamId, String userName){
+
+    public boolean isClueGiver(int teamId, String userName) {
         Team team = teamRepository.findById(teamId);
         for (int i = 0; i < team.getPlayers().size(); i++) {
             Player player = team.getPlayers().get(i);
-            if (Objects.equals(player.getName(), userName) && i==team.getIdxClueGiver() ) {
+            if (Objects.equals(player.getName(), userName) && i == team.getIdxClueGiver()) {
                 return true;
             }
         }
