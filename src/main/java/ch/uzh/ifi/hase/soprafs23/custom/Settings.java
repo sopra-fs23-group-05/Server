@@ -10,7 +10,7 @@ public class Settings {
     public Settings() {
         rounds = 7;
         roundTime = 120;
-        topic = ch.uzh.ifi.hase.soprafs23.constant.Topic.MOVIES;
+        topic = Topic.ANIMALS;
     }
 
     public int getRounds() {
