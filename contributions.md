@@ -74,15 +74,7 @@ Before each meeting, each team member is required to manually append the two dev
 
 ## Felix
 Implement the chat for the game view using a websocket
-- [#115](https://github.com/sopra-fs23-group-05/Server/issues/115)
-- [#118](https://github.com/sopra-fs23-group-05/Server/issues/118)
-- [#45](https://github.com/sopra-fs23-group-05/Server/issues/45)
-- [#46](https://github.com/sopra-fs23-group-05/Server/issues/46)
-- [#31](https://github.com/sopra-fs23-group-05/Client/issues/31)
-- [#63](https://github.com/sopra-fs23-group-05/Client/issues/63)
-- [#64](https://github.com/sopra-fs23-group-05/Client/issues/64)
-- [#65](https://github.com/sopra-fs23-group-05/Client/issues/65)
-- [#66](https://github.com/sopra-fs23-group-05/Client/issues/66)
+- [#115](https://github.com/sopra-fs23-group-05/Server/issues/115), [#118](https://github.com/sopra-fs23-group-05/Server/issues/118), [#45](https://github.com/sopra-fs23-group-05/Server/issues/45), [#46](https://github.com/sopra-fs23-group-05/Server/issues/46), [#31](https://github.com/sopra-fs23-group-05/Client/issues/31), [#63](https://github.com/sopra-fs23-group-05/Client/issues/63), [#64](https://github.com/sopra-fs23-group-05/Client/issues/64), [#65](https://github.com/sopra-fs23-group-05/Client/issues/65), [#66](https://github.com/sopra-fs23-group-05/Client/issues/66)
 
 Implement a websocket for sending and receiving cards between the client and the server.
 - [#31](https://github.com/sopra-fs23-group-05/Server/issues/31)
