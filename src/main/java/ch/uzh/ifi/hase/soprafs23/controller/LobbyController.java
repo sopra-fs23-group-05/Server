@@ -78,31 +78,25 @@ public class LobbyController {
     @PutMapping ("/lobbies/{accessCode}/removals/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO leaveLobby(@PathVariable int accessCode, @PathVariable int userId) {
+    public void leaveLobby(@PathVariable int accessCode, @PathVariable int userId) {
         // leave lobby
-        Lobby leftLobby = lobbyService.leaveLobby(accessCode, userId);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(leftLobby);
+        lobbyService.leaveLobby(accessCode, userId);
     }
 
     @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/additions/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO joinLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
+    public void joinLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
         // join lobby team
-        Lobby lobbyOfTeam = lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobbyOfTeam);
+       lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
     }
 
     @PutMapping ("/lobbies/{accessCode}/teams/{teamNr}/removals/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public LobbyGetDTO leaveLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
+    public void leaveLobbyTeam(@PathVariable int accessCode, @PathVariable int teamNr, @PathVariable int userId) {
         // join lobby
-        Lobby joinedLobby = lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(joinedLobby);
+        lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
 
     }
     @PutMapping ("/lobbies/{accessCode}/settings")

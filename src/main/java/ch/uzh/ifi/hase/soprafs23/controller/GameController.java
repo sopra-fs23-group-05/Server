@@ -47,11 +47,11 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(createdGame);
     }
 
-    @PutMapping("/games/{accessCode}/turns/{scoredPoints}")
+    @PutMapping("/games/{accessCode}/turns")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void nextTurn(@PathVariable int accessCode, @PathVariable int scoredPoints) {
-        gameService.nextTurn(accessCode, scoredPoints);
+    public void nextTurn(@PathVariable int accessCode) {
+        gameService.nextTurn(accessCode);
     }
     @GetMapping("/games/{accessCode}/users/{playerName}")
     @ResponseStatus(HttpStatus.OK)

@@ -61,8 +61,9 @@ public class GameService {
     }
 
 
-    public void nextTurn(int accessCode, int scoredPoints) {
+    public void nextTurn(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
+        int scoredPoints = existingGame.getTurn().getTurnPoints();
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }

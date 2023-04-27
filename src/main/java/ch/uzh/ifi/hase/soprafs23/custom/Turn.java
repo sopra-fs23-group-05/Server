@@ -66,4 +66,7 @@ public class Turn {
     public Deck getDeck() {
         return deck;
     }
+    public int getTurnPoints() {
+        return turnPoints;
+    }
 }

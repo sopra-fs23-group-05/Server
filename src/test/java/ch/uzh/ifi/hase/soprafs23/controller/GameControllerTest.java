@@ -30,8 +30,9 @@ class GameControllerTest {
 
     @MockBean
     private GameService gameService;
+
     @Test
-    void createGame_validInput_gameCreated() throws Exception{
+    void createGame_validInput_gameCreated() throws Exception {
         // given
         Game game = new Game();
 
@@ -50,6 +51,7 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.roundsPlayed", is(1)))
                 .andExpect(jsonPath("$.turn", is(game.getTurn())));
     }
+
     @Test
     void getGame_validAccessCode_gameReturned() throws Exception {
         // given
