@@ -15,13 +15,14 @@ class TeamTest {
     // Test if after playing multiple rounds the roles are distributed correctly
     // And the correct player is the clue giver.
     @Test
-    void changeRole() {
+    void changeTurn() {
         List<Player> players = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             players.add(new Player());
         }
         int scoredPoints = 1;
         Team team = new Team(players, Role.GUESSINGTEAM);   // Player 0 should be clue giver
+
         for(int i = 0; i < 6; i ++){
             team.changeTurn(scoredPoints);
         }
