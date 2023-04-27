@@ -69,8 +69,8 @@ Before each meeting, each team member is required to manually append the two dev
 
 ## Tom
 - [#54](https://github.com/sopra-fs23-group-05/Server/issues/54) Write PUT request for lobbies. Update the lobby with the new settings
-- [#9](https://github.com/sopra-fs23-group-05/Client/issues/9)Implement a function which displays the timer, the player’s new role for the next turn and the scoreboard of both teams.
-- [#140](https://github.com/sopra-fs23-group-05/Server/issues/140)Add turn points to guesser teams total points after a round.
+- [#9](https://github.com/sopra-fs23-group-05/Client/issues/9) Implement a function which displays the timer, the player’s new role for the next turn and the scoreboard of both teams.
+- [#140](https://github.com/sopra-fs23-group-05/Server/issues/140) Add turn points to guesser teams total points after a round.
 
 ## Felix
 - [#115](https://github.com/sopra-fs23-group-05/Server/issues/115), [#118](https://github.com/sopra-fs23-group-05/Server/issues/118), [#45](https://github.com/sopra-fs23-group-05/Server/issues/45), [#46](https://github.com/sopra-fs23-group-05/Server/issues/46), [#31](https://github.com/sopra-fs23-group-05/Client/issues/31), [#63](https://github.com/sopra-fs23-group-05/Client/issues/63), [#64](https://github.com/sopra-fs23-group-05/Client/issues/64), [#65](https://github.com/sopra-fs23-group-05/Client/issues/65), [#66](https://github.com/sopra-fs23-group-05/Client/issues/66), Implement the chat for the game view using a websocket
