@@ -100,7 +100,7 @@ public class GameService {
             if (existingGame.getTeam1().getaRole() == Role.BUZZINGTEAM) {
                 return PlayerRole.BUZZER;
             }
-            else if (teamService.isClueGiver(existingGame.getTeam1().getTeamId(), userName)) {
+            if (teamService.isClueGiver(existingGame.getTeam1().getTeamId(), userName)) {
                 return PlayerRole.CLUEGIVER;
             }
             return PlayerRole.GUESSER;
@@ -109,7 +109,7 @@ public class GameService {
             if (existingGame.getTeam2().getaRole() == Role.BUZZINGTEAM) {
                 return PlayerRole.BUZZER;
             }
-            else if (teamService.isClueGiver(existingGame.getTeam2().getTeamId(), userName)) {
+            if (teamService.isClueGiver(existingGame.getTeam2().getTeamId(), userName)) {
                 return PlayerRole.CLUEGIVER;
             }
             return PlayerRole.GUESSER;
