@@ -57,14 +57,13 @@ Before each meeting, each team member is required to manually append the two dev
 - [#61](https://github.com/sopra-fs23-group-05/Client/issues/61) Create the Buzzer component
 
 
-# Meeting 27.04.2023 - Week 09
+# Meeting 20.04.2023 - Week 09
 ## Daniel
 - [#1](https://github.com/sopra-fs23-group-05/Client/issues/1) On the game page of the clue-giver make the word button clickable.
 - [#2](https://github.com/sopra-fs23-group-05/Client/issues/2) Edit the game page of the clue giver so that the description is displayed when he clicks on the word button.
 - [#7](https://github.com/sopra-fs23-group-05/Client/issues/7) Implement a function that will display the guess entered on the display.
 - [#97](https://github.com/sopra-fs23-group-05/Client/issues/97) Dynamically look up word of current card in dictionary.
 - [#103](https://github.com/sopra-fs23-group-05/Client/issues/103) Create a timer function which starts counting down when a new turn starts.
-- [#106](https://github.com/sopra-fs23-group-05/Client/issues/106) Implement a function that will determine which team has won the game.
 - [#6](https://github.com/sopra-fs23-group-05/Server/issues/6) As a lobby leader I want to change the settings to change the number of rounds, the time per round and the topic of the words.
 - [#91](https://github.com/sopra-fs23-group-05/Server/issues/91) Implement a mechanism for generating unique access codes for each lobby.
 
@@ -73,12 +72,31 @@ Before each meeting, each team member is required to manually append the two dev
 - [#9](https://github.com/sopra-fs23-group-05/Client/issues/9)Implement a function which displays the timer, the player’s new role for the next turn and the scoreboard of both teams.
 - [#140](https://github.com/sopra-fs23-group-05/Server/issues/140)Add turn points to guesser teams total points after a round.
 
-## Melea
-- [#21](https://github.com/sopra-fs23-group-05/Client/issues/21) Update the component displaying the players name in the team he chose.
-- [#13](https://github.com/sopra-fs23-group-05/Client/issues/13) Create one box for each team, with a text field indicating each team's name.
-- [#14](https://github.com/sopra-fs23-group-05/Client/issues/14) Display the players that already joined a team.
-- [#35](https://github.com/sopra-fs23-group-05/Server/issues/35) Disable the start game button based on the condition that both teams need at least two players.
-- [#15](https://github.com/sopra-fs23-group-05/Client/issues/15) Create a join button that sends a request to the backend for a user to join a team.
-- [#68](https://github.com/sopra-fs23-group-05/Server/issues/68) Connect the Taboo database to our app. 
-- [#62](https://github.com/sopra-fs23-group-05/Client/issues/62) Display the components depending on the players role.
-- [#150](https://github.com/sopra-fs23-group-05/Server/issues/150) Make sure a user can only join one team.
+## Felix
+Implement the chat for the game view using a websocket
+- [#115](https://github.com/sopra-fs23-group-05/Server/issues/115)
+- [#118](https://github.com/sopra-fs23-group-05/Server/issues/118)
+- [#45](https://github.com/sopra-fs23-group-05/Server/issues/45)
+- [#46](https://github.com/sopra-fs23-group-05/Server/issues/46)
+- [#31](https://github.com/sopra-fs23-group-05/Client/issues/31)
+- [#63](https://github.com/sopra-fs23-group-05/Client/issues/63)
+- [#64](https://github.com/sopra-fs23-group-05/Client/issues/64)
+- [#65](https://github.com/sopra-fs23-group-05/Client/issues/65)
+- [#66](https://github.com/sopra-fs23-group-05/Client/issues/66)
+
+Implement a websocket for sending and receiving cards between the client and the server.
+- [#31](https://github.com/sopra-fs23-group-05/Server/issues/31)
+- [#70](https://github.com/sopra-fs23-group-05/Server/issues/70)
+- [#120](https://github.com/sopra-fs23-group-05/Server/issues/120)
+- [#29](https://github.com/sopra-fs23-group-05/Client/issues/29)
+
+Enable skipping a card and buzzing.
+- [#3](https://github.com/sopra-fs23-group-05/Client/issues/3)
+- [#4](https://github.com/sopra-fs23-group-05/Client/issues/4)
+- [#28](https://github.com/sopra-fs23-group-05/Server/issues/28)
+- [#29](https://github.com/sopra-fs23-group-05/Server/issues/29)
+- [#32](https://github.com/sopra-fs23-group-05/Server/issues/32)
+
+Connect the chat websocket with the card websocket. The use case is, when a guess entered via the chat, the client needs a new card.
+- [#120](https://github.com/sopra-fs23-group-05/Server/issues/120)
+
