@@ -35,9 +35,15 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         String[] messageParts = message.getPayload().split(",");
         int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 2));
         int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 2));
-        long userId = Long.parseLong(messageParts[2].substring(messageParts[2].indexOf(':') + 2));
+        int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 2));
         String type = messageParts[3].contains("addition") ? "addition" : "deletion";
-        System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
+        // System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
+
+        if(type.equals("addition")) {
+            lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
+        } else {
+            lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
+        }
 
         for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(message);
