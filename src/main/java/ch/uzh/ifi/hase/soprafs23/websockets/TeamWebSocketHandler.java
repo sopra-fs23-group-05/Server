@@ -27,7 +27,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
     }
 
     /**
-     * @param message is of the form "\"accessCode\": 123456, \"teamNr\": 1, \"userId\": 1"
+     * @param message is of the form "\"accessCode\": 123456, \"teamNr\": 1, \"userId\": 1, \"type\": \"addition\""
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -36,7 +36,8 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 2));
         int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 2));
         long userId = Long.parseLong(messageParts[2].substring(messageParts[2].indexOf(':') + 2));
-        // System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId);
+        String type = messageParts[3].contains("addition") ? "addition" : "deletion";
+        System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
 
         for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(message);
