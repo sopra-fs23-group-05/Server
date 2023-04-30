@@ -27,16 +27,16 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
     }
 
     /**
-     * @param message is of the form "\"accessCode\": 123456, \"teamNr\": 1, \"userId\": 1, \"type\": \"addition\""
+     * @param message is of the form "\"accessCode\":123456,\"teamNr\":1,\"userId\":1,\"type\":\"addition\""
      *                the type can be either "addition" or "removal"
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        System.out.println("Sending message: " + message.getPayload());
+        // System.out.println("Sending message: " + message.getPayload());
         String[] messageParts = message.getPayload().split(",");
-        int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 2));
-        int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 2));
-        int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 2));
+        int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 1));
+        int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
+        int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 1));
         String type = messageParts[3].contains("addition") ? "addition" : "removal";
         // System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
 
