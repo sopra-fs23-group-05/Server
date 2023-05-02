@@ -147,4 +147,12 @@ public class GameService {
         existingGame.getTurn().addCard(card);
         gameRepository.flush();
     }
+    public void deleteGame(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        gameRepository.delete(existingGame);
+        gameRepository.flush();
+    }
 }

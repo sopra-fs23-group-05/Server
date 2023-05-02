@@ -112,4 +112,9 @@ public class TeamService {
         return false;
 
     }
+    public void deleteTeam(int teamId) {
+        Team team = teamRepository.findById(teamId);
+        teamRepository.delete(team);
+        teamRepository.flush();
+    }
 }

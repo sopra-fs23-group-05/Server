@@ -34,6 +34,12 @@ public class TeamController {
 
         return DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
     }
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void deleteTeam(@PathVariable("teamId") int teamId) {
+        teamService.deleteTeam(teamId);
+    }
 }
 
 

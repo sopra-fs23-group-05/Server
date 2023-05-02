@@ -201,4 +201,12 @@ public class LobbyService {
         return this.lobbyRepository.findAll();
 
     }
+    public void deleteLobby(int accessCode) {
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        if (lobby == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        lobbyRepository.delete(lobby);
+        lobbyRepository.flush();
+    }
 }
