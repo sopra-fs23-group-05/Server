@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
 import ch.uzh.ifi.hase.soprafs23.websockets.CardWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 import org.slf4j.Logger;
@@ -27,16 +28,18 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final TeamService teamService;
+    private final TeamRepository teamRepository;
 
     private final LobbyRepository lobbyRepository;
 
     private CardWebSocketHandler cardWebSocketHandler;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository) {
         this.gameRepository = gameRepository;
         this.teamService = teamService;
         this.lobbyRepository = lobbyRepository;
+        this.teamRepository = teamRepository;
     }
 
     public void initializeCardWebSocketHandler(CardWebSocketHandler cardWebSocketHandler) {
@@ -152,7 +155,10 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
+        teamRepository.delete(existingGame.getTeam1());
+        teamRepository.delete(existingGame.getTeam2());
         gameRepository.delete(existingGame);
         gameRepository.flush();
+        teamRepository.flush();
     }
 }
