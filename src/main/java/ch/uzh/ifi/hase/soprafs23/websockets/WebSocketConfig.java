@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.websockets;
 
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
@@ -22,9 +23,12 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     private final LobbyService lobbyService;
 
-    public WebSocketConfig(GameService gameService, LobbyService lobbyService){
+    private final UserService userService;
+
+    public WebSocketConfig(GameService gameService, LobbyService lobbyService, UserService userService){
         this.gameService = gameService;
         this.lobbyService = lobbyService;
+        this.userService = userService;
     }
 
     @Override
@@ -48,6 +52,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public WebSocketHandler getTeamWebSocketHandler() {
-        return new TeamWebSocketHandler(lobbyService);
+        return new TeamWebSocketHandler(lobbyService, userService);
     }
 }

@@ -1,7 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.websockets;
 
-import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -16,9 +17,11 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     // Inject dependency to GameService here
     private final LobbyService lobbyService;
+    private final UserService userService;
 
-    public TeamWebSocketHandler(LobbyService lobbyService) {
+    public TeamWebSocketHandler(LobbyService lobbyService, UserService userService) {
         this.lobbyService = lobbyService;
+        this.userService = userService;
     }
 
     @Override
@@ -33,7 +36,8 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         // System.out.println("Sending message: " + message.getPayload());
-        String[] messageParts = message.getPayload().split(",");
+        String messagePayload = message.getPayload();
+        String[] messageParts = messagePayload.split(",");
         int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 1));
         int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
         int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 1));
@@ -46,8 +50,14 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
             lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
         }
 
+        User aUser = userService.getUser(userId);
+        messagePayload = messagePayload.substring(0, messagePayload.length() - 1);
+        messagePayload += ",\"username\":\"" + aUser.getUsername() + "\"}";
+        System.out.println("Sending message: " + messagePayload);
+        TextMessage outMessage = new TextMessage(messagePayload);
+
         for (WebSocketSession webSocketSession : webSocketSessions) {
-            webSocketSession.sendMessage(message);
+            webSocketSession.sendMessage(outMessage);
         }
     }
 
