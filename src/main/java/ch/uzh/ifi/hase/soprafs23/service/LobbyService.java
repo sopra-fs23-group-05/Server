@@ -87,19 +87,16 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided is not in the lobby. Therefore, the user could not be added to the lobby team!");
         }
 
-        //check if user already is in a team
-        List<User> team1 = existingLobby.getTeam1();
-        List<User> team2 = existingLobby.getTeam2();
-
-        for (User user : team1) {
-            if (userId == user.getId()) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "The user already joined team 1. Therefore, the user could not be added to the team.");
-            }
+        if (existingLobby.isUserInTeam1(userInput)) {
+            existingLobby.removeUserFromTeam1(userInput);
         }
-        for (User user : team2) {
-            if (userId == user.getId()) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "The user already joined team 2. Therefore, the user could not be added to the team.");
-            }
+
+        if (existingLobby.isUserInTeam2(userInput)) {
+            existingLobby.removeUserFromTeam2(userInput);
+        }
+
+        if (!existingLobby.isFairJoin(teamNr)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Joining this team would lead to an unfair game. Therefore, wait until more users have joined the lobby or join the other team!");
         }
 
         if (teamNr == 1) {
@@ -189,7 +186,7 @@ public class LobbyService {
     public void changeSettings(int accessCode, Settings settings) {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with accessCode " + accessCode + " does not exist");
         }
         lobby.setSettings(settings);
         lobbyRepository.save(lobby);
