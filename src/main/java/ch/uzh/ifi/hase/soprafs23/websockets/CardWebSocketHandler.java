@@ -58,9 +58,14 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
             outCard = new Card("NA", "NA", "NA", "NA", "NA", "NA");
         }
 
+        //add the turnPoints to the card to send it to the client
+        Integer turnPoints = gameService.getTurnPoints(accessCode);
+        String outCardString = outCard.toString();
+        String outCardStringWithTurnPoints = outCardString.substring(0, outCardString.length() - 1) + ", \"turnPoints\":\"" + turnPoints + '\"' + "}";
+
         // Convert it to a TextMessage object
-        // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null"}
-        TextMessage outMessage = new TextMessage(outCard.toString());
+        // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null", "turnPoints":"0"
+        TextMessage outMessage = new TextMessage(outCardStringWithTurnPoints.toString());
 
         for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(outMessage);
