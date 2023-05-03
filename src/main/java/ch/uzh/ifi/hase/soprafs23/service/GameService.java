@@ -3,11 +3,14 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.websockets.CardWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 import org.slf4j.Logger;
@@ -19,6 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -29,17 +35,21 @@ public class GameService {
     private final GameRepository gameRepository;
     private final TeamService teamService;
     private final TeamRepository teamRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     private final LobbyRepository lobbyRepository;
 
     private CardWebSocketHandler cardWebSocketHandler;
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository) {
         this.gameRepository = gameRepository;
         this.teamService = teamService;
         this.lobbyRepository = lobbyRepository;
         this.teamRepository = teamRepository;
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     public void initializeCardWebSocketHandler(CardWebSocketHandler cardWebSocketHandler) {
@@ -155,10 +165,15 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
+        List<User> users = lobbyRepository.findByAccessCode(accessCode).getLobbyUsers();
+        userRepository.deleteAll(users);
+        lobbyRepository.delete(lobbyRepository.findByAccessCode(accessCode));
         teamRepository.delete(existingGame.getTeam1());
         teamRepository.delete(existingGame.getTeam2());
         gameRepository.delete(existingGame);
         gameRepository.flush();
         teamRepository.flush();
+        userRepository.flush();
+        lobbyRepository.flush();
     }
 }

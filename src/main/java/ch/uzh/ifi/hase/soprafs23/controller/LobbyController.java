@@ -108,13 +108,8 @@ public class LobbyController {
         lobbyService.changeSettings(accessCode, settingsInput);
 
     }
-    @DeleteMapping("/lobbies/{accessCode}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void deleteLobby(@PathVariable int accessCode) {
-        // delete lobby
-        lobbyService.deleteLobby(accessCode);
-    }
+
+
 
 }
 
