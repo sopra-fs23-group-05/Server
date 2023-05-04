@@ -72,8 +72,8 @@ public class GameController {
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteGame(@PathVariable int accessCode) {
-        gameService.deleteGame(accessCode);
+    public void deleteGameTeamsAndPlayers(@PathVariable int accessCode) {
+        gameService.deleteGameTeamsUsersAndLobby(accessCode);
     }
 }
 

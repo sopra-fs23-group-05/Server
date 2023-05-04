@@ -160,13 +160,12 @@ public class GameService {
         existingGame.getTurn().addCard(card);
         gameRepository.flush();
     }
-    public void deleteGame(int accessCode) {
+    public void deleteGameTeamsUsersAndLobby(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
-        List<User> users = lobbyRepository.findByAccessCode(accessCode).getLobbyUsers();
-        userRepository.deleteAll(users);
+
         lobbyRepository.delete(lobbyRepository.findByAccessCode(accessCode));
         teamRepository.delete(existingGame.getTeam1());
         teamRepository.delete(existingGame.getTeam2());
