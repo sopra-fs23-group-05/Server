@@ -3,10 +3,12 @@ package ch.uzh.ifi.hase.soprafs23.constant;
 public enum Topic {
     ANIMALS,
     SPORTS,
-    MOVIES,
-    COUNTRIES,
+    TV,
+    CITY_COUNTRY,
     FOOD,
-    MUSIC,
+    CARS,
+    LITERATURE,
+    WEB,
+    HOME_GOODS,
     FAMOUS_PEOPLE,
-    TECHNOLOGY
 }
