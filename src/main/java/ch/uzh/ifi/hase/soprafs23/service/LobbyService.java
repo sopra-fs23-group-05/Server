@@ -96,6 +96,10 @@ public class LobbyService {
             existingLobby.removeUserFromTeam2(userInput);
         }
 
+        if (!existingLobby.isFairJoin(teamNr)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Joining this team would lead to an unfair game. Therefore, wait until more users have joined the lobby or join the other team!");
+        }
+
         if (teamNr == 1) {
             existingLobby.addUserToTeam1(userInput);
         }
@@ -183,7 +187,7 @@ public class LobbyService {
     public void changeSettings(int accessCode, Settings settings) {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with accessCode " + accessCode + " does not exist");
         }
         lobby.setSettings(settings);
         lobbyRepository.save(lobby);
