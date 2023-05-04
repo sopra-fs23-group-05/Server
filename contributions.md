@@ -91,3 +91,9 @@ Before each meeting, each team member is required to manually append the two dev
  - [#62](https://github.com/sopra-fs23-group-05/Client/issues/62) Display the components depending on the players role.
  - [#150](https://github.com/sopra-fs23-group-05/Server/issues/150) Make sure a user can only join one team.
 
+# Meeting 04.05.2023 - Week 10
+## Felix
+-[#163](https://github.com/sopra-fs23-group-05/Server/issues/163) Use WebSocket for joining a team (back-end).
+-[#112](https://github.com/sopra-fs23-group-05/Client/issues/112) Use WebSocket for joining a team (front-end).
+-[#142](https://github.com/sopra-fs23-group-05/Client/issues/142) Switch URLs dynamically between dev and prod.
+-[#143](https://github.com/sopra-fs23-group-05/Client/issues/143) Adjust the message type dynamically between clue-giver and guesser.
