@@ -82,7 +82,7 @@ public class DTOMapperTest {
         SettingsPutDTO settingsPutDTO = new SettingsPutDTO();
         settingsPutDTO.setRounds(7);
         settingsPutDTO.setRoundTime(120);
-        settingsPutDTO.setTopic(Topic.MOVIES);
+        settingsPutDTO.setTopic(Topic.TV);
 
         Settings settings = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
 

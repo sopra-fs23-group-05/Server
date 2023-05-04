@@ -201,4 +201,27 @@ public class LobbyService {
         return this.lobbyRepository.findAll();
 
     }
+    public boolean userIsInLobby(long userId,int accessCode){
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        User user = userRepository.findById(userId);
+        if(lobby == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with accessCode " + accessCode + " does not exist");
+        }
+        if(user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id " + userId + " does not exist");
+        }
+        return lobby.isUserInLobby(user);
+    }
+    public void deleteLobbyAndUsers(int accessCode) {
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        if (lobby == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby with accessCode " + accessCode + " does not exist");
+        }
+        List<User> users = lobbyRepository.findByAccessCode(accessCode).getLobbyUsers();
+        userRepository.deleteAll(users);
+        lobbyRepository.delete(lobby);
+        userRepository.flush();
+        lobbyRepository.flush();
+    }
+
 }
