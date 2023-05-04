@@ -60,4 +60,8 @@ public class Turn {
     public int getTurnPoints() {
         return turnPoints;
     }
+
+    public void setTurnPoints(int turnPoints) {
+        this.turnPoints = turnPoints;
+    }
 }

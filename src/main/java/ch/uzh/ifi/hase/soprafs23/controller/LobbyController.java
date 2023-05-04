@@ -9,6 +9,7 @@ import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +108,20 @@ public class LobbyController {
         Settings settingsInput = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
         lobbyService.changeSettings(accessCode, settingsInput);
 
+    }
+    @GetMapping("/lobbies/{accessCode}/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public boolean isUserInLobby(@PathVariable int accessCode, @PathVariable int userId) {
+        // check if user is in lobby
+        return lobbyService.userIsInLobby(userId, accessCode);
+    }
+
+    @DeleteMapping("/lobbies/{accessCode}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void deleteLobbyAndUsers(@PathVariable int accessCode) {
+        lobbyService.deleteLobbyAndUsers(accessCode);
     }
 
 }
