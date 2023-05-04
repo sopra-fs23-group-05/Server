@@ -97,3 +97,6 @@ Before each meeting, each team member is required to manually append the two dev
 - [#112](https://github.com/sopra-fs23-group-05/Client/issues/112) Use WebSocket for joining a team (front-end).
 - [#142](https://github.com/sopra-fs23-group-05/Client/issues/142) Switch URLs dynamically between dev and prod.
 - [#143](https://github.com/sopra-fs23-group-05/Client/issues/143) Adjust the message type dynamically between clue-giver and guesser.
+
+## Tom
+-[#185]
