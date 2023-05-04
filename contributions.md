@@ -102,3 +102,8 @@ Before each meeting, each team member is required to manually append the two dev
 - [#185](https://github.com/sopra-fs23-group-05/Server/issues/185) Write a request to delete the game,lobby, players and teams(end of game).
 - [#195](https://github.com/sopra-fs23-group-05/Server/issues/195) Write a request to delete the lobby and the users (lobby leader quitting the lobby).
 - [#129](https://github.com/sopra-fs23-group-05/Client/issues/129) Write Guards for the different pages that unautorized User can't access them. (not commited to the main branch, because it's easier to test the client without).
+
+## Melea
+- [#188](https://github.com/sopra-fs23-group-05/Server/issues/188) Display the correct Score of the guessing team in the Game page.
+- [#160](https://github.com/sopra-fs23-group-05/Server/issues/160) Make sure that joining a team is only possible if the teams do not become unfair.
+- [#199](https://github.com/sopra-fs23-group-05/Server/issues/199) Implement the functionality, that a player can switch between the two teams in the lobby if he wants to.
