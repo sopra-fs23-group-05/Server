@@ -99,6 +99,6 @@ Before each meeting, each team member is required to manually append the two dev
 - [#143](https://github.com/sopra-fs23-group-05/Client/issues/143) Adjust the message type dynamically between clue-giver and guesser.
 
 ## Tom
--[#185](https://github.com/sopra-fs23-group-05/Server/issues/185) Write a request to delete the game,lobby, players and teams(end of game).
--[#195](https://github.com/sopra-fs23-group-05/Server/issues/195) Write a request to delete the lobby and the users (lobby leader quitting the lobby).
--[#129](https://github.com/sopra-fs23-group-05/Client/issues/129) Write Guards for the different pages that unautorized User can't access them. (not commited to the main branch, because it's easier to test the client without).
+- [#185](https://github.com/sopra-fs23-group-05/Server/issues/185) Write a request to delete the game,lobby, players and teams(end of game).
+- [#195](https://github.com/sopra-fs23-group-05/Server/issues/195) Write a request to delete the lobby and the users (lobby leader quitting the lobby).
+- [#129](https://github.com/sopra-fs23-group-05/Client/issues/129) Write Guards for the different pages that unautorized User can't access them. (not commited to the main branch, because it's easier to test the client without).
