@@ -21,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,6 +127,29 @@ public class GameService {
             return PlayerRole.GUESSER;
         }
     }
+
+    public Player getMPVPlayer(int accessCode) {
+        int maxScore=0;
+        Player MVPPlayer=null;
+        Game gameByAccessCode = gameRepository.findByAccessCode(accessCode);
+        List<Player> playersTeam1 = gameByAccessCode.getTeam1().getPlayers();
+        for(Player player : playersTeam1){
+            if(player.getPersonalScore()>maxScore){
+                maxScore=player.getPersonalScore();
+                MVPPlayer=player;
+            }
+        }
+
+        List<Player> playersTeam2 = gameByAccessCode.getTeam2().getPlayers();
+        for(Player player : playersTeam2){
+            if(player.getPersonalScore()>maxScore){
+                maxScore=player.getPersonalScore();
+                MVPPlayer=player;
+            }
+        }
+        return MVPPlayer;
+    }
+
 
     public void guessWord(Message guess) {
         Game existingGame = gameRepository.findByAccessCode(guess.getAccessCode());
