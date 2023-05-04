@@ -81,6 +81,7 @@ public class GameService {
         int scoredPoints = existingGame.getTurn().getTurnPoints();
         existingGame.incrementRoundsPlayed();
         teamService.changeTurn(existingGame.getTeam1().getTeamId(), existingGame.getTeam2().getTeamId(), scoredPoints);
+        existingGame.getTurn().setTurnPoints(0);
         gameRepository.save(existingGame);
         gameRepository.flush();
     }
@@ -182,12 +183,21 @@ public class GameService {
         existingGame.getTurn().addCard(card);
         gameRepository.flush();
     }
-    public void deleteGameTeamsUsersAndLobby(int accessCode) {
+
+    public Integer getTurnPoints(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
-
+        return existingGame.getTurn().getTurnPoints();
+   }
+        
+     
+public void deleteGameTeamsUsersAndLobby(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
         lobbyRepository.delete(lobbyRepository.findByAccessCode(accessCode));
         teamRepository.delete(existingGame.getTeam1());
         teamRepository.delete(existingGame.getTeam2());
