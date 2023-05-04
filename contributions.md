@@ -107,3 +107,10 @@ Before each meeting, each team member is required to manually append the two dev
 - [#188](https://github.com/sopra-fs23-group-05/Server/issues/188) Display the correct Score of the guessing team in the Game page.
 - [#160](https://github.com/sopra-fs23-group-05/Server/issues/160) Make sure that joining a team is only possible if the teams do not become unfair.
 - [#199](https://github.com/sopra-fs23-group-05/Server/issues/199) Implement the functionality, that a player can switch between the two teams in the lobby if he wants to.
+
+## Daniel
+- [#174](https://github.com/sopra-fs23-group-05/Server/issues/174) Create a function to determine the MVP player of the game.
+- [#118](https://github.com/sopra-fs23-group-05/Client/issues/118) Implement a leave button for the players.
+- [#130](https://github.com/sopra-fs23-group-05/Client/issues/130) Change the topic buttons on the Settings page according to the Taboo Data.
+- [#135](https://github.com/sopra-fs23-group-05/Client/issues/135) Create a component to display the MVP player and the number of rounds played.
+
