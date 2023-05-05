@@ -170,7 +170,7 @@ public class GameService {
             }
 
             // Call the card websocket, so it sends a new card to the clients.
-            cardWebSocketHandler.callBack(existingGame.getTurn().drawCard());
+            cardWebSocketHandler.callBack(existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
         }
         gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
     }

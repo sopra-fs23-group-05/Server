@@ -65,7 +65,7 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
 
         // Convert it to a TextMessage object
         // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null", "turnPoints":"0"
-        TextMessage outMessage = new TextMessage(outCardStringWithTurnPoints.toString());
+        TextMessage outMessage = new TextMessage(outCardStringWithTurnPoints);
 
         for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(outMessage);
@@ -77,11 +77,14 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
      * I would inject this CardWebSocketHandler into the gameService and call this method from there. */
 
     /* Make a method that observes the Turn and realizes, when a new card is drawn. */
-    public void callBack(Card outCard) {
+    public void callBack(Card outCard, int turnPoints) {
         // Convert the card to a TextMessage object
-        // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null"}
-        TextMessage outMessage = new TextMessage(outCard.toString());
-        try {
+        // I expect the outMessage to look like this: {"word":"Bic Mac", "taboo1":"McDonalds", "taboo2":"hamburger", "taboo3":"pattie", "taboo4":"salad", "taboo5":"null", "turnPoints":"0"}
+        String outCardString = outCard.toString();
+        String outCardStringWithTurnPoints = outCardString.substring(0, outCardString.length() - 1) + ", \"turnPoints\":\"" + turnPoints + '\"' + "}";
+        TextMessage outMessage = new TextMessage(outCardStringWithTurnPoints);
+
+        try {   // Send the message to all clients
             for (WebSocketSession webSocketSession : webSocketSessions) {
                 webSocketSession.sendMessage(outMessage);
             }
