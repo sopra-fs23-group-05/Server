@@ -8,7 +8,7 @@ public class Player {
     private int personalScore;
     private boolean leader;
 
-    public Player(String username, boolean isLeader){
+    public Player(String username, boolean isLeader) {
         this.name = username;
         this.leader = isLeader;
         this.personalScore = 0;

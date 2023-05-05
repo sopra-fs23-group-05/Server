@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 
@@ -128,22 +129,22 @@ public class GameService {
     }
 
     public Player getMPVPlayer(int accessCode) {
-        int maxScore=0;
-        Player MVPPlayer=null;
+        int maxScore = 0;
+        Player MVPPlayer = null;
         Game gameByAccessCode = gameRepository.findByAccessCode(accessCode);
         List<Player> playersTeam1 = gameByAccessCode.getTeam1().getPlayers();
-        for(Player player : playersTeam1){
-            if(player.getPersonalScore()>maxScore){
-                maxScore=player.getPersonalScore();
-                MVPPlayer=player;
+        for (Player player : playersTeam1) {
+            if (player.getPersonalScore() > maxScore) {
+                maxScore = player.getPersonalScore();
+                MVPPlayer = player;
             }
         }
 
         List<Player> playersTeam2 = gameByAccessCode.getTeam2().getPlayers();
-        for(Player player : playersTeam2){
-            if(player.getPersonalScore()>maxScore){
-                maxScore=player.getPersonalScore();
-                MVPPlayer=player;
+        for (Player player : playersTeam2) {
+            if (player.getPersonalScore() > maxScore) {
+                maxScore = player.getPersonalScore();
+                MVPPlayer = player;
             }
         }
         return MVPPlayer;
@@ -157,15 +158,16 @@ public class GameService {
         }
 
         /* Send a new card to the front end and increase the guessers personal score
-        * in case the guess is correct */
+         * in case the guess is correct */
         if (existingGame.getTurn().guess(guess.getContent())) {
             String guessingUser = userService.getUser(guess.getSenderId()).getUsername();   // guessers username
             // teamId of the players team
             int teamId = (teamService.isInTeam(existingGame.getTeam1().getTeamId(), guessingUser)) ? existingGame.getTeam1().getTeamId() : existingGame.getTeam2().getTeamId();
             // Check if the guesser is in the guessing team and not the clue giver
-            if(teamService.getTeamRole(teamId)== Role.GUESSINGTEAM && !teamService.isClueGiver(teamId, guessingUser)){
+            if (teamService.getTeamRole(teamId) == Role.GUESSINGTEAM && !teamService.isClueGiver(teamId, guessingUser)) {
                 teamService.increasePlayerScore(teamId, guessingUser);
-            }else{
+            }
+            else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player is not in the guessing team or is the clue giver");
             }
 
@@ -200,10 +202,10 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
         return existingGame.getTurn().getTurnPoints();
-   }
-        
-     
-public void deleteGameTeamsUsersAndLobby(int accessCode) {
+    }
+
+
+    public void deleteGameTeamsUsersAndLobby(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
