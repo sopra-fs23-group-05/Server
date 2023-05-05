@@ -159,6 +159,7 @@ public class GameService {
         // Send a new card to the front end in case the guess is correct
         if (existingGame.getTurn().guess(guess.getContent())) {
             // Increase the players individual score
+            // TODO: Ensure the player is in the guessing team and not the clue giver
             String guessingUser = userService.getUser(guess.getSenderId()).getUsername();
             if(teamService.isInTeam(existingGame.getTeam1().getTeamId(), guessingUser)){
                 teamService.increasePlayerScore(existingGame.getTeam1().getTeamId(), guessingUser);
