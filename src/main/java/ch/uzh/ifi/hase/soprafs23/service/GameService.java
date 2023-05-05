@@ -6,7 +6,6 @@ import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -160,9 +158,18 @@ public class GameService {
 
         // Send a new card to the front end in case the guess is correct
         if (existingGame.getTurn().guess(guess.getContent())) {
+            // Increase the players individual score
+            String guessingUser = userService.getUser(guess.getSenderId()).getUsername();
+            if(teamService.isInTeam(existingGame.getTeam1().getTeamId(), guessingUser)){
+                teamService.increasePlayerScore(existingGame.getTeam1().getTeamId(), guessingUser);
+            }else{
+                teamService.increasePlayerScore(existingGame.getTeam2().getTeamId(), guessingUser);
+            }
+
+            // Call the card websocket, so it sends a new card to the clients.
             cardWebSocketHandler.callBack(existingGame.getTurn().drawCard());
         }
-        gameRepository.flush(); // I might have changed the turn points and drawn a new card, so I need to flush.
+        gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
     }
 
     public Card skip(int accessCode) {
