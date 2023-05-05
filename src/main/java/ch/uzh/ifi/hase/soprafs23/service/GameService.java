@@ -156,15 +156,15 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + guess.getAccessCode() + " does not exist");
         }
 
-        // Send a new card to the front end in case the guess is correct
+        /* Send a new card to the front end and increase the guessers personal score
+        * in case the guess is correct */
         if (existingGame.getTurn().guess(guess.getContent())) {
-            // Increase the players individual score
-            String guessingUser = userService.getUser(guess.getSenderId()).getUsername();
+            String guessingUser = userService.getUser(guess.getSenderId()).getUsername();   // guessers username
             // teamId of the players team
             int teamId = (teamService.isInTeam(existingGame.getTeam1().getTeamId(), guessingUser)) ? existingGame.getTeam1().getTeamId() : existingGame.getTeam2().getTeamId();
-            // Give the player points if he is in the guessing team and not the clue giver
+            // Check if the guesser is in the guessing team and not the clue giver
             if(teamService.getTeamRole(teamId)== Role.GUESSINGTEAM && !teamService.isClueGiver(teamId, guessingUser)){
-                teamService.increasePlayerScore(existingGame.getTeam1().getTeamId(), guessingUser);
+                teamService.increasePlayerScore(teamId, guessingUser);
             }else{
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player is not in the guessing team or is the clue giver");
             }
