@@ -159,12 +159,14 @@ public class GameService {
         // Send a new card to the front end in case the guess is correct
         if (existingGame.getTurn().guess(guess.getContent())) {
             // Increase the players individual score
-            // TODO: Ensure the player is in the guessing team and not the clue giver
             String guessingUser = userService.getUser(guess.getSenderId()).getUsername();
-            if(teamService.isInTeam(existingGame.getTeam1().getTeamId(), guessingUser)){
+            // teamId of the players team
+            int teamId = (teamService.isInTeam(existingGame.getTeam1().getTeamId(), guessingUser)) ? existingGame.getTeam1().getTeamId() : existingGame.getTeam2().getTeamId();
+            // Give the player points if he is in the guessing team and not the clue giver
+            if(teamService.getTeamRole(teamId)== Role.GUESSINGTEAM && !teamService.isClueGiver(teamId, guessingUser)){
                 teamService.increasePlayerScore(existingGame.getTeam1().getTeamId(), guessingUser);
             }else{
-                teamService.increasePlayerScore(existingGame.getTeam2().getTeamId(), guessingUser);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player is not in the guessing team or is the clue giver");
             }
 
             // Call the card websocket, so it sends a new card to the clients.

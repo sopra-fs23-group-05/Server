@@ -116,4 +116,12 @@ public class TeamService {
         }
         existingTeam.increasePlayerScore(userName);
     }
+
+    public Role getTeamRole(int teamId){
+        Team existingTeam = teamRepository.findById(teamId);
+        if(existingTeam == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found");
+        }
+        return existingTeam.getaRole();
+    }
 }
