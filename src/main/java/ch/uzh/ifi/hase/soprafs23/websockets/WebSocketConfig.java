@@ -16,8 +16,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     private final static String CHAT_ENDPOINT = "/chat";
     private final static String CARD_ENDPOINT = "/cards";
-
     private final static String TEAM_ENDPOINT = "/teams";
+    private final static String PAGE_ENDPOINT = "/pages";
 
     private final GameService gameService;
 
@@ -39,6 +39,12 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("*");
         webSocketHandlerRegistry.addHandler(getTeamWebSocketHandler(), TEAM_ENDPOINT)
                 .setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getPageWebSocketHandler(), PAGE_ENDPOINT)
+                .setAllowedOrigins("*");
+    }
+
+    private WebSocketHandler getPageWebSocketHandler() {
+        return new PageWebSocketHandler();
     }
 
     private WebSocketHandler getCardWebSocketHandler() {
