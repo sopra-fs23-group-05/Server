@@ -8,6 +8,14 @@ public class Player {
     private int personalScore;
     private boolean leader;
 
+    public Player(String username, boolean isLeader) {
+        this.name = username;
+        this.leader = isLeader;
+        this.personalScore = 0;
+    }
+
+    public Player() {
+    }
 
     public int getPersonalScore() {
         return personalScore;
@@ -33,7 +41,7 @@ public class Player {
         this.name = name;
     }
 
-    public void increaseScoreBy(int points) {
-        this.personalScore += points;
+    public void increaseScore() {
+        this.personalScore++;
     }
 }

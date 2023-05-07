@@ -63,11 +63,7 @@ public class TeamService {
 
     public Player convertUserToPlayer(long userId) {
         User user = userRepository.findById(userId);
-        Player player = new Player();
-        player.setName(user.getUsername());
-        player.setLeader(user.isLeader());
-        player.setPersonalScore(0);
-        return player;
+        return new Player(user.getUsername(), user.isLeader());
     }
 
     public void changeTurn(int teamId1, int teamId2, int scoredPoints) {
@@ -111,5 +107,21 @@ public class TeamService {
         }
         return false;
 
+    }
+
+    public void increasePlayerScore(int teamId, String userName) {
+        Team existingTeam = teamRepository.findById(teamId);
+        if (existingTeam == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found");
+        }
+        existingTeam.increasePlayerScore(userName);
+    }
+
+    public Role getTeamRole(int teamId) {
+        Team existingTeam = teamRepository.findById(teamId);
+        if (existingTeam == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found");
+        }
+        return existingTeam.getaRole();
     }
 }
