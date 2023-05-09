@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
+import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -174,6 +175,16 @@ public class GameService {
         teamRepository.flush();
         userRepository.flush();
         lobbyRepository.flush();
+    }
+    public void finishGame(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Settings settings = existingGame.getSettings();
+        settings.setRounds(existingGame.getRoundsPlayed());
+        existingGame.setSettings(settings);
+        gameRepository.flush();
     }
 
 }

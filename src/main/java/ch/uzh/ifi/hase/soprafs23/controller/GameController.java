@@ -53,6 +53,13 @@ public class GameController {
         gameService.nextTurn(accessCode);
     }
 
+    @PutMapping("/games/{accessCode}/finish")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void finishGame(@PathVariable int accessCode) {
+        gameService.finishGame(accessCode);
+    }
+
     @GetMapping("/games/{accessCode}/users/{playerName}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -62,6 +69,7 @@ public class GameController {
         return gameService.getPlayerRole(accessCode, playerName);
     }
 
+
     @PostMapping("/games/{accessCode}/cards")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -69,6 +77,9 @@ public class GameController {
         Card inputCard = DTOMapper.INSTANCE.convertCardDTOtoEntity(cardDTO);
         gameService.createCard(accessCode, inputCard);
     }
+
+
+
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
