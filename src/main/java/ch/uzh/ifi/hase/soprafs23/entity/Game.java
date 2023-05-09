@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.custom.Turn;
 
@@ -24,18 +25,21 @@ public class Game {
 
     @OneToOne
     private Team team2;
+    @Embedded
+    private Player leader;
 
     public Game() {
         this.roundsPlayed = 1;
     }
 
-    public Game(int accessCode, Settings settings, Team team1, Team team2) {
+    public Game(int accessCode, Settings settings, Team team1, Team team2,Player lobbyLeader){
         this.accessCode = accessCode;
         this.settings = settings;
         this.team1 = team1;
         this.team2 = team2;
         turn = new Turn();
         this.roundsPlayed = 1;
+        this.leader = lobbyLeader;
     }
 
     public int getAccessCode() {
@@ -84,6 +88,12 @@ public class Game {
 
     public void setTurn(Turn turn) {
         this.turn = turn;
+    }
+    public Player getLeader() {
+        return leader;
+    }
+    public void setLeader(Player leader) {
+        this.leader = leader;
     }
 
 
