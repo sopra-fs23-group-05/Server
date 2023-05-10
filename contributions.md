@@ -114,3 +114,9 @@ Before each meeting, each team member is required to manually append the two dev
 - [#130](https://github.com/sopra-fs23-group-05/Client/issues/130) Change the topic buttons on the Settings page according to the Taboo Data.
 - [#135](https://github.com/sopra-fs23-group-05/Client/issues/135) Create a component to display the MVP player and the number of rounds played.
 
+# Meeting 11.05.2023 - Week 11
+## Daniel
+- [#127](https://github.com/sopra-fs23-group-05/Client/issues/127) Implement a confirmation window when a non-leading player wants to leave the game.
+- [#128](https://github.com/sopra-fs23-group-05/Client/issues/128) Adjust the size of the "word button" on the game page to the length of the card word.
+- [#155](https://github.com/sopra-fs23-group-05/Client/issues/155) Create a component to display the points of each player at the end of the game.
+- [#156](https://github.com/sopra-fs23-group-05/Client/issues/156) Change the link in the tweet to the link of the homepage.
