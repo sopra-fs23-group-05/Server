@@ -69,6 +69,7 @@ public class GameController {
         Card inputCard = DTOMapper.INSTANCE.convertCardDTOtoEntity(cardDTO);
         gameService.createCard(accessCode, inputCard);
     }
+
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
