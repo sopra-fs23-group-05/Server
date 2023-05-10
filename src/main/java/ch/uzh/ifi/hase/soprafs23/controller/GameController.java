@@ -79,7 +79,6 @@ public class GameController {
     }
 
 
-
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
