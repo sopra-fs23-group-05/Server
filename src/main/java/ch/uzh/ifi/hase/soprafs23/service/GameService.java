@@ -196,7 +196,7 @@ public class GameService {
         gameRepository.flush();
     }
 
-    public void deleteGameTeamsUsersAndLobby(int accessCode) {
+    public Integer getTurnPoints(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
