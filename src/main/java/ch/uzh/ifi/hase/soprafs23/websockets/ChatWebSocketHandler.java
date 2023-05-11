@@ -15,6 +15,8 @@ import java.util.List;
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
+
+    /** HashMap that stores a list of sessions for each access code. */
     private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions2 = new HashMap<>();
 
     // Inject dependency to GameService here
@@ -28,25 +30,32 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) {
         webSocketSessions.add(session);
         // We need to extract the access code from the session
-        int accessCode = Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
-        webSocketSessions2.put(accessCode, new ArrayList<>());
+        int accessCode = getAccessCode(session);
+        // If the access code is not in the HashMap, add it
+        if (!webSocketSessions2.containsKey(accessCode)) {
+            webSocketSessions2.put(accessCode, new ArrayList<>());
+        }
+        webSocketSessions2.get(accessCode).add(session);
+        System.out.println(webSocketSessions2);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        int accessCode = getAccessCode(session);
         System.out.println("Sending message: " + message.getPayload());
         Message msg = convertTextMessageToMessage(message);
         // Call game service to guess the word
         if (msg.getType() == MessageType.GUESS) {
             gameService.guessWord(msg);
         }
-        for (WebSocketSession webSocketSession : webSocketSessions) {
+        for (WebSocketSession webSocketSession : webSocketSessions2.get(accessCode)) {
             webSocketSession.sendMessage(message);
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+        // TODO remove session from list
         webSocketSessions.remove(session);
     }
 
@@ -72,5 +81,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         // Create new Message object
         return new Message(accessCode, userId, content, msgType);
+    }
+
+    private static int getAccessCode(WebSocketSession session) {
+        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 }
