@@ -63,7 +63,7 @@ class GameServiceTest {
         testTeam.setTeamId(1);
 
 
-        testGame = new Game(123456, new Settings(), testTeam, testTeam2);
+        testGame = new Game(123456, new Settings(), testTeam, testTeam2,new Player());
 
         testLobby = new Lobby();
         testLobby.setAccessCode(123456);

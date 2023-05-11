@@ -60,6 +60,7 @@ public interface DTOMapper {
     @Mapping(source = "turn", target = "turn")
     @Mapping(source = "team1", target = "team1")
     @Mapping(source = "team2", target = "team2")
+    @Mapping(source = "leader", target = "leader")
     GameGetDTO convertEntityToGameGetDTO(Game game);
 
     @Mapping(source = "word", target = "word")
