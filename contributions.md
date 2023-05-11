@@ -130,6 +130,9 @@
 ## Tom
 - [#131](https://github.com/sopra-fs23-group-05/Client/issues/131) Leader closes Endscreen delete Game and Players.
 - [#153](https://github.com/sopra-fs23-group-05/Client/issues/153) Leader closes Lobby delete Users and Lobby.
--
 
+## Melea
+- [#188](https://github.com/sopra-fs23-group-05/Server/issues/188) Display the correct Score of the guessing team in the Game page.
+- [#160](https://github.com/sopra-fs23-group-05/Server/issues/160) Make sure that joining a team is only possible if the teams do not become unfair.
+- [#199](https://github.com/sopra-fs23-group-05/Server/issues/199) Implement the functionality, that a player can switch between the two teams in the lobby if he wants to.
 
