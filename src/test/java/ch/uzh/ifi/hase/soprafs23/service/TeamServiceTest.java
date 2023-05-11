@@ -12,12 +12,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TeamServiceTest {
 
@@ -39,12 +39,9 @@ class TeamServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        testTeam = new Team();
         List<Player> players = new ArrayList<>();
-        testTeam.setPlayers(players);
-        testTeam.setaRole(Role.GUESSINGTEAM);
+        testTeam = new Team(players, Role.GUESSINGTEAM);
         testTeam.setTeamId(1);
-
 
         testUser = new User();
         testUser.setId(1L);
@@ -55,7 +52,6 @@ class TeamServiceTest {
         // testUser
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(testTeam);
-
     }
 
     @Test
@@ -155,4 +151,36 @@ class TeamServiceTest {
     }
 
 
+    @Test
+    void increasePlayerScore_validInput() {
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("Felix", true));
+        players.add(new Player("Tom", false));
+
+        testTeam.setPlayers(players);   // Overwrite the test team with my own team
+        Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(testTeam);
+
+        teamService.increasePlayerScore(testTeam.getTeamId(), "Tom"); // Call UUT
+        assertEquals(1, testTeam.getPlayers().get(1).getPersonalScore());
+    }
+
+    @Test
+    void increasePlayerScore_invalidInput() {
+        Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(null);
+        // Call UUT and make assertion
+        assertThrows(ResponseStatusException.class, () -> teamService.increasePlayerScore(testTeam.getTeamId(), "Tom"));
+    }
+
+    @Test
+    void getTeamRole_validInput() {
+        Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(testTeam);
+        assertEquals(testTeam.getaRole(), teamService.getTeamRole(testTeam.getTeamId()));
+    }
+
+    @Test
+    void getTeamRole_invalidInput() {
+        Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(null);
+        // Call UUT and make assertion
+        assertThrows(ResponseStatusException.class, () -> teamService.getTeamRole(testTeam.getTeamId()));
+    }
 }

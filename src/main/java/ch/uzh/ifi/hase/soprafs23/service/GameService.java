@@ -6,7 +6,6 @@ import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -82,6 +80,7 @@ public class GameService {
         int scoredPoints = existingGame.getTurn().getTurnPoints();
         existingGame.incrementRoundsPlayed();
         teamService.changeTurn(existingGame.getTeam1().getTeamId(), existingGame.getTeam2().getTeamId(), scoredPoints);
+        existingGame.getTurn().setTurnPoints(0);
         gameRepository.save(existingGame);
         gameRepository.flush();
     }
@@ -129,17 +128,53 @@ public class GameService {
         }
     }
 
+    public Player getMPVPlayer(int accessCode) {
+        int maxScore = 0;
+        Player MVPPlayer = null;
+        Game gameByAccessCode = gameRepository.findByAccessCode(accessCode);
+        List<Player> playersTeam1 = gameByAccessCode.getTeam1().getPlayers();
+        for (Player player : playersTeam1) {
+            if (player.getPersonalScore() > maxScore) {
+                maxScore = player.getPersonalScore();
+                MVPPlayer = player;
+            }
+        }
+
+        List<Player> playersTeam2 = gameByAccessCode.getTeam2().getPlayers();
+        for (Player player : playersTeam2) {
+            if (player.getPersonalScore() > maxScore) {
+                maxScore = player.getPersonalScore();
+                MVPPlayer = player;
+            }
+        }
+        return MVPPlayer;
+    }
+
+
     public void guessWord(Message guess) {
         Game existingGame = gameRepository.findByAccessCode(guess.getAccessCode());
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + guess.getAccessCode() + " does not exist");
         }
 
-        // Send a new card to the front end in case the guess is correct
+        /* Send a new card to the front end and increase the guessers personal score
+         * in case the guess is correct */
         if (existingGame.getTurn().guess(guess.getContent())) {
-            cardWebSocketHandler.callBack(existingGame.getTurn().drawCard());
+            String guessingUser = userService.getUser(guess.getSenderId()).getUsername();   // guessers username
+            // teamId of the players team
+            int teamId = (teamService.isInTeam(existingGame.getTeam1().getTeamId(), guessingUser)) ? existingGame.getTeam1().getTeamId() : existingGame.getTeam2().getTeamId();
+            // Check if the guesser is in the guessing team and not the clue giver
+            if (teamService.getTeamRole(teamId) == Role.GUESSINGTEAM && !teamService.isClueGiver(teamId, guessingUser)) {
+                teamService.increasePlayerScore(teamId, guessingUser);
+            }
+            else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player is not in the guessing team or is the clue giver");
+            }
+
+            // Call the card websocket, so it sends a new card to the clients.
+            cardWebSocketHandler.callBack(existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
         }
-        gameRepository.flush(); // I might have changed the turn points and drawn a new card, so I need to flush.
+        gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
     }
 
     public Card skip(int accessCode) {
@@ -161,12 +196,20 @@ public class GameService {
         gameRepository.flush();
     }
 
+    public Integer getTurnPoints(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        return existingGame.getTurn().getTurnPoints();
+    }
+
+
     public void deleteGameTeamsUsersAndLobby(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
-
         lobbyRepository.delete(lobbyRepository.findByAccessCode(accessCode));
         teamRepository.delete(existingGame.getTeam1());
         teamRepository.delete(existingGame.getTeam2());
