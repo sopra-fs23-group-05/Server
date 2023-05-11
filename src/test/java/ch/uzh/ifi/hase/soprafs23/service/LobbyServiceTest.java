@@ -209,5 +209,31 @@ class LobbyServiceTest {
         assertEquals(lobby, testLobby);
     }
 
+    @Test
+    void joinTeam_invalidJoin() {
+        //Create Lobby
+        Lobby lobby = new Lobby();
+        lobby.setAccessCode(123456);
+
+        //Create Users
+        User user1 = new User(); user1.setId(1L);
+        User user2 = new User(); user2.setId(2L);
+        User user3 = new User(); user3.setId(3L);
+        User user4 = new User(); user4.setId(4L);
+
+        //Add Users to Lobby
+        lobby.addUserToLobby(user1);
+        lobby.addUserToLobby(user2);
+        lobby.addUserToLobby(user3);
+        lobby.addUserToLobby(user4);
+
+        //Join Teams
+        lobby.addUserToTeam1(user1);
+        lobby.addUserToTeam1(user2);
+        lobby.addUserToTeam2(user3);
+
+        // adding a 3rd user to team 1 should throw an exception
+        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(lobby.getAccessCode(), 1, Math.toIntExact(user4.getId())));
+    }
 
 }

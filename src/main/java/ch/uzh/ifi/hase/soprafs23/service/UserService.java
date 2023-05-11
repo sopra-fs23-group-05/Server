@@ -55,7 +55,6 @@ public class UserService {
         return newUser;
     }
 
-
     private void validateUsername(User userToBeCreated) {
         User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
 
@@ -66,6 +65,5 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is empty. Therefore, the user could not be created!");
         }
     }
-
 
 }

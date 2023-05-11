@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.CardDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.GameGetDTO;
@@ -70,6 +71,16 @@ public class GameController {
     }
 
 
+    @GetMapping("/games/{accessCode}/players/MVP")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Player getMVPPlayer(@PathVariable int accessCode) {
+        // create lobby
+        // convert internal representation of user back to API
+        return gameService.getMPVPlayer(accessCode);
+    }
+
+
     @PostMapping("/games/{accessCode}/cards")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -78,7 +89,7 @@ public class GameController {
         gameService.createCard(accessCode, inputCard);
     }
 
-
+  
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

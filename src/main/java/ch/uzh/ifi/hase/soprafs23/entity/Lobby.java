@@ -110,4 +110,13 @@ public class Lobby {
         return team2;
     }
 
+    //returns true if the difference in the number of users in each team is less than or equal to 1
+    public boolean isFairJoin(int teamNr) {
+        if (teamNr == 1) {
+            return team1.size() - team2.size() <= 1;
+        } else {
+            return team2.size() - team1.size() <= 1;
+        }
+    }
+
 }
