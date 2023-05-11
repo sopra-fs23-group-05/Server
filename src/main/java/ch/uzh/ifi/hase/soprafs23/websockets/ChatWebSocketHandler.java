@@ -2,12 +2,12 @@ package ch.uzh.ifi.hase.soprafs23.websockets;
 
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +53,16 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        // TODO remove session from list
+        int accessCode = getAccessCode(session);
+        webSocketSessions2.get(accessCode).remove(session);
+
+        // If the game was deleted, delete the mapping.
+        try{
+            gameService.getGame(accessCode);
+        }catch (ResponseStatusException e){
+            webSocketSessions2.remove(accessCode);
+        }
+
         webSocketSessions.remove(session);
     }
 

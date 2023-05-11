@@ -55,8 +55,12 @@ public class GameService {
         this.cardWebSocketHandler = cardWebSocketHandler;
     }
 
-    public Game getGame(int accessCode) {
-        return this.gameRepository.findByAccessCode(accessCode);
+    public Game getGame(int accessCode){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        return existingGame;
     }
     //updates the team at the end of a round with the points they made and switches the roles
 
