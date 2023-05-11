@@ -53,7 +53,7 @@ public class GameController {
         gameService.nextTurn(accessCode);
     }
 
-    @PutMapping("/games/{accessCode}/finish")
+    @PutMapping("/games/{accessCode}/finishes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void finishGame(@PathVariable int accessCode) {
