@@ -134,7 +134,10 @@
 - [#167](https://github.com/sopra-fs23-group-05/Server/issues/167) Endpoint and method to finish the game.
 
 ## Melea
-- [#188](https://github.com/sopra-fs23-group-05/Server/issues/188) Display the correct Score of the guessing team in the Game page.
-- [#160](https://github.com/sopra-fs23-group-05/Server/issues/160) Make sure that joining a team is only possible if the teams do not become unfair.
-- [#199](https://github.com/sopra-fs23-group-05/Server/issues/199) Implement the functionality, that a player can switch between the two teams in the lobby if he wants to.
+-[#122](https://github.com/sopra-fs23-group-05/Client/issues/122) Disable the "Start Game" button on the lobby page if the teams do not contain at least 2 players
+-[#159](https://github.com/sopra-fs23-group-05/Client/issues/159) Use drop-down menus instead of TextFields for changing the settings
+-[#117](https://github.com/sopra-fs23-group-05/Client/issues/117) Show a message that a new card is drawn -> does not work yet 
+
+
+
 
