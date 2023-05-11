@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.CardDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.GameGetDTO;
@@ -67,6 +68,16 @@ public class GameController {
         // create lobby
         // convert internal representation of user back to API
         return gameService.getPlayerRole(accessCode, playerName);
+    }
+
+
+    @GetMapping("/games/{accessCode}/players/MVP")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Player getMVPPlayer(@PathVariable int accessCode) {
+        // create lobby
+        // convert internal representation of user back to API
+        return gameService.getMPVPlayer(accessCode);
     }
 
 

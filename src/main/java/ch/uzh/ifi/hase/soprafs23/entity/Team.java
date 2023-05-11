@@ -104,4 +104,12 @@ public class Team {
     public void addPoints(int scoredPoints) {
         points += scoredPoints;
     }
+
+    public void increasePlayerScore(String username) {
+        for (Player player : players) {
+            if (player.getName().equals(username)) {
+                player.increaseScore();
+            }
+        }
+    }
 }
