@@ -131,6 +131,7 @@
 ## Tom
 - [#131](https://github.com/sopra-fs23-group-05/Client/issues/131) Leader closes Endscreen delete Game and Players.
 - [#153](https://github.com/sopra-fs23-group-05/Client/issues/153) Leader closes Lobby delete Users and Lobby.
+- [#167](https://github.com/sopra-fs23-group-05/Server/issues/167) Endpoint and method to finish the game.
 
 ## Melea
 - [#188](https://github.com/sopra-fs23-group-05/Server/issues/188) Display the correct Score of the guessing team in the Game page.
