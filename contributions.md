@@ -2,24 +2,24 @@ Before each meeting, each team member is required to manually append the two dev
 
 # Meeting 06.04.2023 - Week 07
 ## Daniel
-- [#34] (https://github.com/sopra-fs23-group-05/Client/issues/34): Create homepage for users.
-- [#35] (https://github.com/sopra-fs23-group-05/Client/issues/35): Create rules page for users.
-- [#36] (https://github.com/sopra-fs23-group-05/Client/issues/36): Add rules to rules page.
+- [#34](https://github.com/sopra-fs23-group-05/Client/issues/34) Create homepage for users.
+- [#35](https://github.com/sopra-fs23-group-05/Client/issues/35) Create rules page for users.
+- [#36](https://github.com/sopra-fs23-group-05/Client/issues/36) Add rules to rules page.
 
 ## Melea
-- [#38] (https://github.com/sopra-fs23-group-05/Client/issues/38): Create login page for lobby leaders.
-- [#44] (https://github.com/sopra-fs23-group-05/Client/issues/44): Create login page for users.
-- [#40] (https://github.com/sopra-fs23-group-05/Client/issues/40): Create lobby page with required fields (place for team members, buttons).
-- [#41| (https://github.com/sopra-fs23-group-05/Client/issues/41): Implement functionality, that buttons "start game" & "settings" are only visible for the lobby leader
-- [#85] (https://github.com/sopra-fs23-group-05/Server/issues/85): added necessary field isLeader to User in client; felix edited user entity in server (issue 85).
+- [#38](https://github.com/sopra-fs23-group-05/Client/issues/38) Create login page for lobby leaders.
+- [#44](https://github.com/sopra-fs23-group-05/Client/issues/44) Create login page for users.
+- [#40](https://github.com/sopra-fs23-group-05/Client/issues/40) Create lobby page with required fields (place for team members, buttons).
+- [#41|(https://github.com/sopra-fs23-group-05/Client/issues/41) Implement functionality, that buttons "start game" & "settings" are only visible for the lobby leader
+- [#85](https://github.com/sopra-fs23-group-05/Server/issues/85) added necessary field isLeader to User in client; felix edited user entity in server (issue 85).
 ## Felix
-- [#97](https://github.com/sopra-fs23-group-05/Server/issues/97): Create and store a new lobby in the database. Created classes: Lobby, Settings, Topic, LobbyGetDTO, LobbyRepository. Implemented six new endpoints in UserController.java and according methods in UserService.
-- [#87](https://github.com/sopra-fs23-group-05/Server/issues/87): Store a new user in the database. 12 files changed.
-- [#86](https://github.com/sopra-fs23-group-05/Server/issues/86): Implement code to catch non-unique/non-empty usernames.
+- [#97](https://github.com/sopra-fs23-group-05/Server/issues/97) Create and store a new lobby in the database. Created classes: Lobby, Settings, Topic, LobbyGetDTO, LobbyRepository. Implemented six new endpoints in UserController.java and according methods in UserService.
+- [#87](https://github.com/sopra-fs23-group-05/Server/issues/87) Store a new user in the database. 12 files changed.
+- [#86](https://github.com/sopra-fs23-group-05/Server/issues/86) Implement code to catch non-unique/non-empty usernames.
 
 ## Tom
-- [#75](https://github.com/sopra-fs23-group-05/Server/issues/75): Wrote a get request for Team. Implementet Team entity, a Player class, TeamGetDto, a Role enum and changed all the depending classes.
-- [#76](https://github.com/sopra-fs23-group-05/Server/issues/76): Implemented the put request for a team to update it especially at the end of every round.
+- [#75](https://github.com/sopra-fs23-group-05/Server/issues/75) Wrote a get request for Team. Implementet Team entity, a Player class, TeamGetDto, a Role enum and changed all the depending classes.
+- [#76](https://github.com/sopra-fs23-group-05/Server/issues/76) Implemented the put request for a team to update it especially at the end of every round.
 
 # Meeting 20.04.2023 - Week 08
 ## Daniel
@@ -120,3 +120,12 @@ Before each meeting, each team member is required to manually append the two dev
 - [#128](https://github.com/sopra-fs23-group-05/Client/issues/128) Adjust the size of the "word button" on the game page to the length of the card word.
 - [#155](https://github.com/sopra-fs23-group-05/Client/issues/155) Create a component to display the points of each player at the end of the game.
 - [#156](https://github.com/sopra-fs23-group-05/Client/issues/156) Change the link in the tweet to the link of the homepage.
+
+## Felix
+- [#206](https://github.com/sopra-fs23-group-05/Server/issues/206) Record the collected points of each individual player.
+- [#208](https://github.com/sopra-fs23-group-05/Server/issues/208) WS for turning pages.
+- [#119](https://github.com/sopra-fs23-group-05/Client/issues/119) WS for turning pages - Lobby to PreGame
+- [#121](https://github.com/sopra-fs23-group-05/Client/issues/121) WS for turning pages - PreGame to Game
+- [#123](https://github.com/sopra-fs23-group-05/Client/issues/123) WS for turning pages - Game to PreGame
+- [#125](https://github.com/sopra-fs23-group-05/Client/issues/125) WS for turning pages - Game to EndScreen
+
