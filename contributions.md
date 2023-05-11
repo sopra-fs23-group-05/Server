@@ -127,3 +127,9 @@
 - [#123](https://github.com/sopra-fs23-group-05/Client/issues/123) WS for turning pages - Game to PreGame
 - [#125](https://github.com/sopra-fs23-group-05/Client/issues/125) WS for turning pages - Game to EndScreen
 
+## Tom
+- [#131](https://github.com/sopra-fs23-group-05/Client/issues/131) Leader closes Endscreen delete Game and Players.
+- [#153](https://github.com/sopra-fs23-group-05/Client/issues/153) Leader closes Lobby delete Users and Lobby.
+-
+
+
