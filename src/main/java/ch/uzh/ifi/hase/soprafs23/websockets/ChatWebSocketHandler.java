@@ -29,14 +29,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         webSocketSessions.add(session);
-        // We need to extract the access code from the session
         int accessCode = getAccessCode(session);
         // If the access code is not in the HashMap, add it
         if (!webSocketSessions2.containsKey(accessCode)) {
             webSocketSessions2.put(accessCode, new ArrayList<>());
         }
         webSocketSessions2.get(accessCode).add(session);
-        System.out.println(webSocketSessions2);
     }
 
     @Override
@@ -83,6 +81,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         return new Message(accessCode, userId, content, msgType);
     }
 
+    /** Extracts the access code from a WebSocketSession object. */
     private static int getAccessCode(WebSocketSession session) {
         return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
