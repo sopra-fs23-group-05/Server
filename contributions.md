@@ -114,6 +114,7 @@
 
 # Meeting 11.05.2023 - Week 11
 ## Daniel
+- [#184](https://github.com/sopra-fs23-group-05/Server/issues/184) Adjust the Topic enum according to the topics in the Taboo Data.
 - [#127](https://github.com/sopra-fs23-group-05/Client/issues/127) Implement a confirmation window when a non-leading player wants to leave the game.
 - [#128](https://github.com/sopra-fs23-group-05/Client/issues/128) Adjust the size of the "word button" on the game page to the length of the card word.
 - [#155](https://github.com/sopra-fs23-group-05/Client/issues/155) Create a component to display the points of each player at the end of the game.
