@@ -67,9 +67,11 @@ public class GameGetDTO {
     public Team getTeam1() {
         return team1;
     }
+
     public Player getLeader() {
         return leader;
     }
+
     public void setLeader(Player leader) {
         this.leader = leader;
     }

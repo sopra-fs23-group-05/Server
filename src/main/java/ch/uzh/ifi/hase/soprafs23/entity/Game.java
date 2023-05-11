@@ -32,7 +32,7 @@ public class Game {
         this.roundsPlayed = 1;
     }
 
-    public Game(int accessCode, Settings settings, Team team1, Team team2,Player lobbyLeader){
+    public Game(int accessCode, Settings settings, Team team1, Team team2, Player lobbyLeader) {
         this.accessCode = accessCode;
         this.settings = settings;
         this.team1 = team1;
@@ -89,9 +89,11 @@ public class Game {
     public void setTurn(Turn turn) {
         this.turn = turn;
     }
+
     public Player getLeader() {
         return leader;
     }
+
     public void setLeader(Player leader) {
         this.leader = leader;
     }

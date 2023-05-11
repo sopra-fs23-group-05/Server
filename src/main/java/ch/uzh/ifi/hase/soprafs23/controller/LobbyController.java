@@ -109,6 +109,7 @@ public class LobbyController {
         lobbyService.changeSettings(accessCode, settingsInput);
 
     }
+
     @GetMapping("/lobbies/{accessCode}/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

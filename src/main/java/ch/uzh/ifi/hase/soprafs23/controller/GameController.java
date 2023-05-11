@@ -54,6 +54,13 @@ public class GameController {
         gameService.nextTurn(accessCode);
     }
 
+    @PutMapping("/games/{accessCode}/finishes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void finishGame(@PathVariable int accessCode) {
+        gameService.finishGame(accessCode);
+    }
+
     @GetMapping("/games/{accessCode}/users/{playerName}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -62,6 +69,7 @@ public class GameController {
         // convert internal representation of user back to API
         return gameService.getPlayerRole(accessCode, playerName);
     }
+
 
     @GetMapping("/games/{accessCode}/players/MVP")
     @ResponseStatus(HttpStatus.OK)
@@ -81,6 +89,7 @@ public class GameController {
         gameService.createCard(accessCode, inputCard);
     }
 
+  
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
