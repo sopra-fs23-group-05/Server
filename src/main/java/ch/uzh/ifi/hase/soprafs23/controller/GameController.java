@@ -78,7 +78,7 @@ public class GameController {
         gameService.createCard(accessCode, inputCard);
     }
 
-
+  
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
