@@ -65,4 +65,5 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username provided is empty. Therefore, the user could not be created!");
         }
     }
+
 }

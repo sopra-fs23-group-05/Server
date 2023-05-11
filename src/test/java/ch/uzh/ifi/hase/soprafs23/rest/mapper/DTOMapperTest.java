@@ -104,7 +104,7 @@ public class DTOMapperTest {
 
     @Test
     void testGame_fromGame_toGameGetDTO() {
-        Game game = new Game(123456, new Settings(), new Team(), new Team());
+        Game game = new Game(123456, new Settings(), new Team(), new Team(), new Player());
 
         GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
 

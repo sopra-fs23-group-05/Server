@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.custom.Turn;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
@@ -17,6 +18,7 @@ public class GameGetDTO {
     private Team team1;
 
     private Team team2;
+    private Player leader;
 
     public void setTurn(Turn turn) {
         this.turn = turn;
@@ -64,5 +66,11 @@ public class GameGetDTO {
 
     public Team getTeam1() {
         return team1;
+    }
+    public Player getLeader() {
+        return leader;
+    }
+    public void setLeader(Player leader) {
+        this.leader = leader;
     }
 }

@@ -61,7 +61,7 @@ public class GameService {
 
     public Game createGame(int accessCode) {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
-        Game newGame = new Game(lobby.getAccessCode(), lobby.getSettings(), teamService.createTeam(lobby.getTeam1(), Role.GUESSINGTEAM), teamService.createTeam(lobby.getTeam2(), Role.BUZZINGTEAM));
+        Game newGame = new Game(lobby.getAccessCode(), lobby.getSettings(), teamService.createTeam(lobby.getTeam1(), Role.GUESSINGTEAM), teamService.createTeam(lobby.getTeam2(), Role.BUZZINGTEAM), teamService.convertUserToPlayer(lobby.getLobbyLeader().getId()));
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         newGame = gameRepository.save(newGame);
@@ -196,7 +196,7 @@ public class GameService {
         gameRepository.flush();
     }
 
-    public Integer getTurnPoints(int accessCode) {
+    public void deleteGameTeamsUsersAndLobby(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
@@ -219,4 +219,5 @@ public class GameService {
         userRepository.flush();
         lobbyRepository.flush();
     }
+
 }
