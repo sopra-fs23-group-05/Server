@@ -7,12 +7,15 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
+    private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions2 = new HashMap<>();
 
     // Inject dependency to GameService here
     private final GameService gameService;
@@ -24,6 +27,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         webSocketSessions.add(session);
+        // We need to extract the access code from the session
+        int accessCode = Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
+        webSocketSessions2.put(accessCode, new ArrayList<>());
     }
 
     @Override
