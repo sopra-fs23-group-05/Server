@@ -10,14 +10,12 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
-    private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
     /** HashMap that stores a list of sessions for each access code. */
-    private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions2 = new HashMap<>();
+    private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = new HashMap<>();
 
     // Inject dependency to GameService here
     private final GameService gameService;
@@ -28,13 +26,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        webSocketSessions.add(session);
         int accessCode = getAccessCode(session);
         // If the access code is not in the HashMap, add it
-        if (!webSocketSessions2.containsKey(accessCode)) {
-            webSocketSessions2.put(accessCode, new ArrayList<>());
+        if (!webSocketSessions.containsKey(accessCode)) {
+            webSocketSessions.put(accessCode, new ArrayList<>());
         }
-        webSocketSessions2.get(accessCode).add(session);
+        webSocketSessions.get(accessCode).add(session);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         if (msg.getType() == MessageType.GUESS) {
             gameService.guessWord(msg);
         }
-        for (WebSocketSession webSocketSession : webSocketSessions2.get(accessCode)) {
+        for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
             webSocketSession.sendMessage(message);
         }
     }
@@ -54,16 +51,14 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         int accessCode = getAccessCode(session);
-        webSocketSessions2.get(accessCode).remove(session);
+        webSocketSessions.get(accessCode).remove(session);
 
         // If the game was deleted, delete the mapping.
         try{
             gameService.getGame(accessCode);
         }catch (ResponseStatusException e){
-            webSocketSessions2.remove(accessCode);
+            webSocketSessions.remove(accessCode);
         }
-
-        webSocketSessions.remove(session);
     }
 
     private Message convertTextMessageToMessage(TextMessage message) {
