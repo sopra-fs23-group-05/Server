@@ -43,11 +43,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("*");
     }
 
-    private WebSocketHandler getPageWebSocketHandler() {
+    @Bean
+    public WebSocketHandler getPageWebSocketHandler() {
         return new PageWebSocketHandler(gameService);
     }
 
-    private WebSocketHandler getCardWebSocketHandler() {
+    @Bean
+    public WebSocketHandler getCardWebSocketHandler() {
         return new CardWebSocketHandler(gameService);
     }
 
