@@ -181,7 +181,11 @@ public class LobbyService {
     }
 
     public Lobby getLobby(int accessCode) {
-        return lobbyRepository.findByAccessCode(accessCode);
+        Lobby existingLobby = lobbyRepository.findByAccessCode(accessCode);
+        if (existingLobby == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby with the access code provided does not exist. Therefore, the lobby could not be returned!");
+        }
+        return existingLobby;
     }
 
     public void changeSettings(int accessCode, Settings settings) {
