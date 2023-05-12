@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.websockets;
 
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -9,11 +10,11 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class CardWebSocketHandler extends TextWebSocketHandler {
 
-    private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
+    private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = new HashMap<>();
 
     // Inject dependency to GameService
     private final GameService gameService;
@@ -26,17 +27,20 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        webSocketSessions.add(session);
+        int accessCode = getAccessCode(session);
+        if(!webSocketSessions.containsKey(accessCode)) {
+            webSocketSessions.put(accessCode, new ArrayList<>());
+        }
+        webSocketSessions.get(accessCode).add(session);
     }
 
     // Handle the client requesting a card
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        int accessCode = getAccessCode(session);
+
         // I expect a message of the form "{"accessCode":"123456", "action":"draw"}", "{"accessCode":"123456", "action":"skip"}" or "{"accessCode":"123456", "action":"buzz"}"
         String messageString = message.getPayload();
-
-        // Extract the access code (it is at index 15 to 21)
-        int accessCode = Integer.parseInt(messageString.substring(15, 21));
 
         // Execute buzz or draw
         Card outCard;
@@ -67,7 +71,7 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
         // I expect the outMessage to look like this: {"word":"Bic Mac","taboo1":"McDonalds","taboo2":"hamburger","taboo3":"pattie","taboo4":"salad","taboo5":"null", "turnPoints":"0"
         TextMessage outMessage = new TextMessage(outCardStringWithTurnPoints);
 
-        for (WebSocketSession webSocketSession : webSocketSessions) {
+        for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
             webSocketSession.sendMessage(outMessage);
         }
     }
@@ -77,7 +81,7 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
      * I would inject this CardWebSocketHandler into the gameService and call this method from there. */
 
     /* Make a method that observes the Turn and realizes, when a new card is drawn. */
-    public void callBack(Card outCard, int turnPoints) {
+    public void callBack(int accessCode, Card outCard, int turnPoints) {
         // Convert the card to a TextMessage object
         // I expect the outMessage to look like this: {"word":"Bic Mac", "taboo1":"McDonalds", "taboo2":"hamburger", "taboo3":"pattie", "taboo4":"salad", "taboo5":"null", "turnPoints":"0"}
         String outCardString = outCard.toString();
@@ -85,7 +89,7 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
         TextMessage outMessage = new TextMessage(outCardStringWithTurnPoints);
 
         try {   // Send the message to all clients
-            for (WebSocketSession webSocketSession : webSocketSessions) {
+            for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
                 webSocketSession.sendMessage(outMessage);
             }
         }
@@ -96,6 +100,19 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        webSocketSessions.remove(session);
+        int accessCode = getAccessCode(session);
+        webSocketSessions.get(accessCode).remove(session);
+
+        // If the game was deleted, delete the mapping.
+        try{
+            gameService.getGame(accessCode);
+        }catch (ResponseStatusException e){
+            webSocketSessions.remove(accessCode);
+        }
+    }
+
+    /** Extracts the access code from a WebSocketSession object. */
+    private static int getAccessCode(WebSocketSession session) {
+        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 }
