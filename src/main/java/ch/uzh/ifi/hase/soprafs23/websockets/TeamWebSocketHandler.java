@@ -8,6 +8,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     public TeamWebSocketHandler(LobbyService lobbyService, UserService userService) {
         this.lobbyService = lobbyService;
+        lobbyService.initializeTeamWebSocketHandler(this);
         this.userService = userService;
     }
 
@@ -58,6 +60,21 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
         for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(outMessage);
+        }
+    }
+
+    public void callBack(int accessCode, int teamNr, int userId) {
+        User aUser = userService.getUser(userId);
+        String messagePayload = "{\"accessCode\":" + accessCode + ",\"teamNr\":" + teamNr + ",\"userId\":" + userId + ",\"type\":\"removal\",\"username\":\"" + aUser.getUsername() + "\"}";
+        System.out.println("Sending message: " + messagePayload);
+        TextMessage outMessage = new TextMessage(messagePayload);
+
+        try {
+            for (WebSocketSession webSocketSession : webSocketSessions) {
+                webSocketSession.sendMessage(outMessage);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
