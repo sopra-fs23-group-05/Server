@@ -24,6 +24,9 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
     public TimerWebSocketHandler(GameService gameService) {
         this.gameService = gameService;
     }
+    public TimerWebSocketHandler() {
+        this.gameService = null;
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws InterruptedException, IOException {
@@ -33,7 +36,11 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
             webSocketSessions.put(accessCode, new ArrayList<>());
         }
         webSocketSessions.get(accessCode).add(session);
-        timerValue = gameService.getGame(accessCode).getSettings().getRoundTime();
+        if (gameService == null) {
+            timerValue = 10;
+        } else{
+            this.timerValue = gameService.getGame(accessCode).getSettings().getRoundTime();
+        }
         startTimer(accessCode);
     }
 

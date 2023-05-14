@@ -78,6 +78,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public WebSocketHandler getPreGameTimeWebSocketHandler() {
-        return new PreGameTimeWebSocketHandler();
+        return new TimerWebSocketHandler();
     }
 }
