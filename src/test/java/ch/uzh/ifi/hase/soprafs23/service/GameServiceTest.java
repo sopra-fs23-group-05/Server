@@ -104,7 +104,7 @@ class GameServiceTest {
     @Test
     void getGame_invalidInputs_gameNotFound() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
-        assertEquals(null, gameService.getGame(123456));
+        assertThrows(ResponseStatusException.class, () -> gameService.getGame(123456));
     }
 
     @Test

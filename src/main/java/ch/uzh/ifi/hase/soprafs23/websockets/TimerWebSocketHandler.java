@@ -53,7 +53,7 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
     }
 
     public void startTimer(int accessCode) throws InterruptedException, IOException {
-        for (int tick = timerValue; tick > 0; tick --){
+        for (int tick = timerValue; tick >= 0; tick --){
             String time = String.valueOf(timerValue);
             for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
                 webSocketSession.sendMessage(new TextMessage(time));
