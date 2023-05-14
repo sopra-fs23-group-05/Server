@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.websockets.TeamWebSocketHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class LobbyService {
 
     private final UserRepository userRepository;
     private final LobbyRepository lobbyRepository;
+    private TeamWebSocketHandler teamWebSocketHandler;
+
 
     private final SecureRandom random = new SecureRandom();
 
@@ -39,6 +42,10 @@ public class LobbyService {
     public LobbyService(@Qualifier("userRepository") UserRepository userRepository, LobbyRepository lobbyRepository) {
         this.userRepository = userRepository;
         this.lobbyRepository = lobbyRepository;
+    }
+
+    public void initializeTeamWebSocketHandler(TeamWebSocketHandler teamWebSocketHandler) {
+        this.teamWebSocketHandler = teamWebSocketHandler;
     }
 
     public Lobby createLobby() {
@@ -90,10 +97,12 @@ public class LobbyService {
         //check if user already is in a team
         if (existingLobby.isUserInTeam1(userInput)) {
             existingLobby.removeUserFromTeam1(userInput);
+            teamWebSocketHandler.callBack(accessCode, 1, userId);
         }
 
         if (existingLobby.isUserInTeam2(userInput)) {
             existingLobby.removeUserFromTeam2(userInput);
+            teamWebSocketHandler.callBack(accessCode, 2, userId);
         }
 
         if (!existingLobby.isFairJoin(teamNr)) {
