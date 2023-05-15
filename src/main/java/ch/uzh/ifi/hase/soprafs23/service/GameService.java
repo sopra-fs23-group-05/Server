@@ -215,6 +215,8 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        userRepository.deleteAll(lobby.getLobbyUsers());
         lobbyRepository.delete(lobbyRepository.findByAccessCode(accessCode));
         teamRepository.delete(existingGame.getTeam1());
         teamRepository.delete(existingGame.getTeam2());
