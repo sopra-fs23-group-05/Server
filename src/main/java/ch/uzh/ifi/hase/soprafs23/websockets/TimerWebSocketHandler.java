@@ -20,12 +20,14 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
     private int timerValue;
 
     private final GameService gameService;
+    private boolean isRunning = false;
 
     public TimerWebSocketHandler(GameService gameService) {
         this.gameService = gameService;
     }
     public TimerWebSocketHandler() {
         this.gameService = null;
+        timerValue =10;
     }
 
     @Override
@@ -36,12 +38,14 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
             webSocketSessions.put(accessCode, new ArrayList<>());
         }
         webSocketSessions.get(accessCode).add(session);
-        if (gameService == null) {
-            timerValue = 10;
-        } else{
-            this.timerValue = gameService.getGame(accessCode).getSettings().getRoundTime();
+        if (!isRunning) {
+            if (gameService != null) {
+                timerValue = gameService.getGame(accessCode).getSettings().getRoundTime();
+            }
+            startTimer(accessCode);
+            isRunning = true;
         }
-        startTimer(accessCode);
+
     }
 
     @Override

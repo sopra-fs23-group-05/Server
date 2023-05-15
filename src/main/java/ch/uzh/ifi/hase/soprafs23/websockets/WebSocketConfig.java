@@ -18,8 +18,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private final static String CARD_ENDPOINT = "/cards/{accessCode}";
     private final static String TEAM_ENDPOINT = "/teams/{accessCode}";
     private final static String PAGE_ENDPOINT = "/pages/{accessCode}";
-    private final static String TIMER_ENDPOINT = "/timer/{accessCode}";
-    private final static String PREGAME_ENDPOINT = "/pregame/{accessCode}";
+    private final static String TIMER_ENDPOINT = "/timers/{accessCode}";
+    private final static String PREGAME_ENDPOINT = "/pregameTimers/{accessCode}";
 
     private final GameService gameService;
 
@@ -73,7 +73,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public WebSocketHandler getTimerWebSocketHandler()   {
-            return new TimerWebSocketHandler(gameService);
+        return new TimerWebSocketHandler(gameService);
     }
 
     @Bean
