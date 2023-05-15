@@ -8,8 +8,6 @@ public class Turn {
     @Embedded
     private final Deck deck;
 
-    // private Timer timer;    do we need a timer class in the backend? like it is in our class diagram
-
     private int turnPoints;
 
     private Card drawnCard;
