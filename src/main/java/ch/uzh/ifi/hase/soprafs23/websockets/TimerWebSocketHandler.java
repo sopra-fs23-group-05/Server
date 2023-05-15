@@ -42,8 +42,9 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
             if (gameService != null) {
                 timerValue = gameService.getGame(accessCode).getSettings().getRoundTime();
             }
-            startTimer(accessCode);
             isRunning = true;
+            startTimer(accessCode);
+
         }
 
     }
@@ -61,6 +62,19 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         int accessCode = getAccessCode(session);
         webSocketSessions.get(accessCode).remove(session);
+        if (webSocketSessions.get(accessCode).isEmpty()) {
+            stopTimer(accessCode);
+        }
+    }
+    public void stopTimer(int accessCode) {
+        if (isRunning) {
+            isRunning = false;
+            if (gameService != null) {
+                timerValue = gameService.getGame(accessCode).getSettings().getRoundTime();
+            } else {
+                timerValue = 10;
+            }
+        }
     }
 
     public void startTimer(int accessCode) throws InterruptedException, IOException {
