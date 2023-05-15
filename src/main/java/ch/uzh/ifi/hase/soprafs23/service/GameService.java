@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.awt.image.AreaAveragingScaleFilter;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -219,6 +221,38 @@ public class GameService {
         teamRepository.flush();
         userRepository.flush();
         lobbyRepository.flush();
+    }
+
+    public void deletePlayerFromGame(int accessCode, String playerName){
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        if(teamService.isInTeam(existingGame.getTeam1().getTeamId(), playerName)){
+            List<Player> playersTeam1= existingGame.getTeam1().getPlayers();
+            int playerIdx=0;
+            for(Player player : playersTeam1){
+                if(player.getName().equals(playerName)){
+                    existingGame.getTeam1().getPlayers().remove(playerIdx);
+                    return;
+                }
+                playerIdx++;
+            }
+        }
+        else if(teamService.isInTeam(existingGame.getTeam2().getTeamId(), playerName)){
+            List<Player> playersTeam2 = existingGame.getTeam2().getPlayers();
+            int playerIdx=0;
+            for(Player player : playersTeam2){
+                if(player.getName().equals(playerName)){
+                    existingGame.getTeam2().getPlayers().remove(playerIdx);
+                    return;
+                }
+                playerIdx++;
+            }
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player with name " + playerName + " does not exist");
+        }
     }
 
     public void finishGame(int accessCode) {
