@@ -61,8 +61,8 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         messagePayload += ",\"username\":\"" + aUser.getUsername() + "\"}";
         System.out.println("Sending message: " + messagePayload);
         TextMessage outMessage = new TextMessage(messagePayload);
-
-        for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
+        for (int i = 0; i < webSocketSessions.get(accessCode).size(); i++) {
+            WebSocketSession webSocketSession = webSocketSessions.get(accessCode).get(i);
             webSocketSession.sendMessage(outMessage);
         }
     }
