@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
@@ -223,32 +224,34 @@ public class GameService {
         lobbyRepository.flush();
     }
 
+    public void deletePlayerFromTeam(Team team, String playerName, int accessCode) {
+        List<Player> playersTeam = team.getPlayers();
+        int playerIdx = 0;
+        for (Player player : playersTeam) {
+            if (player.getName().equals(playerName)) {
+                team.getPlayers().remove(playerIdx);
+                if (playersTeam.size() < 2) {
+                    deleteGameTeamsUsersAndLobby(accessCode);
+                }
+                else {
+                    gameRepository.flush();
+                }
+                return;
+            }
+            playerIdx++;
+        }
+    }
+
     public void deletePlayerFromGame(int accessCode, String playerName){
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
         if(teamService.isInTeam(existingGame.getTeam1().getTeamId(), playerName)){
-            List<Player> playersTeam1= existingGame.getTeam1().getPlayers();
-            int playerIdx=0;
-            for(Player player : playersTeam1){
-                if(player.getName().equals(playerName)){
-                    existingGame.getTeam1().getPlayers().remove(playerIdx);
-                    return;
-                }
-                playerIdx++;
-            }
+            deletePlayerFromTeam(existingGame.getTeam1(), playerName, accessCode);
         }
         else if(teamService.isInTeam(existingGame.getTeam2().getTeamId(), playerName)){
-            List<Player> playersTeam2 = existingGame.getTeam2().getPlayers();
-            int playerIdx=0;
-            for(Player player : playersTeam2){
-                if(player.getName().equals(playerName)){
-                    existingGame.getTeam2().getPlayers().remove(playerIdx);
-                    return;
-                }
-                playerIdx++;
-            }
+            deletePlayerFromTeam(existingGame.getTeam2(), playerName, accessCode);
         }
         else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player with name " + playerName + " does not exist");
