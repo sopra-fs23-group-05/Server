@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
@@ -21,8 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameServiceTest {
 
@@ -36,6 +36,9 @@ class GameServiceTest {
 
     @Mock
     private TeamRepository teamRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     private Lobby testLobby;
 
@@ -67,6 +70,7 @@ class GameServiceTest {
         testLobby.setAccessCode(123456);
         testLobby.setSettings(new Settings());
 
+
         Mockito.when(lobbyRepository.save(Mockito.any())).thenReturn(testLobby);
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(testTeam);
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
@@ -80,13 +84,7 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> gameService.nextTurn(123456));
     }
-    /*@Test
-    void nextTurn_validInputs_success() {
-        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
-        testGame.getTurn().
-        gameService.nextTurn(123456);
-        assertEquals(Role.BUZZINGTEAM, testTeam.getaRole());
-    }*/
+
 
     @Test
     void getGame_validInputs_success() {
@@ -133,5 +131,105 @@ class GameServiceTest {
         testGame.setTurn(null);
         assertThrows(NullPointerException.class, () -> gameService.drawCard(123456));
     }
+
+    @Test
+    void buzz_validInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        Card testCard = gameService.drawCard(123456);
+        Card card = gameService.buzz(123456);
+        assertEquals(card, testCard);
+    }
+
+    @Test
+    void doubleBuzz_validInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        Card testCard = gameService.drawCard(123456);
+        Card card = gameService.buzz(123456);
+        assertEquals(card, testCard);
+        Card card2 = gameService.buzz(123456);
+        assertNotEquals(card2, testCard);
+    }
+
+    @Test
+    void finishGame_validInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        gameService.finishGame(123456);
+        assertEquals(testGame.getRoundsPlayed(), testGame.getSettings().getRounds());
+    }
+
+    @Test
+    void finishGame_invalidInputs_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.finishGame(123456));
+    }
+
+    @Test
+    void deleteGameTeamsUsersAndLobby_inValidInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.deleteGameTeamsUsersAndLobby(123456));
+    }
+
+    @Test
+    void getTurnPoints_validInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        assertEquals(0, gameService.getTurnPoints(123456));
+    }
+
+    @Test
+    void getTurnPointsAfterSkip_validInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        gameService.skip(123456);
+        assertEquals(-1, gameService.getTurnPoints(123456));
+    }
+
+    @Test
+    void getTurnPoints_invalidInputs_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.getTurnPoints(123456));
+    }
+
+    @Test
+    void createCard_validInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        Card card = new Card();
+        gameService.createCard(123456, card);
+        assertEquals(card, testGame.getTurn().getDeck().getCards().get(0));
+    }
+
+    @Test
+    void createCard_invalidInputs_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.createCard(123456, new Card()));
+    }
+
+    @Test
+    void skip_validInputs_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        Card card = gameService.drawCard(123456);
+        Card skipcard =gameService.skip(123456);
+        assertNotEquals(card, skipcard);
+        assertEquals(testGame.getTurn().getTurnPoints(), -1);
+    }
+
+    @Test
+    void skip_invalidInput_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.skip(123456));
+    }
+
+    @Test
+    void guessWord_invalidInput_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        Message message = new Message(123456, 1,"test", MessageType.DESCRIPTION);
+        assertThrows(ResponseStatusException.class, () -> gameService.guessWord(message));
+    }
+
 
 }

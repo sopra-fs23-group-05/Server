@@ -117,8 +117,8 @@ class TeamServiceTest {
         teamService.changeTurn(1, 2, 5);
 
         Mockito.verify(teamRepository, Mockito.times(2)).save(Mockito.any());
-        assertEquals(testTeam.getaRole(), Role.BUZZINGTEAM);
-        assertEquals(testTeam1.getaRole(), Role.GUESSINGTEAM);
+        assertEquals(Role.BUZZINGTEAM,testTeam.getaRole() );
+        assertEquals(Role.GUESSINGTEAM, testTeam1.getaRole());
         assertEquals(5, testTeam.getPoints());
         assertEquals(0, testTeam1.getPoints());
 
@@ -144,8 +144,8 @@ class TeamServiceTest {
 
         teamService.changeTurn(2, 1, 5);
         Mockito.verify(teamRepository, Mockito.times(2)).save(Mockito.any());
-        assertEquals(testTeam2.getaRole(), Role.GUESSINGTEAM);
-        assertEquals(testTeam1.getaRole(), Role.BUZZINGTEAM);
+        assertEquals(Role.GUESSINGTEAM,testTeam2.getaRole());
+        assertEquals(Role.BUZZINGTEAM, testTeam1.getaRole());
         assertEquals(0, testTeam2.getPoints());
         assertEquals(5, testTeam1.getPoints());
     }
@@ -167,8 +167,9 @@ class TeamServiceTest {
     @Test
     void increasePlayerScore_invalidInput() {
         Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(null);
+        int teamId = testTeam.getTeamId();
         // Call UUT and make assertion
-        assertThrows(ResponseStatusException.class, () -> teamService.increasePlayerScore(testTeam.getTeamId(), "Tom"));
+        assertThrows(ResponseStatusException.class, () -> teamService.increasePlayerScore(teamId, "Tom"));
     }
 
     @Test
@@ -180,7 +181,8 @@ class TeamServiceTest {
     @Test
     void getTeamRole_invalidInput() {
         Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(null);
+        int teamId = testTeam.getTeamId();
         // Call UUT and make assertion
-        assertThrows(ResponseStatusException.class, () -> teamService.getTeamRole(testTeam.getTeamId()));
+        assertThrows(ResponseStatusException.class, () -> teamService.getTeamRole(teamId));
     }
 }
