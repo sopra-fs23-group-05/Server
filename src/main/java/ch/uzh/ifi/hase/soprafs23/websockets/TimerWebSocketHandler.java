@@ -41,6 +41,13 @@
                 webSocketSessions.put(accessCode, new ArrayList<>());
             }
             webSocketSessions.get(accessCode).add(session);
+
+        }
+
+        @Override
+        protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+            int accessCode = getAccessCode(session);
+            String time = String.valueOf(timerValue);
             if (!isRunning.contains(accessCode)) {
                 if (gameService != null) {
                     timerValue = gameService.getGame(accessCode).getSettings().getRoundTime();
@@ -48,23 +55,13 @@
                 isRunning.add(accessCode);
                 Timer timer = new Timer(webSocketSessions.get(accessCode), timerValue);
                 timer.start();
-                Thread.sleep((timerValue * 1000)-100);
-                isRunning.remove(Integer.valueOf(accessCode));
-            }
-        }
-
-        @Override
-        protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-            int accessCode = getAccessCode(session);
-            String time = String.valueOf(timerValue);
-            for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
-                webSocketSession.sendMessage(new TextMessage(time));
             }
         }
 
         @Override
         public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
             int accessCode = getAccessCode(session);
+            isRunning.remove(Integer.valueOf(accessCode));
             webSocketSessions.get(accessCode).remove(session);
         }
 
