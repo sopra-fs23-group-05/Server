@@ -10,7 +10,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TeamWebSocketHandler extends TextWebSocketHandler {
 
@@ -27,10 +26,11 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        if(!webSocketSessions.containsKey(1)){
-            webSocketSessions.put(1, new ArrayList<>());
+        int accessCode = getAccessCode(session);
+        if(!webSocketSessions.containsKey(accessCode)){
+            webSocketSessions.put(accessCode, new ArrayList<>());
         }
-        webSocketSessions.get(1).add(session);
+        webSocketSessions.get(accessCode).add(session);
     }
 
     /**
@@ -68,5 +68,11 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         webSocketSessions.get(1).remove(session);
+    }
+
+    /** Extracts the access code from a WebSocketSession object. */
+    private static int getAccessCode(WebSocketSession session) {
+        return 123456;
+        // return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 }
