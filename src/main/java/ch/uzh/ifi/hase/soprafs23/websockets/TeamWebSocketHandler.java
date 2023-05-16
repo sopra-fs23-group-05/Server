@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.websockets;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -10,11 +11,12 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class TeamWebSocketHandler extends TextWebSocketHandler {
 
-    private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
+    /** HashMap that stores a list of sessions for each access code. */
+    private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = new HashMap<>();
 
     // Inject dependency to GameService here
     private final LobbyService lobbyService;
@@ -28,7 +30,12 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        webSocketSessions.add(session);
+        int accessCode = getAccessCode(session);
+        // If the access code is not in the HashMap, add it
+        if (!webSocketSessions.containsKey(accessCode)) {
+            webSocketSessions.put(accessCode, new ArrayList<>());
+        }
+        webSocketSessions.get(accessCode).add(session);
     }
 
     /**
@@ -37,10 +44,11 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        int accessCode = getAccessCode(session);
+
         // System.out.println("Sending message: " + message.getPayload());
         String messagePayload = message.getPayload();
         String[] messageParts = messagePayload.split(",");
-        int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 1));
         int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
         int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 1));
         String type = messageParts[3].contains("addition") ? "addition" : "removal";
@@ -58,7 +66,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         System.out.println("Sending message: " + messagePayload);
         TextMessage outMessage = new TextMessage(messagePayload);
 
-        for (WebSocketSession webSocketSession : webSocketSessions) {
+        for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
             webSocketSession.sendMessage(outMessage);
         }
     }
@@ -70,7 +78,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         TextMessage outMessage = new TextMessage(messagePayload);
 
         try {
-            for (WebSocketSession webSocketSession : webSocketSessions) {
+            for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
                 webSocketSession.sendMessage(outMessage);
             }
         } catch (IOException e) {
@@ -80,6 +88,20 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        webSocketSessions.remove(session);
+        int accessCode = getAccessCode(session);
+        webSocketSessions.get(accessCode).remove(session);
+
+        // If the lobby was deleted, delete the mapping.
+        try{
+            lobbyService.getLobby(accessCode);
+        }catch (ResponseStatusException e){
+            webSocketSessions.remove(accessCode);
+        }
+    }
+
+    /** Extracts the access code from a WebSocketSession object. */
+    private static int getAccessCode(WebSocketSession session) {
+        return 123456;
+        // return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 }
