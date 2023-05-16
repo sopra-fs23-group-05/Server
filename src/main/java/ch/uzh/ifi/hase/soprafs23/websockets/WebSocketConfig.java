@@ -17,7 +17,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private final static String CHAT_ENDPOINT = "/chats/{accessCode}";
     private final static String CARD_ENDPOINT = "/cards/{accessCode}";
     private final static String TEAM_ENDPOINT = "/teams";
-    private final static String PAGE_ENDPOINT = "/pages";
+    private final static String PAGE_ENDPOINT = "/pages/{accessCode}";
 
     private final GameService gameService;
 
@@ -44,7 +44,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
 
     private WebSocketHandler getPageWebSocketHandler() {
-        return new PageWebSocketHandler();
+        return new PageWebSocketHandler(gameService);
     }
 
     private WebSocketHandler getCardWebSocketHandler() {
