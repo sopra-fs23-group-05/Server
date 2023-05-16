@@ -27,8 +27,9 @@ public class Timer extends Thread {
                 timerValue--;
                 Thread.sleep(1000);
             }
-        } catch (InterruptedException | IOException e) {
-            // Handle any exceptions that occur during timer execution
+        }
+        catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
