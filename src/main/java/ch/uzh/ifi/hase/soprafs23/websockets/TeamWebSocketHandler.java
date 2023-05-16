@@ -39,10 +39,11 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        int accessCode = getAccessCode(session);
+
         // System.out.println("Sending message: " + message.getPayload());
         String messagePayload = message.getPayload();
         String[] messageParts = messagePayload.split(",");
-        int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 1));
         int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
         int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 1));
         String type = messageParts[3].contains("addition") ? "addition" : "removal";
@@ -60,14 +61,19 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         System.out.println("Sending message: " + messagePayload);
         TextMessage outMessage = new TextMessage(messagePayload);
 
-        for (WebSocketSession webSocketSession : webSocketSessions.get(1)) {
+        for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
             webSocketSession.sendMessage(outMessage);
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        webSocketSessions.get(1).remove(session);
+        int accessCode = getAccessCode(session);
+        webSocketSessions.get(accessCode).remove(session);
+
+        if(webSocketSessions.get(accessCode).size() == 0){
+            webSocketSessions.remove(accessCode);
+        }
     }
 
     /** Extracts the access code from a WebSocketSession object. */
