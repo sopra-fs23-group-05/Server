@@ -48,6 +48,8 @@
                 isRunning.add(accessCode);
                 Timer timer = new Timer(webSocketSessions.get(accessCode), timerValue);
                 timer.start();
+                Thread.sleep((timerValue * 1000)-100);
+                isRunning.remove(Integer.valueOf(accessCode));
             }
         }
 
