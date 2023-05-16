@@ -166,8 +166,6 @@ class LobbyServiceTest {
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
         Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
         testLobby.addUserToLobby(testUser);
-
-
         testLobby = lobbyService.leaveLobby(testLobby.getAccessCode(), 1);
 
         assertEquals(testLobby.getLobbyUsers(), users);
