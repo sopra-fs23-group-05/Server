@@ -96,6 +96,13 @@ public class GameController {
     public void deleteGameTeamsAndPlayers(@PathVariable int accessCode) {
         gameService.deleteGameTeamsUsersAndLobby(accessCode);
     }
+
+    @DeleteMapping("/games/{accessCode}/{playerName}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void deletePlayerFromGame(@PathVariable int accessCode, @PathVariable String playerName) {
+        gameService.deletePlayerFromGame(accessCode, playerName);
+    }
 }
 
 
