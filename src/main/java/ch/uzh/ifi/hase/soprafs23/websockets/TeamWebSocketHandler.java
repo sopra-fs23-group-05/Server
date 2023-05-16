@@ -9,11 +9,12 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TeamWebSocketHandler extends TextWebSocketHandler {
 
-    private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
+    private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = new HashMap<>();
 
     // Inject dependency to GameService here
     private final LobbyService lobbyService;
@@ -26,7 +27,10 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        webSocketSessions.add(session);
+        if(!webSocketSessions.containsKey(1)){
+            webSocketSessions.put(1, new ArrayList<>());
+        }
+        webSocketSessions.get(1).add(session);
     }
 
     /**
@@ -56,13 +60,13 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         System.out.println("Sending message: " + messagePayload);
         TextMessage outMessage = new TextMessage(messagePayload);
 
-        for (WebSocketSession webSocketSession : webSocketSessions) {
+        for (WebSocketSession webSocketSession : webSocketSessions.get(1)) {
             webSocketSession.sendMessage(outMessage);
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        webSocketSessions.remove(session);
+        webSocketSessions.get(1).remove(session);
     }
 }
