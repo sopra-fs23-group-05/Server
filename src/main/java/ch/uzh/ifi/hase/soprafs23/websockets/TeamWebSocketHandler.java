@@ -46,17 +46,26 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         String type = messageParts[3].contains("addition") ? "addition" : "removal";
         // System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
 
-        if(type.equals("addition")) {
-            lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
-        } else {
-            lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
-        }
-
         User aUser = userService.getUser(userId);
-        messagePayload = messagePayload.substring(0, messagePayload.length() - 1);
-        messagePayload += ",\"username\":\"" + aUser.getUsername() + "\"}";
-        System.out.println("Sending message: " + messagePayload);
-        TextMessage outMessage = new TextMessage(messagePayload);
+        TextMessage outMessage;
+
+        try {
+            if (type.equals("addition")) {
+                lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
+            }
+            else {
+                lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
+            }
+            messagePayload = messagePayload.substring(0, messagePayload.length() - 1);
+            messagePayload += ",\"username\":\"" + aUser.getUsername() + "\"}";
+            System.out.println("Sending message: " + messagePayload);
+            outMessage = new TextMessage(messagePayload);
+
+        } catch (Exception e) { //exception is thrown if the join would not be fair
+            messagePayload = "{\"accessCode\":" + accessCode + ",\"teamNr\":" + teamNr + ",\"userId\":" + userId + ",\"type\":\"" + "error" + "\",\"username\":\"" + aUser.getUsername() + "\"}";
+            System.out.println("Sending message: " + messagePayload);
+            outMessage = new TextMessage(messagePayload);
+        }
 
         for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(outMessage);

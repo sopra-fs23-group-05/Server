@@ -94,6 +94,10 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided is not in the lobby. Therefore, the user could not be added to the lobby team!");
         }
 
+        if (!existingLobby.isFairJoin(teamNr, userInput)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Joining this team would lead to an unfair game. Therefore, wait until more users have joined the lobby or join the other team!");
+        }
+
         //check if user already is in a team
         if (existingLobby.isUserInTeam1(userInput)) {
             existingLobby.removeUserFromTeam1(userInput);
@@ -103,10 +107,6 @@ public class LobbyService {
         if (existingLobby.isUserInTeam2(userInput)) {
             existingLobby.removeUserFromTeam2(userInput);
             teamWebSocketHandler.callBack(accessCode, 2, userId);
-        }
-
-        if (!existingLobby.isFairJoin(teamNr)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Joining this team would lead to an unfair game. Therefore, wait until more users have joined the lobby or join the other team!");
         }
 
         if (teamNr == 1) {
