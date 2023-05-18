@@ -101,6 +101,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     /** Extracts the access code from a WebSocketSession object. */
     private static int getAccessCode(WebSocketSession session) {
-        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
+        return 123456;
+        // return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 }
