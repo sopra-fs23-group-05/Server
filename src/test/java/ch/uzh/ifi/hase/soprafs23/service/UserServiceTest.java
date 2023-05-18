@@ -98,4 +98,19 @@ class UserServiceTest {
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testEmptyUsernameUser));
     }
 
+    // Test if exception is thrown for usernames that contain nothing but spaces. #237
+    @Test
+    void createUser_InputOnlySpaces_throwsException() {
+
+        // given
+        User testEmptyUsernameUser = new User();
+        testEmptyUsernameUser.setId(1L);
+        testEmptyUsernameUser.setLeader(true);
+        testEmptyUsernameUser.setUsername("     ");
+
+        // then -> attempt to create user with empty username -> check that an error
+        // is thrown
+        assertThrows(ResponseStatusException.class, () -> userService.createUser(testEmptyUsernameUser));
+    }
+
 }
