@@ -165,3 +165,8 @@
 - [#200](https://github.com/sopra-fs23-group-05/Client/issues/200) Implement a sound effect so that a sound is played when the clue-giving player provides a clue.
 - [#201](https://github.com/sopra-fs23-group-05/Client/issues/201) Implement a sound effect so that a sound is played when the buzzer button is clicked.
 - [#203](https://github.com/sopra-fs23-group-05/Client/issues/203) Implement a winner sound that will be played at the end screen. 
+
+## Tom
+- [#189](https://github.com/sopra-fs23-group-05/Client/issues/189) Adjust settings that sliders are on current settings.
+- [#49](https://github.com/sopra-fs23-group-05/Server/issues/49) Changed the timer that it works with the websocket and adjusted the frontend.
+
