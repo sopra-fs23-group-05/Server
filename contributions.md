@@ -145,3 +145,11 @@
 - [#179](https://github.com/sopra-fs23-group-05/Client/issues/179) Enable players to switch between the teams.
 - [#235](https://github.com/sopra-fs23-group-05/Server/issues/235) Display error messages in production.
 - [#237](https://github.com/sopra-fs23-group-05/Server/issues/237) Forbid usernames that contain nothing but spaces. (Feedback beta testing)
+
+## Melea
+- [#158](https://github.com/sopra-fs23-group-05/Client/issues/158) Enable the ENTER key for user input.
+- [#174](https://github.com/sopra-fs23-group-05/Client/issues/174) Remove scroll bar in timer and card.
+- [#175](https://github.com/sopra-fs23-group-05/Client/issues/175) Add leave button on top of the Game page for non-leader players.
+- [#173](https://github.com/sopra-fs23-group-05/Client/issues/173) Adjust the layout of the chat component in the Game page.
+- [#177](https://github.com/sopra-fs23-group-05/Client/issues/177) Make formatting consistent across all pages.
+- [#188](https://github.com/orgs/sopra-fs23-group-05/projects/2/views/1?filterQuery=melea&pane=issue&itemId=28415603) remove word "QUICK" in the rules page.
