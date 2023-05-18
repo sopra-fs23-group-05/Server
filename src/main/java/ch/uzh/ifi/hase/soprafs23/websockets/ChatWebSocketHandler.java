@@ -70,7 +70,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     }
 
     /** Inform the clients that a new card was drawn. */
-    public void sendInformationCallBack(){
+    public void sendInformationCallBack(int accessCode){
 
     }
 }

@@ -95,7 +95,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
         Card outCard = existingGame.getTurn().drawCard();
-        chatWebSocketHandler.sendInformationCallBack();
+        chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
         return outCard;
     }
@@ -105,7 +105,24 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
+
         Card outCard = existingGame.getTurn().buzz();
+        if(outCard != null){
+            chatWebSocketHandler.sendInformationCallBack(accessCode);
+            gameRepository.flush();
+        }else{
+            outCard = existingGame.getTurn().getDrawnCard();
+        }
+        return outCard;
+    }
+
+    public Card skip(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Card outCard = existingGame.getTurn().skip();
+        chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
         return outCard;
     }
@@ -179,16 +196,6 @@ public class GameService {
             cardWebSocketHandler.callBack(existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
         }
         gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
-    }
-
-    public Card skip(int accessCode) {
-        Game existingGame = gameRepository.findByAccessCode(accessCode);
-        if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
-        }
-        Card outCard = existingGame.getTurn().skip();
-        gameRepository.flush();
-        return outCard;
     }
 
     public void createCard(int accessCode, Card card) {

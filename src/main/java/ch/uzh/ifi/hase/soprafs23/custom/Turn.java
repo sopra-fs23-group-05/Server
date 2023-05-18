@@ -36,7 +36,7 @@ public class Turn {
             turnPoints--;
             return drawCard();
         }
-        return drawnCard;
+        return null;
     }
 
     public boolean guess(String guess) {
