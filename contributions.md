@@ -138,6 +138,10 @@
 - [#159](https://github.com/sopra-fs23-group-05/Client/issues/159) Use drop-down menus instead of TextFields for changing the settings
 - [#117](https://github.com/sopra-fs23-group-05/Client/issues/117) Show a message that a new card is drawn -> does not work yet 
 
-
-
-
+# Meeting 18.05.2023 - Week 12
+## Felix
+- [#215](https://github.com/sopra-fs23-group-05/Server/issues/215) Separate WS sessions for each game.
+- [#163](https://github.com/sopra-fs23-group-05/Server/issues/163) Fix joining teams.
+- [#179](https://github.com/sopra-fs23-group-05/Client/issues/179) Enable players to switch between the teams.
+- [#235](https://github.com/sopra-fs23-group-05/Server/issues/235) Display error messages in production.
+- [#237](https://github.com/sopra-fs23-group-05/Server/issues/237) Forbid usernames that contain nothing but spaces. (Feedback beta testing)
