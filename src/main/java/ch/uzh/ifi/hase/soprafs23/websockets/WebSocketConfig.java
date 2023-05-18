@@ -14,10 +14,10 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
-    private final static String CHAT_ENDPOINT = "/chat";
-    private final static String CARD_ENDPOINT = "/cards";
+    private final static String CHAT_ENDPOINT = "/chats/{accessCode}";
+    private final static String CARD_ENDPOINT = "/cards/{accessCode}";
     private final static String TEAM_ENDPOINT = "/teams";
-    private final static String PAGE_ENDPOINT = "/pages";
+    private final static String PAGE_ENDPOINT = "/pages/{accessCode}";
 
     private final GameService gameService;
 
@@ -43,11 +43,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("*");
     }
 
-    private WebSocketHandler getPageWebSocketHandler() {
-        return new PageWebSocketHandler();
+    @Bean
+    public WebSocketHandler getPageWebSocketHandler() {
+        return new PageWebSocketHandler(gameService);
     }
 
-    private WebSocketHandler getCardWebSocketHandler() {
+    @Bean
+    public WebSocketHandler getCardWebSocketHandler() {
         return new CardWebSocketHandler(gameService);
     }
 
