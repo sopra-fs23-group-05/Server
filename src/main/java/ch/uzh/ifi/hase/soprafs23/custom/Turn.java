@@ -62,4 +62,8 @@ public class Turn {
     public void setTurnPoints(int turnPoints) {
         this.turnPoints = turnPoints;
     }
+
+    public Card getDrawnCard() {
+        return drawnCard;
+    }
 }

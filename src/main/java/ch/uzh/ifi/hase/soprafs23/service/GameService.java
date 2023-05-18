@@ -13,6 +13,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.websockets.CardWebSocketHandler;
+import ch.uzh.ifi.hase.soprafs23.websockets.ChatWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.awt.image.AreaAveragingScaleFilter;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,10 +38,10 @@ public class GameService {
     private final TeamRepository teamRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-
     private final LobbyRepository lobbyRepository;
 
     private CardWebSocketHandler cardWebSocketHandler;
+    private ChatWebSocketHandler chatWebSocketHandler;
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository) {
@@ -96,6 +95,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
         Card outCard = existingGame.getTurn().drawCard();
+        chatWebSocketHandler.sendInformationCallBack();
         gameRepository.flush();
         return outCard;
     }
@@ -269,4 +269,7 @@ public class GameService {
         gameRepository.flush();
     }
 
+    public void initializeChatWebSocketHandler(ChatWebSocketHandler chatWebSocketHandler) {
+        this.chatWebSocketHandler = chatWebSocketHandler;
+    }
 }

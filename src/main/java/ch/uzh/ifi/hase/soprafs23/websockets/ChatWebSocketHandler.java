@@ -19,6 +19,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     public ChatWebSocketHandler(GameService gameService) {
         this.gameService = gameService;
+        gameService.initializeChatWebSocketHandler(this);
     }
 
     @Override
@@ -66,5 +67,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         // Create new Message object
         return new Message(accessCode, userId, content, msgType);
+    }
+
+    /** Inform the clients that a new card was drawn. */
+    public void sendInformationCallBack(){
+
     }
 }
