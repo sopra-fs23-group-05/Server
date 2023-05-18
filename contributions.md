@@ -153,3 +153,15 @@
 - [#173](https://github.com/sopra-fs23-group-05/Client/issues/173) Adjust the layout of the chat component in the Game page.
 - [#177](https://github.com/sopra-fs23-group-05/Client/issues/177) Make formatting consistent across all pages.
 - [#188](https://github.com/orgs/sopra-fs23-group-05/projects/2/views/1?filterQuery=melea&pane=issue&itemId=28415603) remove word "QUICK" in the rules page.
+
+## Daniel
+- [#176](https://github.com/sopra-fs23-group-05/Server/issues/176) Make a endpoint which removes a player from a team.
+- [#177](https://github.com/sopra-fs23-group-05/Server/issues/177) Implement a function to check if there are enough players to continue the game.
+- [#178](https://github.com/sopra-fs23-group-05/Server/issues/178) Implement a function which ends the game if there are not enough players left.
+- [#184](https://github.com/sopra-fs23-group-05/Client/issues/184) Redirect the remaining players to the endscreen if there are too few players in the game.
+- [#195](https://github.com/sopra-fs23-group-05/Client/issues/195) Implement button sound such that a sound is played when a user clicks a button.
+- [#198](https://github.com/sopra-fs23-group-05/Client/issues/198) Implement a sound effect when a player joins a team.
+- [#199](https://github.com/sopra-fs23-group-05/Client/issues/199) Implement a sound effect so that a sound is played when the guessing player makes a guess.
+- [#200](https://github.com/sopra-fs23-group-05/Client/issues/200) Implement a sound effect so that a sound is played when the clue-giving player provides a clue.
+- [#201](https://github.com/sopra-fs23-group-05/Client/issues/201) Implement a sound effect so that a sound is played when the buzzer button is clicked.
+- [#203](https://github.com/sopra-fs23-group-05/Client/issues/203) Implement a winner sound that will be played at the end screen. 
