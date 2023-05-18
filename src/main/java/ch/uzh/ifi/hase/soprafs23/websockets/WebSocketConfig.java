@@ -18,6 +18,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private final static String CARD_ENDPOINT = "/cards/{accessCode}";
     private final static String TEAM_ENDPOINT = "/teams";
     private final static String PAGE_ENDPOINT = "/pages/{accessCode}";
+    private final static String TIMER_ENDPOINT = "/timers/{accessCode}";
+    private final static String PREGAME_ENDPOINT = "/pregameTimers/{accessCode}";
 
     private final GameService gameService;
 
@@ -25,7 +27,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     private final UserService userService;
 
-    public WebSocketConfig(GameService gameService, LobbyService lobbyService, UserService userService){
+    public WebSocketConfig(GameService gameService, LobbyService lobbyService, UserService userService) {
         this.gameService = gameService;
         this.lobbyService = lobbyService;
         this.userService = userService;
@@ -40,6 +42,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
         webSocketHandlerRegistry.addHandler(getTeamWebSocketHandler(), TEAM_ENDPOINT)
                 .setAllowedOrigins("*");
         webSocketHandlerRegistry.addHandler(getPageWebSocketHandler(), PAGE_ENDPOINT)
+                .setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getTimerWebSocketHandler(), TIMER_ENDPOINT)
+                .setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getPreGameTimeWebSocketHandler(), PREGAME_ENDPOINT)
                 .setAllowedOrigins("*");
     }
 
@@ -61,5 +67,15 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Bean
     public WebSocketHandler getTeamWebSocketHandler() {
         return new TeamWebSocketHandler(lobbyService, userService);
+    }
+
+    @Bean
+    public WebSocketHandler getTimerWebSocketHandler() {
+        return new TimerWebSocketHandler(gameService);
+    }
+
+    @Bean
+    public WebSocketHandler getPreGameTimeWebSocketHandler() {
+        return new TimerWebSocketHandler();
     }
 }
