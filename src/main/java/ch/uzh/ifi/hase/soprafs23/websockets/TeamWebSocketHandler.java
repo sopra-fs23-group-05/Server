@@ -100,6 +100,10 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
     }
 
     /** Extracts the access code from a WebSocketSession object. */
+    /* This method returns a constant, as there is an unresolvable issue with the endpoint /teams/{accessCode}.
+    * This means, for the time being, there can only be one lobby at a time.
+    * In case a way is found to make the /teams/{accessCode} endpoint work, the session specific access code can
+    * be returned. */
     private static int getAccessCode(WebSocketSession session) {
         return 123456;
         // return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
