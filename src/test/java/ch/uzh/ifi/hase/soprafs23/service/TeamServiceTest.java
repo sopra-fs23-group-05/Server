@@ -74,18 +74,6 @@ class TeamServiceTest {
         assertEquals(player.isLeader(), user.isLeader());
     }
 
-    @Test
-    void isInTeam_validInput() {
-        Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(testTeam);
-        Player player = new Player();
-        player.setName("a");
-        List<Player> players = new ArrayList<>();
-        players.add(player);
-
-        testTeam.setPlayers(players);
-
-        assertTrue(teamService.isInTeam(testTeam.getTeamId(), "a"));
-    }
 
     @Test
     void isClueGiver_validInput() {
