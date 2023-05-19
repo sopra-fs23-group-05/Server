@@ -88,6 +88,9 @@ public class TeamService {
 
     public boolean isInTeam(int teamId, String userName) {
         Team team = teamRepository.findById(teamId);
+        if (userRepository.findByUsername(userName) == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
         for (int i = 0; i < team.getPlayers().size(); i++) {
             Player player = team.getPlayers().get(i);
             if (Objects.equals(player.getName(), userName)) {

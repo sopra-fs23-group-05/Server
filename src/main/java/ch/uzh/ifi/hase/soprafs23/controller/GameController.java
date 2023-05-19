@@ -48,14 +48,14 @@ public class GameController {
     }
 
     @PutMapping("/games/{accessCode}/turns")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void nextTurn(@PathVariable int accessCode) {
         gameService.nextTurn(accessCode);
     }
 
     @PutMapping("/games/{accessCode}/finishes")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void finishGame(@PathVariable int accessCode) {
         gameService.finishGame(accessCode);

@@ -38,8 +38,13 @@ public class Timer extends Thread {
             }
             timerWebSocketHandler.callBack(accessCode);
         }
-        catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        catch(IOException e){
+            System.out.println("IOException");
         }
+        catch(InterruptedException e){
+            System.out.println("InterruptedException");
+            Thread.currentThread().interrupt();
+        }
+
     }
 }
