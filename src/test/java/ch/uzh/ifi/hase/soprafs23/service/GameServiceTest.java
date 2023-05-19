@@ -11,7 +11,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
-import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.websockets.ChatWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ class GameServiceTest {
     private TeamRepository teamRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private ChatWebSocketHandler chatWebSocketHandler;
 
     private Lobby testLobby;
 
@@ -76,6 +76,8 @@ class GameServiceTest {
         Mockito.when(lobbyRepository.save(Mockito.any())).thenReturn(testLobby);
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(testTeam);
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+
+        gameService.initializeChatWebSocketHandler(chatWebSocketHandler);
     }
 
 
