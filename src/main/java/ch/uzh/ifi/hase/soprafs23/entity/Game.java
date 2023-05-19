@@ -29,7 +29,7 @@ public class Game {
     private Player leader;
 
     public Game() {
-        this.roundsPlayed = 1;
+        this.roundsPlayed = 0;
     }
 
     public Game(int accessCode, Settings settings, Team team1, Team team2, Player lobbyLeader) {
@@ -38,7 +38,7 @@ public class Game {
         this.team1 = team1;
         this.team2 = team2;
         turn = new Turn();
-        this.roundsPlayed = 1;
+        this.roundsPlayed = 0;
         this.leader = lobbyLeader;
     }
 
