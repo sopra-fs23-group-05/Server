@@ -45,7 +45,7 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.team2", is(game.getTeam2())))
                 .andExpect(jsonPath("$.settings", is(game.getSettings())))
                 .andExpect(jsonPath("$.turn", is(game.getTurn())))
-                .andExpect(jsonPath("$.roundsPlayed", is(1)))
+                .andExpect(jsonPath("$.roundsPlayed", is(0)))
                 .andExpect(jsonPath("$.turn", is(game.getTurn())));
     }
 

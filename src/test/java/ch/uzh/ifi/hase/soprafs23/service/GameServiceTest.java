@@ -1,16 +1,20 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
+import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
+import ch.uzh.ifi.hase.soprafs23.custom.Turn;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.websockets.ChatWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +46,12 @@ class GameServiceTest {
     @Mock
     private ChatWebSocketHandler chatWebSocketHandler;
 
+    @Mock
+    private TeamService teamService;
+
+    @Mock
+    private UserRepository userRepository;
+
     private Lobby testLobby;
 
     private Team testTeam;
@@ -57,31 +67,40 @@ class GameServiceTest {
         testTeam2 = new Team();
 
         testTeam = new Team();
-        List<Player> players = new ArrayList<>();
         Player p1 = new Player();
         p1.setName("testName");
+        Player p2 = new Player();
+        p2.setName("testName2");
+        Player p3 = new Player();
+        p3.setName("testName3");
+        Player p4 = new Player();
+        p4.setName("testName4");
+        List<Player> players = new ArrayList<>();
         players.add(p1);
+        p1.setPersonalScore(3);
+        players.add(p2);
+        List<Player> players2 = new ArrayList<>();
+        players2.add(p3);
+        players2.add(p4);
+        testTeam2.setaRole(Role.BUZZINGTEAM);
+        testTeam2.setTeamId(2);
+        testTeam2.setPlayers(players2);
         testTeam.setPlayers(players);
         testTeam.setaRole(Role.GUESSINGTEAM);
         testTeam.setTeamId(1);
 
 
-        testGame = new Game(123456, new Settings(), testTeam, testTeam2,new Player());
+        testGame = new Game(123456, new Settings(), testTeam, testTeam2, new Player());
 
         testLobby = new Lobby();
         testLobby.setAccessCode(123456);
         testLobby.setSettings(new Settings());
-
-
-        Mockito.when(lobbyRepository.save(Mockito.any())).thenReturn(testLobby);
-        Mockito.when(teamRepository.save(Mockito.any())).thenReturn(testTeam);
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+
 
         gameService.initializeChatWebSocketHandler(chatWebSocketHandler);
     }
 
-
-    // #50, Test if the nextTurn method throws an exception when the game is not found
 
     @Test
     void nextTurn_invalidInputs_gameNotFound() {
@@ -217,7 +236,7 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
         Card card = gameService.drawCard(123456);
-        Card skipcard =gameService.skip(123456);
+        Card skipcard = gameService.skip(123456);
         assertNotEquals(card, skipcard);
         assertEquals(testGame.getTurn().getTurnPoints(), -1);
     }
@@ -231,8 +250,192 @@ class GameServiceTest {
     @Test
     void guessWord_invalidInput_gameNotFound() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
-        Message message = new Message(123456, 1,"test", MessageType.DESCRIPTION);
+        Message message = new Message(123456, 1, "test", MessageType.DESCRIPTION);
         assertThrows(ResponseStatusException.class, () -> gameService.guessWord(message));
+    }
+
+    @Test
+    void deletePlayerFromGame_validInput_team1() {
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(1, "testName")).thenReturn(true);
+        gameService.deletePlayerFromGame(123456, "testName");
+        assertEquals(1, testGame.getTeam1().getPlayers().size());
+    }
+
+    @Test
+    void deletePlayerFromGame_validInput_team2() {
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(2, "testName3")).thenReturn(true);
+        gameService.deletePlayerFromGame(123456, "testName3");
+        assertEquals(1, testGame.getTeam2().getPlayers().size());
+    }
+
+    @Test
+    void deletePlayerFromGame_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.deletePlayerFromGame(123456, "testName"));
+    }
+
+    @Test
+    void deletePlayerFromGame_playerNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(1, "testName")).thenReturn(false);
+        assertThrows(ResponseStatusException.class, () -> gameService.deletePlayerFromGame(123456, "testName"));
+    }
+
+    @Test
+    void deletePlayerFromTeam_validInput_team1() {
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        gameService.deletePlayerFromTeam(testTeam, "testName", 123456);
+        assertEquals(1, testGame.getTeam1().getPlayers().size());
+    }
+
+    @Test
+    void deletePlayerFromTeam_validInput_team2() {
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        gameService.deletePlayerFromTeam(testTeam2, "testName3", 123456);
+        assertEquals(1, testGame.getTeam2().getPlayers().size());
+    }
+
+    @Test
+    void deleteGameTeamsUsersAndLobby_validInput_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        gameService.deleteGameTeamsUsersAndLobby(123456);
+        Mockito.verify(userRepository, Mockito.times(1)).deleteAll(testLobby.getLobbyUsers());
+        Mockito.verify(gameRepository, Mockito.times(1)).delete(testGame);
+        Mockito.verify(teamRepository, Mockito.times(1)).delete(testTeam);
+        Mockito.verify(teamRepository, Mockito.times(1)).delete(testTeam2);
+        Mockito.verify(lobbyRepository, Mockito.times(1)).delete(testLobby);
+        Mockito.verify(userRepository, Mockito.times(1)).flush();
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+        Mockito.verify(teamRepository, Mockito.times(1)).flush();
+        Mockito.verify(lobbyRepository, Mockito.times(1)).flush();
+    }
+
+    @Test
+    void getMVPPlayer_validInput_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        assertEquals(testGame.getTeam1().getPlayers().get(0), gameService.getMPVPlayer(123456));
+    }
+
+    @Test
+    void getPlayerRole_validInput_Buzzer() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        assertEquals(PlayerRole.BUZZER, gameService.getPlayerRole(123456, "testName"));
+    }
+
+    @Test
+    void getPlayerRole_validInput_GuesserTeam1() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(1, "testName2")).thenReturn(true);
+        Mockito.when(teamService.isClueGiver(1, "testName2")).thenReturn(false);
+        assertEquals(PlayerRole.GUESSER, gameService.getPlayerRole(123456, "testName2"));
+    }
+
+    @Test
+    void getPlayerRole_validInput_GuesserTeam2() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(1, "testName2")).thenReturn(false);
+        Mockito.when(teamService.isClueGiver(2, "testName2")).thenReturn(false);
+        testGame.getTeam2().setaRole(Role.GUESSINGTEAM);
+        assertEquals(PlayerRole.GUESSER, gameService.getPlayerRole(123456, "testName2"));
+    }
+
+    @Test
+    void getPlayerRole_validInput_BuzzerTeam1() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(1, "testName2")).thenReturn(true);
+        testGame.getTeam1().setaRole(Role.BUZZINGTEAM);
+        assertEquals(PlayerRole.BUZZER, gameService.getPlayerRole(123456, "testName2"));
+    }
+
+    @Test
+    void getPlayerRole_validInput_BuzzerTeam2() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(1, "testName2")).thenReturn(false);
+        testGame.getTeam2().setaRole(Role.BUZZINGTEAM);
+        assertEquals(PlayerRole.BUZZER, gameService.getPlayerRole(123456, "testName2"));
+    }
+
+    @Test
+    void getPlayerRole_validInput_clueGiverTeam1() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(1, "testName2")).thenReturn(true);
+        Mockito.when(teamService.isClueGiver(1, "testName2")).thenReturn(true);
+        assertEquals(PlayerRole.CLUEGIVER, gameService.getPlayerRole(123456, "testName2"));
+    }
+
+    @Test
+    void getPlayerRole_validInput_clueGiverTeam2() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(teamService.isInTeam(1, "testName2")).thenReturn(false);
+        Mockito.when(teamService.isClueGiver(2, "testName2")).thenReturn(true);
+        testGame.getTeam2().setaRole(Role.GUESSINGTEAM);
+        assertEquals(PlayerRole.CLUEGIVER, gameService.getPlayerRole(123456, "testName2"));
+    }
+
+    @Test
+    void buzz_invalidInput_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.buzz(123456));
+    }
+
+    @Test
+    void nextTurn_validInput_success() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        gameService.nextTurn(123456);
+        Mockito.verify(gameRepository, Mockito.times(1)).save(testGame);
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+        assertEquals(1, testGame.getRoundsPlayed());
+        assertEquals(0, testGame.getTurn().getTurnPoints());
+    }
+
+    @Test
+    void createGame_validInput_success() {
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        User user = new User();
+        user.setUsername("testName");
+        user.setLeader(true);
+        user.setId(1L);
+        User user2 = new User();
+        user2.setUsername("testName2");
+        user2.setLeader(false);
+        user2.setId(2L);
+        User user3 = new User();
+        user3.setUsername("testName3");
+        user3.setLeader(false);
+        user3.setId(3L);
+        User user4 = new User();
+        user4.setUsername("testName4");
+        user4.setLeader(false);
+        testLobby.setLobbyLeader(user);
+        testLobby.addUserToLobby(user2);
+        testLobby.addUserToLobby(user3);
+        testLobby.addUserToLobby(user4);
+
+
+        Game game = gameService.createGame(123456);
+        Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(game);
+        assertEquals(game.getTeam1().getPlayers().get(0).getName(), "testName");
+        assertEquals(game.getTeam2().getPlayers().get(0).getName(), "testName3");
+        assertEquals(game.getTeam1().getPlayers().get(1).getName(), "testName2");
+        assertEquals(game.getTeam2().getPlayers().get(1).getName(), "testName4");
+        assertEquals(game.getAccessCode(), 123456);
+        assertEquals(game.getRoundsPlayed(), 0);
+
+
     }
 
 
