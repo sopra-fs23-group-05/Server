@@ -14,6 +14,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.websockets.ChatWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +50,7 @@ class GameServiceTest {
     private TeamService teamService;
 
     @Mock
-    private LobbyService lobbyService;
+    private UserRepository userRepository;
 
     private Lobby testLobby;
 
@@ -101,7 +102,8 @@ class GameServiceTest {
     }
 
 
-    }
+
+
 
 
     @Test
