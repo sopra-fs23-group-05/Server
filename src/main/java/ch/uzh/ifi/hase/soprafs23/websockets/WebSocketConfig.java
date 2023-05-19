@@ -14,10 +14,12 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
-    private final static String CHAT_ENDPOINT = "/chat";
-    private final static String CARD_ENDPOINT = "/cards";
+    private final static String CHAT_ENDPOINT = "/chats/{accessCode}";
+    private final static String CARD_ENDPOINT = "/cards/{accessCode}";
     private final static String TEAM_ENDPOINT = "/teams";
-    private final static String PAGE_ENDPOINT = "/pages";
+    private final static String PAGE_ENDPOINT = "/pages/{accessCode}";
+    private final static String TIMER_ENDPOINT = "/timers/{accessCode}";
+    private final static String PREGAME_ENDPOINT = "/pregameTimers/{accessCode}";
 
     private final GameService gameService;
 
@@ -25,7 +27,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     private final UserService userService;
 
-    public WebSocketConfig(GameService gameService, LobbyService lobbyService, UserService userService){
+    public WebSocketConfig(GameService gameService, LobbyService lobbyService, UserService userService) {
         this.gameService = gameService;
         this.lobbyService = lobbyService;
         this.userService = userService;
@@ -41,13 +43,19 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("*");
         webSocketHandlerRegistry.addHandler(getPageWebSocketHandler(), PAGE_ENDPOINT)
                 .setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getTimerWebSocketHandler(), TIMER_ENDPOINT)
+                .setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getPreGameTimeWebSocketHandler(), PREGAME_ENDPOINT)
+                .setAllowedOrigins("*");
     }
 
-    private WebSocketHandler getPageWebSocketHandler() {
-        return new PageWebSocketHandler();
+    @Bean
+    public WebSocketHandler getPageWebSocketHandler() {
+        return new PageWebSocketHandler(gameService);
     }
 
-    private WebSocketHandler getCardWebSocketHandler() {
+    @Bean
+    public WebSocketHandler getCardWebSocketHandler() {
         return new CardWebSocketHandler(gameService);
     }
 
@@ -59,5 +67,15 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Bean
     public WebSocketHandler getTeamWebSocketHandler() {
         return new TeamWebSocketHandler(lobbyService, userService);
+    }
+
+    @Bean
+    public WebSocketHandler getTimerWebSocketHandler() {
+        return new TimerWebSocketHandler(gameService);
+    }
+
+    @Bean
+    public WebSocketHandler getPreGameTimeWebSocketHandler() {
+        return new TimerWebSocketHandler();
     }
 }

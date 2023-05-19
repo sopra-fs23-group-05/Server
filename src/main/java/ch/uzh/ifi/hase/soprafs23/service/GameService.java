@@ -58,7 +58,11 @@ public class GameService {
     }
 
     public Game getGame(int accessCode) {
-        return this.gameRepository.findByAccessCode(accessCode);
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        return existingGame;
     }
     //updates the team at the end of a round with the points they made and switches the roles
 
@@ -193,7 +197,7 @@ public class GameService {
             }
 
             // Call the card websocket, so it sends a new card to the clients.
-            cardWebSocketHandler.callBack(existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
+            cardWebSocketHandler.callBack(guess.getAccessCode(), existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
         }
         gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
     }
@@ -221,6 +225,8 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        userRepository.deleteAll(lobby.getLobbyUsers());
         lobbyRepository.delete(lobbyRepository.findByAccessCode(accessCode));
         teamRepository.delete(existingGame.getTeam1());
         teamRepository.delete(existingGame.getTeam2());
