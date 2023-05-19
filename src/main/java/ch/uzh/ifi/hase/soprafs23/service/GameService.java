@@ -13,6 +13,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.TeamRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.websockets.CardWebSocketHandler;
+import ch.uzh.ifi.hase.soprafs23.websockets.ChatWebSocketHandler;
 import ch.uzh.ifi.hase.soprafs23.websockets.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.awt.image.AreaAveragingScaleFilter;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,10 +38,10 @@ public class GameService {
     private final TeamRepository teamRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-
     private final LobbyRepository lobbyRepository;
 
     private CardWebSocketHandler cardWebSocketHandler;
+    private ChatWebSocketHandler chatWebSocketHandler;
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository) {
@@ -100,6 +99,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
         Card outCard = existingGame.getTurn().drawCard();
+        chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
         return outCard;
     }
@@ -109,7 +109,24 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
+
         Card outCard = existingGame.getTurn().buzz();
+        if(outCard != null){
+            chatWebSocketHandler.sendInformationCallBack(accessCode);
+            gameRepository.flush();
+        }else{
+            outCard = existingGame.getTurn().getDrawnCard();
+        }
+        return outCard;
+    }
+
+    public Card skip(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        Card outCard = existingGame.getTurn().skip();
+        chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
         return outCard;
     }
@@ -183,16 +200,6 @@ public class GameService {
             cardWebSocketHandler.callBack(guess.getAccessCode(), existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
         }
         gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
-    }
-
-    public Card skip(int accessCode) {
-        Game existingGame = gameRepository.findByAccessCode(accessCode);
-        if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
-        }
-        Card outCard = existingGame.getTurn().skip();
-        gameRepository.flush();
-        return outCard;
     }
 
     public void createCard(int accessCode, Card card) {
@@ -275,4 +282,7 @@ public class GameService {
         gameRepository.flush();
     }
 
+    public void initializeChatWebSocketHandler(ChatWebSocketHandler chatWebSocketHandler) {
+        this.chatWebSocketHandler = chatWebSocketHandler;
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,6 +21,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     public ChatWebSocketHandler(GameService gameService) {
         this.gameService = gameService;
+        gameService.initializeChatWebSocketHandler(this);
     }
 
     @Override
@@ -86,5 +88,19 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     /** Extracts the access code from a WebSocketSession object. */
     private static int getAccessCode(WebSocketSession session) {
         return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
+    }
+
+    /** Inform the clients that a new card was drawn. */
+    public void sendInformationCallBack(int accessCode){
+        String messageString = "\"accessCode\":\"" + accessCode + "\", \"userId\":" + -1 + ", \"message\":\"A new card was drawn.\", \"type\":\"information\"";
+        TextMessage message = new TextMessage(messageString);
+        try {
+            for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
+                webSocketSession.sendMessage(message);
+            }
+        }
+        catch (IOException e) {
+            System.out.println("IOException in CardWebSocketHandler: Sending TextMessage objects failed.");
+        }
     }
 }
