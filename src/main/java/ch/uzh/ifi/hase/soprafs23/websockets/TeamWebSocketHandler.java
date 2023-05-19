@@ -12,11 +12,12 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     /** HashMap that stores a list of sessions for each access code. */
-    private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = new HashMap<>();
+    private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
     // Inject dependency to GameService here
     private final LobbyService lobbyService;
@@ -30,12 +31,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        int accessCode = getAccessCode(session);
-        // If the access code is not in the HashMap, add it
-        if (!webSocketSessions.containsKey(accessCode)) {
-            webSocketSessions.put(accessCode, new ArrayList<>());
-        }
-        webSocketSessions.get(accessCode).add(session);
+        webSocketSessions.add(session);
     }
 
     /**
@@ -44,11 +40,10 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        int accessCode = getAccessCode(session);
-
         // System.out.println("Sending message: " + message.getPayload());
         String messagePayload = message.getPayload();
         String[] messageParts = messagePayload.split(",");
+        int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 1));
         int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
         int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 1));
         String type = messageParts[3].contains("addition") ? "addition" : "removal";
@@ -75,7 +70,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
             outMessage = new TextMessage(messagePayload);
         }
 
-        for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
+        for (WebSocketSession webSocketSession : webSocketSessions) {
             webSocketSession.sendMessage(outMessage);
         }
     }
@@ -87,7 +82,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         TextMessage outMessage = new TextMessage(messagePayload);
 
         try {
-            for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
+            for (WebSocketSession webSocketSession : webSocketSessions) {
                 webSocketSession.sendMessage(outMessage);
             }
         } catch (IOException e) {
@@ -97,24 +92,6 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
-        int accessCode = getAccessCode(session);
-        webSocketSessions.get(accessCode).remove(session);
-
-        // If the lobby was deleted, delete the mapping.
-        try{
-            lobbyService.getLobby(accessCode);
-        }catch (ResponseStatusException e){
-            webSocketSessions.remove(accessCode);
-        }
-    }
-
-    /** Extracts the access code from a WebSocketSession object. */
-    /* This method returns a constant, as there is an unresolvable issue with the endpoint /teams/{accessCode}.
-    * This means, for the time being, there can only be one lobby at a time.
-    * In case a way is found to make the /teams/{accessCode} endpoint work, the session specific access code can
-    * be returned. */
-    private static int getAccessCode(WebSocketSession session) {
-        return 123456;
-        // return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
+        webSocketSessions.remove(session);
     }
 }
