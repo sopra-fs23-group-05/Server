@@ -174,6 +174,12 @@ class LobbyServiceTest {
     }
 
     @Test
+    void joinLobbyTeam_teamDoesntExist() {
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123456, 3, 1));
+    }
+
+    @Test
     void leaveLobby_validInput() {
         List<User> users = new ArrayList<>();
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
@@ -185,6 +191,39 @@ class LobbyServiceTest {
 
         assertEquals(testLobby.getLobbyUsers(), users);
 
+    }
+
+    @Test
+    void leaveLobby_invalidLobby() {
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobby(123123, 1));
+    }
+
+    @Test
+    void leaveLobby_invalidUser(){
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobby(123123, 1));
+    }
+
+    @Test
+    void leaveLobbyTeam_invalidLobby() {
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobbyTeam(123123, 1, 1));
+    }
+
+    @Test
+    void leaveLobbyTeam_invalidUser(){
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobbyTeam(123123, 1,1));
+    }
+
+    @Test
+    void leaveLobbyTeam_invalidTeam(){
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobbyTeam(123123, 3,1));
     }
 
     @Test
@@ -221,6 +260,7 @@ class LobbyServiceTest {
 
         assertEquals(lobby, testLobby);
     }
+
 
     @Test
     void joinTeam_invalidJoin() {
@@ -298,5 +338,6 @@ class LobbyServiceTest {
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> lobbyService.getLobby(123456));
     }
+
 
 }
