@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.websockets.TeamWebSocketHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,6 +29,8 @@ class LobbyServiceTest {
     private LobbyService lobbyService;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private TeamWebSocketHandler teamWebSocketHandler;
 
     private Lobby testLobby;
     private User testUser;
@@ -44,11 +47,12 @@ class LobbyServiceTest {
         testUser.setLeader(true);
         testUser.setUsername("testUsername");
 
-        // when -> any object is being saved in the userRepository -> return the dummy
-        // testUser
-        Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
 
-        Mockito.when(lobbyRepository.save(Mockito.any())).thenReturn(testLobby);
+
+
+        Mockito.when(userRepository.save(testUser)).thenReturn(testUser);
+
+        Mockito.when(lobbyRepository.save(testLobby)).thenReturn(testLobby);
     }
 
     @Test
@@ -63,33 +67,41 @@ class LobbyServiceTest {
 
     @Test
     void createLobby_validInput() {
-        Lobby lobby = lobbyService.createLobby();
-        Mockito.verify(lobbyRepository, Mockito.times(1)).save(Mockito.any());
-
-        assertEquals(lobby.getSettings(), testLobby.getSettings());
-        assertEquals(lobby.getAccessCode(), testLobby.getAccessCode());
-
+        Mockito.when(lobbyRepository.save(Mockito.any())).thenReturn(testLobby);
+        assertEquals(lobbyService.createLobby(), testLobby);
+        Mockito.verify(lobbyRepository, Mockito.times(1)).flush();
     }
 
     @Test
     void joinLobbyTeam_LobbyDoesntExist() {
+        Mockito.when(lobbyRepository.findByAccessCode(123445)).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123445, 1, 1));
     }
 
+
     @Test
     void joinLobbyTeam_UserDoesntExist() {
-        Lobby lobby = new Lobby();
-        int code = lobby.getAccessCode();
-        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(code, 1, 1));
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(1L)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123456, 1, 1));
     }
 
     @Test
     void joinLobbyTeam_UserNotInLobby() {
-        Lobby lobby = new Lobby();
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
         User user = new User();
-        Long id = user.getId();
-        int code = lobby.getAccessCode();
-        assertThrows(NullPointerException.class, () -> lobbyService.joinLobbyTeam(code, 1, Math.toIntExact(id)));
+        user.setId(5L);
+        user.setLeader(false);
+        Mockito.when(userRepository.findById(5L)).thenReturn(user);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123456, 1, 1));
+    }
+
+    @Test
+    void joinLobbyTeam_isUnfair(){
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(1L)).thenReturn(testUser);
+
+        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123456, 1, 1));
     }
 
     @Test
@@ -117,6 +129,7 @@ class LobbyServiceTest {
 
         assertEquals(testLobby.getTeam2(), users);
     }
+
 
     @Test
     void leaveTeam_team2() {
@@ -234,6 +247,56 @@ class LobbyServiceTest {
 
         // adding a 3rd user to team 1 should throw an exception
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(lobby.getAccessCode(), 1, Math.toIntExact(user4.getId())));
+    }
+
+    @Test
+    void deleteLobbyAndUsers_invalidInput() {
+        assertThrows(ResponseStatusException.class, () -> lobbyService.deleteLobbyAndUsers(123456));
+    }
+
+    @Test
+    void deleteLobbyAndUsers_validInput(){
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        lobbyService.deleteLobbyAndUsers(123456);
+        Mockito.verify(lobbyRepository, Mockito.times(1)).delete(testLobby);
+        Mockito.verify(userRepository, Mockito.times(1)).deleteAll(testLobby.getLobbyUsers());
+        Mockito.verify(userRepository, Mockito.times(1)).flush();
+        Mockito.verify(lobbyRepository, Mockito.times(1)).flush();
+    }
+
+    @Test
+    void userIsInLobby_invalidInput_LobbyNotFound(){
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.userIsInLobby(1L, 123456));
+    }
+
+    @Test
+    void userIsInLobby_invalidInput_userNotFound(){
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.userIsInLobby(1L, 123456));
+    }
+
+    @Test
+    void userIsInLobby_validInput(){
+        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(1L)).thenReturn(testUser);
+        testLobby.addUserToLobby(testUser);
+        assertTrue(lobbyService.userIsInLobby(1L, 123456));
+    }
+
+    @Test
+    void getLobbies_validInput(){
+        List<Lobby> lobbies = new ArrayList<>();
+        lobbies.add(testLobby);
+        Mockito.when(lobbyRepository.findAll()).thenReturn(lobbies);
+        assertEquals(lobbies, lobbyService.getLobbies());
+    }
+
+    @Test
+    void getLobby_invalidInput(){
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.getLobby(123456));
     }
 
 }
