@@ -94,13 +94,6 @@ class LobbyServiceTest {
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123456, 1, 1));
     }
 
-    @Test
-    void joinLobbyTeam_isUnfair() {
-        Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
-        Mockito.when(userRepository.findById(1L)).thenReturn(testUser);
-
-        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobbyTeam(123456, 1, 1));
-    }
 
     @Test
     void joinLobbyTeam_joinTeam1ValidInput() {
@@ -339,6 +332,37 @@ class LobbyServiceTest {
     void getLobby_invalidInput() {
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> lobbyService.getLobby(123456));
+    }
+
+    @Test
+    void joinLobby_invalidInput() {
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobby(123456, 1L));
+    }
+
+    @Test
+    void joinLobby_userNotExists(){
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobby(123456, 1L));
+    }
+
+    @Test
+    void joinLobby_validInput_Leader(){
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
+        lobbyService.joinLobby(123456, 1L);
+        assertEquals(testLobby.getLobbyLeader(), testUser);
+        Mockito.verify(lobbyRepository, Mockito.times(1)).save(testLobby);
+        Mockito.verify(lobbyRepository, Mockito.times(1)).flush();
+    }
+
+    @Test
+    void leaveLobbyTeam_userNotInTeam(){
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
+        testLobby.addUserToLobby(testUser);
+        assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobbyTeam(123456, 1, 1));
     }
 
 
