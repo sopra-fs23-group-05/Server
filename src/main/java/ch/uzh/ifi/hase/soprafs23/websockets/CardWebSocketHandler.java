@@ -26,12 +26,19 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) {
+    public void afterConnectionEstablished(WebSocketSession session) throws IOException {
         int accessCode = getAccessCode(session);
-        if(!webSocketSessions.containsKey(accessCode)) {
+        if (!webSocketSessions.containsKey(accessCode)) {
             webSocketSessions.put(accessCode, new ArrayList<>());
+            gameService.drawCard(accessCode);   // Draw a starting card when the first client connects
         }
         webSocketSessions.get(accessCode).add(session);
+
+        // Send the starting card to each connecting client
+        Card outCard = gameService.getDrawnCard(accessCode);
+        String outCardString = outCard.toString();
+        String outCardStringWithTurnPoints = outCardString.substring(0, outCardString.length() - 1) + ", \"turnPoints\":\"" + 0 + '\"' + "}";
+        session.sendMessage(new TextMessage(outCardStringWithTurnPoints));
     }
 
     // Handle the client requesting a card
