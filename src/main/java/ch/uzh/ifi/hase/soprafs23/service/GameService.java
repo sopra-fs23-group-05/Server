@@ -285,4 +285,12 @@ public class GameService {
     public void initializeChatWebSocketHandler(ChatWebSocketHandler chatWebSocketHandler) {
         this.chatWebSocketHandler = chatWebSocketHandler;
     }
+
+    public Card getDrawnCard(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+        return existingGame.getTurn().getDrawnCard();
+    }
 }
