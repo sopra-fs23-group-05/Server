@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.websockets;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +34,7 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws InterruptedException, IOException {
+    public void afterConnectionEstablished(WebSocketSession session) {
         int accessCode = getAccessCode(session);
         // If the access code is not in the HashMap, add it
         if (!webSocketSessions.containsKey(accessCode)) {
@@ -44,10 +42,15 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
         }
         webSocketSessions.get(accessCode).add(session);
 
+        startTimer(session);
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+        // The timer websocket never receives messages.
+    }
+
+    private void startTimer(WebSocketSession session) {
         int accessCode = getAccessCode(session);
         if (!isRunning.contains(accessCode)) {
             if (gameService != null) {
