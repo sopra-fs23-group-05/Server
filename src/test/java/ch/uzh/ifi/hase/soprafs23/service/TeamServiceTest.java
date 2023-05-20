@@ -46,10 +46,9 @@ class TeamServiceTest {
         testUser = new User();
         testUser.setId(1L);
         testUser.setLeader(true);
-        testUser.setUsername("testUsername");
+        testUser.setUsername("testName");
 
-        // when -> any object is being saved in the userRepository -> return the dummy
-        // testUser
+
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
         Mockito.when(teamRepository.save(Mockito.any())).thenReturn(testTeam);
     }
@@ -63,7 +62,7 @@ class TeamServiceTest {
     @Test
     void convertUserToPlayer() {
         User user = new User();
-        user.setUsername("testUsername");
+        user.setUsername("testName");
         user.setLeader(true);
         user.setId(1L);
         Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
@@ -105,7 +104,7 @@ class TeamServiceTest {
         teamService.changeTurn(1, 2, 5);
 
         Mockito.verify(teamRepository, Mockito.times(2)).save(Mockito.any());
-        assertEquals(Role.BUZZINGTEAM,testTeam.getaRole() );
+        assertEquals(Role.BUZZINGTEAM, testTeam.getaRole());
         assertEquals(Role.GUESSINGTEAM, testTeam1.getaRole());
         assertEquals(5, testTeam.getPoints());
         assertEquals(0, testTeam1.getPoints());
@@ -132,7 +131,7 @@ class TeamServiceTest {
 
         teamService.changeTurn(2, 1, 5);
         Mockito.verify(teamRepository, Mockito.times(2)).save(Mockito.any());
-        assertEquals(Role.GUESSINGTEAM,testTeam2.getaRole());
+        assertEquals(Role.GUESSINGTEAM, testTeam2.getaRole());
         assertEquals(Role.BUZZINGTEAM, testTeam1.getaRole());
         assertEquals(0, testTeam2.getPoints());
         assertEquals(5, testTeam1.getPoints());
@@ -172,5 +171,66 @@ class TeamServiceTest {
         int teamId = testTeam.getTeamId();
         // Call UUT and make assertion
         assertThrows(ResponseStatusException.class, () -> teamService.getTeamRole(teamId));
+    }
+
+    @Test
+    void createTeam_teamSizeTooSmall() {
+        Mockito.when(userRepository.findById(1)).thenReturn(testUser);
+        List<User> users = new ArrayList<>();
+        users.add(testUser);
+        assertThrows(ResponseStatusException.class, () -> teamService.createTeam(users, Role.GUESSINGTEAM));
+    }
+
+    @Test
+    void changeTurn_team1NotExists() {
+        Mockito.when(teamRepository.findById(1)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> teamService.changeTurn(1, 2, 5));
+    }
+
+    @Test
+    void changeTurn_team2NotExists() {
+        Mockito.when(teamRepository.findById(1)).thenReturn(testTeam);
+        Mockito.when(teamRepository.findById(2)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> teamService.changeTurn(1, 2, 5));
+    }
+
+    @Test
+    void isInTeam_userNotFound() {
+        Mockito.when(userRepository.findById(1)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> teamService.isInTeam(1, "testName"));
+    }
+
+    @Test
+    void isInTeam_userNotInTeam() {
+        Mockito.when(teamRepository.findById(1)).thenReturn(testTeam);
+        Mockito.when(userRepository.findByUsername("testName")).thenReturn(testUser);
+
+        assertEquals(false, teamService.isInTeam(1, "testName"));
+    }
+
+    @Test
+    void inInTeam_userInTeam() {
+        Mockito.when(teamRepository.findById(1)).thenReturn(testTeam);
+        Mockito.when(userRepository.findByUsername("testName")).thenReturn(testUser);
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("testName", true));
+        testTeam.setPlayers(players);
+
+        assertEquals(true, teamService.isInTeam(1, "testName"));
+    }
+
+    @Test
+    void isClueGiver_isNot() {
+        Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(testTeam);
+        Player player = new Player();
+        player.setName("a");
+        Player player2 = new Player();
+        player2.setName("b");
+        List<Player> players = new ArrayList<>();
+        players.add(player);
+
+        testTeam.setPlayers(players);
+
+        assertFalse(teamService.isClueGiver(testTeam.getTeamId(), "b"));
     }
 }
