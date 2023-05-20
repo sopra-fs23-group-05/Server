@@ -27,6 +27,7 @@ public class Timer extends Thread {
     @Override
     public void run() {
         try {
+            Thread.sleep(1000); // Wait until clients are connected.
             for (int tick = timerValue; tick >= 0; tick--) {
                 String time = String.valueOf(timerValue);
                 for (WebSocketSession webSocketSession : webSocketSessions) {
