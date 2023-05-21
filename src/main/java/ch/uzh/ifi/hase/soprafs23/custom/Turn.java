@@ -12,11 +12,14 @@ public class Turn {
 
     private Card drawnCard;
 
+    private int turnCounter;
+
     private int buzzCounter = 0;
 
     public Turn() {
         this.deck = new Deck();
         this.turnPoints = 0;
+        this.turnCounter = 0;
     }
 
     public Card drawCard() {
@@ -65,5 +68,17 @@ public class Turn {
 
     public Card getDrawnCard() {
         return drawnCard;
+    }
+
+    public int getTurnCounter() {
+        return turnCounter;
+    }
+
+    public void incrementTurnCounter() {
+        this.turnCounter += 1;
+    }
+
+    public void resetTurnCounter() {
+        this.turnCounter = 0;
     }
 }

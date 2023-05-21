@@ -86,8 +86,27 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
+
         int scoredPoints = existingGame.getTurn().getTurnPoints();
-        existingGame.incrementRoundsPlayed();
+
+        existingGame.getTurn().incrementTurnCounter();
+        int numberOfTurns = existingGame.getTurn().getTurnCounter();
+
+        if (numberOfTurns == 1) {
+            existingGame.incrementRoundsPlayed();
+        }
+
+        if (numberOfTurns == 2) {
+            existingGame.getTurn().resetTurnCounter();
+        }
+
+        //System.out.println("rounds played " + existingGame.getRoundsPlayed() + " with number of turns played " + existingGame.getTurn().getTurnCounter());
+        //System.out.println("Number of setting rounds " + existingGame.getSettings().getRounds());
+
+        if (existingGame.getSettings().getRounds() == existingGame.getRoundsPlayed()) {
+            finishGame(accessCode);
+        }
+
         teamService.changeTurn(existingGame.getTeam1().getTeamId(), existingGame.getTeam2().getTeamId(), scoredPoints);
         existingGame.getTurn().setTurnPoints(0);
         gameRepository.save(existingGame);
