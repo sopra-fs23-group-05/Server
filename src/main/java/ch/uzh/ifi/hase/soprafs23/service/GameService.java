@@ -68,9 +68,11 @@ public class GameService {
 
     public Game createGame(int accessCode) {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        /* TODO We create two Player objects for the lobby leader. This is bad. Remove Player lobbyLeader as parameter constructor.
+        *   Instead, within the Game constructor, iterate over all Player objects, check if the Player is the leader, and if so set
+        *   the Game.leader field. */
         Game newGame = new Game(lobby.getAccessCode(), lobby.getSettings(), teamService.createTeam(lobby.getTeam1(), Role.GUESSINGTEAM), teamService.createTeam(lobby.getTeam2(), Role.BUZZINGTEAM), teamService.convertUserToPlayer(lobby.getLobbyLeader().getId()));
-        // saves the given entity but data is only persisted in the database once
-        // flush() is called
+        // saves the given entity but data is only persisted in the database once flush() is called
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
 
