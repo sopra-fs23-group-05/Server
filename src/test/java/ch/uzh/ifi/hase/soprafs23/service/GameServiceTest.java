@@ -6,7 +6,6 @@ import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
-import ch.uzh.ifi.hase.soprafs23.custom.Turn;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Team;
@@ -438,5 +437,18 @@ class GameServiceTest {
 
     }
 
+    @Test
+    void getDrawnCard_success() {
+        Card aCard = new Card("testWord", "testTaboo1", "testTaboo2", "testTaboo3", "testTaboo4", "testTaboo5");
+        testGame.getTurn().addCard(aCard);
+        testGame.getTurn().drawCard();
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        assertEquals(aCard, gameService.getDrawnCard(123456));
+    }
 
+    @Test
+    void getDrawnCard_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.getDrawnCard(123456));
+    }
 }
