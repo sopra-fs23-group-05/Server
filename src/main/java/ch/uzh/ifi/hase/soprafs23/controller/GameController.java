@@ -11,6 +11,9 @@ import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * User Controller
@@ -35,6 +38,19 @@ public class GameController {
     public GameGetDTO createGame(@PathVariable int accessCode) {
         Game createdGame = gameService.createGame(accessCode);
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(createdGame);
+    }
+
+    @GetMapping("/games")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<GameGetDTO> getAllGames() {
+        List<Game> games = gameService.getAllGames();
+        List<GameGetDTO> gameGetDTOS = new ArrayList<>();
+
+        for (Game game : games) {
+            gameGetDTOS.add(DTOMapper.INSTANCE.convertEntityToGameGetDTO(game));
+        }
+        return gameGetDTOS;
     }
 
     @GetMapping("/games/{accessCode}")

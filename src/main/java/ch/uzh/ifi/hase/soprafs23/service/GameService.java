@@ -296,4 +296,8 @@ public class GameService {
         }
         return existingGame.getTurn().getDrawnCard();
     }
+
+    public List<Game> getAllGames() {
+        return gameRepository.findAll();
+    }
 }
