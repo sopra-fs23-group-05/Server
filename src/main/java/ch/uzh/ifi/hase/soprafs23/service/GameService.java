@@ -87,6 +87,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
         int scoredPoints = existingGame.getTurn().getTurnPoints();
+        // TODO increment the turns played, then use that to calculate the number of played rounds
         existingGame.incrementRoundsPlayed();
         teamService.changeTurn(existingGame.getTeam1().getTeamId(), existingGame.getTeam2().getTeamId(), scoredPoints);
         existingGame.getTurn().setTurnPoints(0);
