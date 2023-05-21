@@ -28,7 +28,6 @@ public interface DTOMapper {
     DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
     @Mapping(source = "teamId", target = "teamId")
-    @Mapping(source = "teamName", target = "teamName")
     @Mapping(source = "aRole", target = "aRole")
     @Mapping(source = "points", target = "points")
     @Mapping(source = "players", target = "players")
