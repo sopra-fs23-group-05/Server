@@ -66,7 +66,6 @@ public class DTOMapperTest {
         team.setPlayers(players);
         team.setPoints(0);
         team.setIdxClueGiver(0);
-        team.setTeamName("a");
 
         TeamGetDTO teamGetDTO = DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
 
