@@ -246,12 +246,7 @@ public class GameService {
         for (Player player : playersTeam) {
             if (player.getName().equals(playerName)) {
                 team.getPlayers().remove(playerIdx);
-                if (playersTeam.size() < 2) {
-                    deleteGameTeamsUsersAndLobby(accessCode);
-                }
-                else {
-                    gameRepository.flush();
-                }
+                gameRepository.flush();
                 return;
             }
             playerIdx++;
