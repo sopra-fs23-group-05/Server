@@ -69,7 +69,7 @@ class TeamServiceTest {
         Player player = teamService.convertUserToPlayer(1);
 
         assertEquals(player.getName(), user.getUsername());
-        assertEquals(player.getPersonalScore(), 0);
+        assertEquals(0, player.getPersonalScore());
         assertEquals(player.isLeader(), user.isLeader());
     }
 
@@ -205,7 +205,7 @@ class TeamServiceTest {
         Mockito.when(teamRepository.findById(1)).thenReturn(testTeam);
         Mockito.when(userRepository.findByUsername("testName")).thenReturn(testUser);
 
-        assertEquals(false, teamService.isInTeam(1, "testName"));
+        assertFalse(teamService.isInTeam(1, "testName"));
     }
 
     @Test
@@ -216,7 +216,7 @@ class TeamServiceTest {
         players.add(new Player("testName", true));
         testTeam.setPlayers(players);
 
-        assertEquals(true, teamService.isInTeam(1, "testName"));
+        assertTrue(teamService.isInTeam(1, "testName"));
     }
 
     @Test
@@ -224,8 +224,6 @@ class TeamServiceTest {
         Mockito.when(teamRepository.findById(Mockito.anyInt())).thenReturn(testTeam);
         Player player = new Player();
         player.setName("a");
-        Player player2 = new Player();
-        player2.setName("b");
         List<Player> players = new ArrayList<>();
         players.add(player);
 

@@ -263,14 +263,15 @@ class GameServiceTest {
         assertEquals(1, testGame.getTeam1().getPlayers().size());
     }
 
+
     @Test
-    void deletePlayerFromGame_validInput_team2() {
+    void deletePlayerFromGame_validInput_player2(){
         Mockito.when(lobbyRepository.findByAccessCode(123456)).thenReturn(testLobby);
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
-        Mockito.when(teamService.isInTeam(2, "testName3")).thenReturn(true);
-        gameService.deletePlayerFromGame(123456, "testName3");
-        assertEquals(1, testGame.getTeam2().getPlayers().size());
+        Mockito.when(teamService.isInTeam(1, "testName2")).thenReturn(true);
+        gameService.deletePlayerFromGame(123456, "testName2");
+        assertEquals(1, testGame.getTeam1().getPlayers().size());
     }
 
     @Test
@@ -321,9 +322,16 @@ class GameServiceTest {
     }
 
     @Test
-    void getMVPPlayer_validInput_success() {
+    void getMVPPlayer_validInput_team1() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
         assertEquals(testGame.getTeam1().getPlayers().get(0), gameService.getMPVPlayer(123456));
+    }
+
+    @Test
+    void getMVPPlayer_validInput_team2(){
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        testGame.getTeam2().getPlayers().get(0).setPersonalScore(10);
+        assertEquals(testGame.getTeam2().getPlayers().get(0), gameService.getMPVPlayer(123456));
     }
 
     @Test
@@ -427,14 +435,12 @@ class GameServiceTest {
         Mockito.verify(gameRepository, Mockito.times(1)).save(Mockito.any());
         Mockito.verify(gameRepository, Mockito.times(1)).flush();
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(game);
-        assertEquals(game.getTeam1().getPlayers().get(0).getName(), "testName");
-        assertEquals(game.getTeam2().getPlayers().get(0).getName(), "testName3");
-        assertEquals(game.getTeam1().getPlayers().get(1).getName(), "testName2");
-        assertEquals(game.getTeam2().getPlayers().get(1).getName(), "testName4");
-        assertEquals(game.getAccessCode(), 123456);
-        assertEquals(game.getRoundsPlayed(), 0);
-
-
+        assertEquals("testName",game.getTeam1().getPlayers().get(0).getName());
+        assertEquals("testName3",game.getTeam2().getPlayers().get(0).getName());
+        assertEquals("testName2",game.getTeam1().getPlayers().get(1).getName());
+        assertEquals("testName4",game.getTeam2().getPlayers().get(1).getName());
+        assertEquals(123456,game.getAccessCode() );
+        assertEquals(0,game.getRoundsPlayed());
     }
 
     @Test
@@ -451,4 +457,14 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> gameService.getDrawnCard(123456));
     }
+
+    @Test
+    void getGames_validInput_success() {
+        List<Game> testGames = new ArrayList<>();
+        testGames.add(testGame);
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.findAll()).thenReturn(testGames);
+        assertEquals(testGames, gameService.getAllGames());
+    }
+
 }

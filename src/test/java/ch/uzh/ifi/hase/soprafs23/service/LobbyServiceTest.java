@@ -6,7 +6,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs23.websockets.TeamWebSocketHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,8 +28,6 @@ class LobbyServiceTest {
     private LobbyService lobbyService;
     @Mock
     private UserRepository userRepository;
-    @Mock
-    private TeamWebSocketHandler teamWebSocketHandler;
 
     private Lobby testLobby;
     private User testUser;

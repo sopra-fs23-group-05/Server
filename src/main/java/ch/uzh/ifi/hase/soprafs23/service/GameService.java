@@ -43,6 +43,9 @@ public class GameService {
     private CardWebSocketHandler cardWebSocketHandler;
     private ChatWebSocketHandler chatWebSocketHandler;
 
+    private final String gameWithCode = "Game with accessCode ";
+    private final String doesNotExist = " does not exist";
+
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository) {
         this.gameRepository = gameRepository;
@@ -60,7 +63,7 @@ public class GameService {
     public Game getGame(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         return existingGame;
     }
@@ -84,7 +87,7 @@ public class GameService {
     public void nextTurn(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
 
         int scoredPoints = existingGame.getTurn().getTurnPoints();
@@ -101,18 +104,19 @@ public class GameService {
     public Card drawCard(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Card outCard = existingGame.getTurn().drawCard();
         chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
+        existingGame.getTurn().resetBuzzCounter();
         return outCard;
     }
 
     public Card buzz(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
 
         Card outCard = existingGame.getTurn().buzz();
@@ -128,11 +132,12 @@ public class GameService {
     public Card skip(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Card outCard = existingGame.getTurn().skip();
         chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
+        existingGame.getTurn().resetBuzzCounter();
         return outCard;
     }
 
@@ -184,7 +189,7 @@ public class GameService {
     public void guessWord(Message guess) {
         Game existingGame = gameRepository.findByAccessCode(guess.getAccessCode());
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + guess.getAccessCode() + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + guess.getAccessCode() + doesNotExist);
         }
 
         /* Send a new card to the front end and increase the guessers personal score
@@ -210,7 +215,7 @@ public class GameService {
     public void createCard(int accessCode, Card card) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         existingGame.getTurn().addCard(card);
         gameRepository.flush();
@@ -219,7 +224,7 @@ public class GameService {
     public Integer getTurnPoints(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         return existingGame.getTurn().getTurnPoints();
     }
@@ -228,7 +233,7 @@ public class GameService {
     public void deleteGameTeamsUsersAndLobby(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         userRepository.deleteAll(lobby.getLobbyUsers());
@@ -258,7 +263,7 @@ public class GameService {
     public void deletePlayerFromGame(int accessCode, String playerName){
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         if(teamService.isInTeam(existingGame.getTeam1().getTeamId(), playerName)){
             deletePlayerFromTeam(existingGame.getTeam1(), playerName, accessCode);
@@ -267,14 +272,14 @@ public class GameService {
             deletePlayerFromTeam(existingGame.getTeam2(), playerName, accessCode);
         }
         else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player with name " + playerName + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player with name " + playerName + doesNotExist);
         }
     }
 
     public void finishGame(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Settings settings = existingGame.getSettings();
         settings.setRounds(existingGame.getRoundsPlayed());
@@ -296,5 +301,17 @@ public class GameService {
 
     public List<Game> getAllGames() {
         return gameRepository.findAll();
+    }
+
+    public void shuffleCards(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
+        }
+
+        existingGame.getTurn().getDeck().shuffle();
+        existingGame.getTurn().drawCard();
+        gameRepository.save(existingGame);
+        gameRepository.flush();
     }
 }

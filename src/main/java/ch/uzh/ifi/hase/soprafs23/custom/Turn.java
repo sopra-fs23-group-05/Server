@@ -67,4 +67,8 @@ public class Turn {
     public Card getDrawnCard() {
         return drawnCard;
     }
+
+    public void resetBuzzCounter() {
+        buzzCounter = 0;
+    }
 }
