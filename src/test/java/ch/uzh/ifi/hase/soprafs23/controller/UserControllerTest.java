@@ -102,4 +102,21 @@ class UserControllerTest {
                     String.format("The request body could not be created.%s", e));
         }
     }
+
+    @Test
+    void getUser() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        user.setLeader(true);
+        user.setUsername("testUsername");
+
+        given(userService.getUser(1)).willReturn(user);
+
+        MockHttpServletRequestBuilder getRequest = get("/users/1").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$.leader", is(user.isLeader())))
+                .andExpect(jsonPath("$.username", is(user.getUsername())));
+    }
 }
