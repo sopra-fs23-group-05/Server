@@ -39,7 +39,6 @@ public class TimerTest {
         timer.initializeTimerWebSocketHandler(mockWebSocketHandler);
 
         timer.run();
-
         Mockito.verify(mockWebSocketSession, times(4)).sendMessage(any(TextMessage.class));
         Mockito.verify(mockWebSocketSession, times(1)).sendMessage(new TextMessage("3"));
         Mockito.verify(mockWebSocketSession, times(1)).sendMessage(new TextMessage("2"));
@@ -51,9 +50,7 @@ public class TimerTest {
     public void testTimerCallbackCalled() throws IOException, InterruptedException {
         Timer timer = new Timer(webSocketSessions, 1, 123456);
         timer.initializeTimerWebSocketHandler(mockWebSocketHandler);
-
         timer.run();
-
         Mockito.verify(mockWebSocketHandler, times(1)).callBack(123456);
     }
 }
