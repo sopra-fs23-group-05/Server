@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
@@ -236,4 +237,14 @@ public class LobbyService {
         lobbyRepository.flush();
     }
 
+    public boolean allUsersInTeam(int accessCode) {
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        List<User> allUsers = lobby.getLobbyUsers();
+        for(User user : allUsers){
+            if(!lobby.isUserInTeam1(user) && !lobby.isUserInTeam2(user)){
+                return false;
+            }
+        }
+        return true;
+    }
 }
