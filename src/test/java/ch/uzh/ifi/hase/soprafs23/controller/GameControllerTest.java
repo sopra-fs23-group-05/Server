@@ -67,6 +67,24 @@ class GameControllerTest {
     }
 
     @Test
+    void getGames_validInput_gamesReturned() throws Exception {
+        Game game1 = new Game();
+        game1.setAccessCode(123456);
+        Game game2 = new Game();
+        game2.setAccessCode(123457);
+        List<Game> games = List.of(game1, game2);
+
+        given(gameService.getAllGames()).willReturn(games);
+
+        MockHttpServletRequestBuilder getRequest = get("/games");
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].accessCode", is(game1.getAccessCode())))
+                .andExpect(jsonPath("$[1].accessCode", is(game2.getAccessCode())));
+    }
+
+    @Test
     void nextTurn_validInput() throws Exception {
         MockHttpServletRequestBuilder putRequest = put("/games/123456/turns");
 
@@ -123,5 +141,6 @@ class GameControllerTest {
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());
     }
+
 
 }
