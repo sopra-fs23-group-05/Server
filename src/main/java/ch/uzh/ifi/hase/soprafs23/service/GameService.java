@@ -103,9 +103,9 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Card outCard = existingGame.getTurn().drawCard();
-        existingGame.getTurn().resetBuzzCounter();
         chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
+        existingGame.getTurn().resetBuzzCounter();
         return outCard;
     }
 
@@ -131,9 +131,9 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Card outCard = existingGame.getTurn().skip();
-        existingGame.getTurn().resetBuzzCounter();
         chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
+        existingGame.getTurn().resetBuzzCounter();
         return outCard;
     }
 
