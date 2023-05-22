@@ -91,8 +91,8 @@ public class GameService {
         }
 
         int scoredPoints = existingGame.getTurn().getTurnPoints();
-
         existingGame.incrementRoundsPlayed();
+        existingGame.getTurn().drawCard();  // Draw a new card for the new turn
 
         teamService.changeTurn(existingGame.getTeam1().getTeamId(), existingGame.getTeam2().getTeamId(), scoredPoints);
         existingGame.getTurn().setTurnPoints(0);
