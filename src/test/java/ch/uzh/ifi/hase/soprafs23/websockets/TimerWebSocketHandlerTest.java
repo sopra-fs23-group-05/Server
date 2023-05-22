@@ -37,7 +37,7 @@ class TimerWebSocketHandlerTest {
     }
 
     @Test
-    void afterConnectionEstablished_shouldAddSessionToWebSocketSessions() {
+    void afterConnectionEstablished_addSession() {
         int accessCode = 123456;
         when(session.getUri()).thenReturn(URI.create(getUriWithAccessCode(accessCode)));
         Game game = new Game();

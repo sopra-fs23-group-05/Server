@@ -94,4 +94,8 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         webSocketSessions.remove(session);
     }
+
+    public List<WebSocketSession> getWebSocketSessions() {
+        return webSocketSessions;
+    }
 }
