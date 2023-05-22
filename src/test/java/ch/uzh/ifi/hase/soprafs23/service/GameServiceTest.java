@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
-import ch.uzh.ifi.hase.soprafs23.custom.Deck;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
@@ -178,10 +177,21 @@ class GameServiceTest {
         assertNotEquals(card2, testCard);
     }
 
+    // test when only one turn of the round has been played:
     @Test
-    void finishGame_validInputs_success() {
+    void finishGame_validInputs_success_firstRoundPlayed() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
         Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        gameService.finishGame(123456);
+        assertEquals(testGame.getRoundsPlayed() + 1, testGame.getSettings().getRounds());
+    }
+
+    // test when the second turn of the round has been played:
+    @Test
+    void finishGame_validInputs_success_secondRoundPlayed() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        gameService.nextTurn(123456);
         gameService.finishGame(123456);
         assertEquals(testGame.getRoundsPlayed(), testGame.getSettings().getRounds());
     }
