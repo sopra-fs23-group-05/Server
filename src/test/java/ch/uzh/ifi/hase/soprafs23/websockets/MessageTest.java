@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MessageTest {
+class MessageTest {
 
     @Test
-    public void gettersAndSetters_validInput() {
+    void gettersAndSetters_validInput() {
 
         Message message = new Message(123456, 1, "Test message", MessageType.DESCRIPTION);
 

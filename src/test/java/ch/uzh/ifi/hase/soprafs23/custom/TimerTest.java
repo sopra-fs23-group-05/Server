@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class TimerTest {
+class TimerTest {
 
     @Mock
     private TimerWebSocketHandler mockWebSocketHandler;
@@ -26,14 +26,14 @@ public class TimerTest {
     private List<WebSocketSession> webSocketSessions;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
         webSocketSessions = new ArrayList<>();
         webSocketSessions.add(mockWebSocketSession);
     }
 
     @Test
-    public void testTimerSendsCorrectMessages() throws IOException {
+    void testTimerSendsCorrectMessages() throws IOException {
         Timer timer = new Timer(webSocketSessions, 3, 123456);
         timer.initializeTimerWebSocketHandler(mockWebSocketHandler);
 
@@ -46,7 +46,7 @@ public class TimerTest {
     }
 
     @Test
-    public void testTimerCallbackCalled() {
+    void testTimerCallbackCalled() {
         Timer timer = new Timer(webSocketSessions, 1, 123456);
         timer.initializeTimerWebSocketHandler(mockWebSocketHandler);
         timer.run();

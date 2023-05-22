@@ -69,7 +69,7 @@ class TeamServiceTest {
         Player player = teamService.convertUserToPlayer(1);
 
         assertEquals(player.getName(), user.getUsername());
-        assertEquals(player.getPersonalScore(), 0);
+        assertEquals(0, player.getPersonalScore());
         assertEquals(player.isLeader(), user.isLeader());
     }
 
