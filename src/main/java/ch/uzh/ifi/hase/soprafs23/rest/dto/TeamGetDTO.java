@@ -9,7 +9,6 @@ public class TeamGetDTO {
 
     private int teamId;
 
-    private String teamName;
 
     private Role aRole;
 
@@ -59,11 +58,4 @@ public class TeamGetDTO {
         return points;
     }
 
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
 }

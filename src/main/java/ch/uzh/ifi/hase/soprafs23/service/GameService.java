@@ -248,12 +248,7 @@ public class GameService {
         for (Player player : playersTeam) {
             if (player.getName().equals(playerName)) {
                 team.getPlayers().remove(playerIdx);
-                if (playersTeam.size() < 2) {
-                    deleteGameTeamsUsersAndLobby(accessCode);
-                }
-                else {
-                    gameRepository.flush();
-                }
+                gameRepository.flush();
                 return;
             }
             playerIdx++;
@@ -282,7 +277,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
         Settings settings = existingGame.getSettings();
-        settings.setRounds((int) Math.ceil(existingGame.getRoundsPlayed()));
+        settings.setRounds(existingGame.getRoundsPlayed());
         existingGame.setSettings(settings);
         gameRepository.flush();
     }
@@ -297,5 +292,9 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
         }
         return existingGame.getTurn().getDrawnCard();
+    }
+
+    public List<Game> getAllGames() {
+        return gameRepository.findAll();
     }
 }

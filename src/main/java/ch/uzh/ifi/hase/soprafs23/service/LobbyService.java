@@ -210,7 +210,6 @@ public class LobbyService {
 
     public List<Lobby> getLobbies() {
         return this.lobbyRepository.findAll();
-
     }
 
     public boolean userIsInLobby(long userId, int accessCode) {

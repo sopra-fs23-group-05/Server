@@ -15,9 +15,6 @@ public class Team {
     private int teamId;
 
     @Column
-    private String teamName;
-
-    @Column
     private Role aRole;
 
     @Column
@@ -91,14 +88,6 @@ public class Team {
 
     public int getPoints() {
         return points;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
     }
 
     public void addPoints(int scoredPoints) {
