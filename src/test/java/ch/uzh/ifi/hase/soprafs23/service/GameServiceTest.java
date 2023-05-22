@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
+import ch.uzh.ifi.hase.soprafs23.custom.Deck;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
@@ -50,6 +51,9 @@ class GameServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private UserService userService;
 
     private Lobby testLobby;
 
@@ -250,6 +254,43 @@ class GameServiceTest {
     void guessWord_invalidInput_gameNotFound() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
         Message message = new Message(123456, 1, "test", MessageType.DESCRIPTION);
+        assertThrows(ResponseStatusException.class, () -> gameService.guessWord(message));
+    }
+
+    @Test
+    void guessWord_invalidInput_incorrectGuess() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Card card = new Card("test1", "1", "2", "3", "4", "5");
+        User user = new User();
+        user.setUsername("testName2");
+        user.setId(2L);
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
+        Mockito.when(userRepository.findById(2)).thenReturn(user);
+        Mockito.when(userService.getUser(2)).thenReturn(user);
+
+        testGame.getTurn().getDeck().getCards().add(card);
+        testGame.getTurn().drawCard();
+
+        Message message = new Message(123456, 2, "test", MessageType.DESCRIPTION);
+        gameService.guessWord(message);
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
+    }
+
+    @Test
+    void guessWord_invalidInput_guesser(){
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Card card = new Card("test", "1", "2", "3", "4", "5");
+        User user = new User();
+        user.setUsername("testName2");
+        user.setId(2L);
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
+        Mockito.when(userRepository.findById(2)).thenReturn(user);
+        Mockito.when(userService.getUser(2)).thenReturn(user);
+
+        testGame.getTurn().getDeck().getCards().add(card);
+        testGame.getTurn().drawCard();
+
+        Message message = new Message(123456, 2, "test", MessageType.DESCRIPTION);
         assertThrows(ResponseStatusException.class, () -> gameService.guessWord(message));
     }
 
@@ -465,6 +506,21 @@ class GameServiceTest {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
         Mockito.when(gameRepository.findAll()).thenReturn(testGames);
         assertEquals(testGames, gameService.getAllGames());
+    }
+
+    @Test
+    void shuffleCards_invalidInput_gameNotFound() {
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(null);
+        assertThrows(ResponseStatusException.class, () -> gameService.shuffleCards(123456));
+    }
+
+    @Test
+    void shuffleCards_validInput_success(){
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        Mockito.when(gameRepository.save(Mockito.any())).thenReturn(testGame);
+        gameService.shuffleCards(123456);
+        Mockito.verify(gameRepository, Mockito.times(1)).save(testGame);
+        Mockito.verify(gameRepository, Mockito.times(1)).flush();
     }
 
 }

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
+import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
@@ -138,6 +139,14 @@ class GameControllerTest {
         MockHttpServletRequestBuilder deleteRequest = delete("/games/123456/player1");
 
         mockMvc.perform(deleteRequest)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shuffleCards() throws Exception {
+        MockHttpServletRequestBuilder putRequest = put("/games/123456/cards");
+
+        mockMvc.perform(putRequest)
                 .andExpect(status().isOk());
     }
 
