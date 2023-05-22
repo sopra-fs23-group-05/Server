@@ -16,7 +16,7 @@ public class Game {
     @Embedded
     private Settings settings;
     @Column
-    private int roundsPlayed;
+    private double roundsPlayed;
     @Embedded
     private Turn turn;
 
@@ -47,7 +47,7 @@ public class Game {
     }
 
     public int getRoundsPlayed() {
-        return roundsPlayed;
+        return (int) Math.ceil(roundsPlayed); //return the rounded number of rounds played
     }
 
     public Settings getSettings() {
@@ -70,9 +70,7 @@ public class Game {
         this.accessCode = accessCode;
     }
 
-    public void incrementRoundsPlayed() {
-        roundsPlayed++;
-    }
+    public void incrementRoundsPlayed() {this.roundsPlayed = this.roundsPlayed + 0.5;}
 
     public void setSettings(Settings settings) {
         this.settings = settings;
