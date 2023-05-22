@@ -105,6 +105,7 @@ public class GameService {
         Card outCard = existingGame.getTurn().drawCard();
         chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
+        existingGame.getTurn().resetBuzzCounter();
         return outCard;
     }
 
@@ -132,6 +133,7 @@ public class GameService {
         Card outCard = existingGame.getTurn().skip();
         chatWebSocketHandler.sendInformationCallBack(accessCode);
         gameRepository.flush();
+        existingGame.getTurn().resetBuzzCounter();
         return outCard;
     }
 
