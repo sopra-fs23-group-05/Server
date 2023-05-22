@@ -12,6 +12,7 @@ public class Turn {
 
     private Card drawnCard;
 
+
     private int buzzCounter = 0;
 
     public Turn() {

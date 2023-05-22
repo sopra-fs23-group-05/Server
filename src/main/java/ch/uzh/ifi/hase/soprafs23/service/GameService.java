@@ -89,9 +89,11 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
+
         int scoredPoints = existingGame.getTurn().getTurnPoints();
-        // TODO increment the turns played, then use that to calculate the number of played rounds
+
         existingGame.incrementRoundsPlayed();
+
         teamService.changeTurn(existingGame.getTeam1().getTeamId(), existingGame.getTeam2().getTeamId(), scoredPoints);
         existingGame.getTurn().setTurnPoints(0);
         gameRepository.save(existingGame);
