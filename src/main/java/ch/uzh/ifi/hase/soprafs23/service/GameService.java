@@ -295,4 +295,16 @@ public class GameService {
     public List<Game> getAllGames() {
         return gameRepository.findAll();
     }
+
+    public void shuffleCards(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
+        if (existingGame == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+        }
+
+        existingGame.getTurn().getDeck().shuffle();
+        existingGame.getTurn().drawCard();
+        gameRepository.save(existingGame);
+        gameRepository.flush();
+    }
 }
