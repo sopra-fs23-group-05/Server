@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import ch.uzh.ifi.hase.soprafs23.entity.Team;
 
 import java.util.List;
 
@@ -64,6 +63,24 @@ class GameControllerTest {
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessCode", is(accessCode)));
+    }
+
+    @Test
+    void getGames_validInput_gamesReturned() throws Exception {
+        Game game1 = new Game();
+        game1.setAccessCode(123456);
+        Game game2 = new Game();
+        game2.setAccessCode(123457);
+        List<Game> games = List.of(game1, game2);
+
+        given(gameService.getAllGames()).willReturn(games);
+
+        MockHttpServletRequestBuilder getRequest = get("/games");
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].accessCode", is(game1.getAccessCode())))
+                .andExpect(jsonPath("$[1].accessCode", is(game2.getAccessCode())));
     }
 
     @Test
@@ -123,5 +140,6 @@ class GameControllerTest {
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());
     }
+
 
 }
