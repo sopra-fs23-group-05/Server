@@ -1,12 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.exceptions;
 
-import ch.uzh.ifi.hase.soprafs23.exceptions.GlobalExceptionAdvice;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 

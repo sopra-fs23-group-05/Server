@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.custom;
 
-import ch.uzh.ifi.hase.soprafs23.custom.Timer;
 import ch.uzh.ifi.hase.soprafs23.websockets.TimerWebSocketHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ public class TimerTest {
     }
 
     @Test
-    public void testTimerSendsCorrectMessages() throws IOException, InterruptedException {
+    public void testTimerSendsCorrectMessages() throws IOException {
         Timer timer = new Timer(webSocketSessions, 3, 123456);
         timer.initializeTimerWebSocketHandler(mockWebSocketHandler);
 
@@ -47,7 +46,7 @@ public class TimerTest {
     }
 
     @Test
-    public void testTimerCallbackCalled() throws IOException, InterruptedException {
+    public void testTimerCallbackCalled() {
         Timer timer = new Timer(webSocketSessions, 1, 123456);
         timer.initializeTimerWebSocketHandler(mockWebSocketHandler);
         timer.run();
