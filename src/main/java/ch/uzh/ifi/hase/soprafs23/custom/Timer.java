@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Timer extends Thread {
     private final List<WebSocketSession> webSocketSessions;
-    private int timerValue;
+    private final int timerValue;
     private final int accessCode;
     private TimerWebSocketHandler timerWebSocketHandler;
 
@@ -27,17 +27,28 @@ public class Timer extends Thread {
     @Override
     public void run() {
         try {
-            Thread.sleep(100);  // Wait until all sessions are connected (I cannot iterate over webSocketSessions while it is being modified --> ConcurrentModificationException)
-            for (int tick = timerValue; tick >= 0; tick--) {
-                String time = String.valueOf(timerValue);
-                for (WebSocketSession webSocketSession : webSocketSessions) {
-                    webSocketSession.sendMessage(new TextMessage(time));
-                }
-                System.out.println("Sending message: " + time);
-                timerValue--;
-                Thread.sleep(1000);
+            Thread.sleep(250);  // Wait until all sessions are connected (I cannot iterate over webSocketSessions while it is being modified --> ConcurrentModificationException)
+
+            String timeString = String.valueOf(timerValue);
+            for (WebSocketSession webSocketSession : webSocketSessions) {
+                webSocketSession.sendMessage(new TextMessage(timeString));
             }
-            timerWebSocketHandler.callBack(accessCode);
+            // Having the Thread.sleep before sending the messages ensures, that immediately after sending the last message, the callBack method is called.
+            for (int tick = timerValue - 1; tick >= 0; tick--) {
+                Thread.sleep(1000);
+
+                timeString = String.valueOf(tick);
+                System.out.println("Sending message: " + timeString);
+                /* Sending messages takes time. When the fist client got the message and
+                * built his connection to the new websocket, this thread might still be
+                * sending messages. The following if clause paves the way to enable that. */
+                if(tick == 0){
+                    timerWebSocketHandler.callBack(accessCode);
+                }
+                for (WebSocketSession webSocketSession : webSocketSessions) {
+                    webSocketSession.sendMessage(new TextMessage(timeString));
+                }
+            }
         }
         catch(IOException e){
             System.out.println("IOException");
