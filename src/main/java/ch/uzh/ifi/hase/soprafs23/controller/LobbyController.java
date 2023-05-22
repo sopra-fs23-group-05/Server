@@ -126,6 +126,14 @@ public class LobbyController {
         return lobbyService.allUsersInTeam(accessCode);
     }
 
+    @GetMapping("/lobbies/{accessCode}/remainingUsers")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public int getRemainingPlayersNeeded(@PathVariable int accessCode) {
+        // check if for remaining number of players in lobby to start the game
+        return lobbyService.getRemainingPlayersNeeded(accessCode);
+    }
+
     @DeleteMapping("/lobbies/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
