@@ -20,7 +20,7 @@ public class Deck {
 
     public Card draw() {
 
-        if (cards.size() == 0) {
+        if (cards.isEmpty()) {
             String s = "mock";
             return new Card(s, s, s, s, s, s);
         }
