@@ -38,13 +38,14 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         int accessCode = getAccessCode(session);
         System.out.println("Sending message: " + message.getPayload());
+        for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
+            webSocketSession.sendMessage(message);
+        }
+
         Message msg = convertTextMessageToMessage(message);
         // Call game service to guess the word
         if (msg.getType() == MessageType.GUESS) {
             gameService.guessWord(msg);
-        }
-        for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
-            webSocketSession.sendMessage(message);
         }
     }
 
