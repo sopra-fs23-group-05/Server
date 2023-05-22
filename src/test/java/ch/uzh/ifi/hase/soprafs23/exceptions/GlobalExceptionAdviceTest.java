@@ -13,12 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class GlobalExceptionAdviceTest {
+class GlobalExceptionAdviceTest {
 
     private final GlobalExceptionAdvice globalExceptionAdvice = new GlobalExceptionAdvice();
 
     @Test
-    public void handleConflict_ShouldReturnConflictResponse() {
+    void handleConflict_ShouldReturnConflictResponse() {
         IllegalArgumentException exception = new IllegalArgumentException("Test exception");
         WebRequest mockRequest = mock(WebRequest.class);
 
@@ -30,7 +30,7 @@ public class GlobalExceptionAdviceTest {
     }
 
     @Test
-    public void handleTransactionSystemException_ShouldReturnResponseStatusException() {
+    void handleTransactionSystemException_ShouldReturnResponseStatusException() {
         Exception exception = new Exception("Test exception");
         HttpServletRequest mockRequest = new MockHttpServletRequest();
 
@@ -42,7 +42,7 @@ public class GlobalExceptionAdviceTest {
     }
 
     @Test
-    public void handleException_ShouldReturnResponseStatusException() {
+    void handleException_ShouldReturnResponseStatusException() {
 
         Exception exception = new Exception("Test exception");
 
