@@ -27,7 +27,7 @@ public class Timer extends Thread {
     @Override
     public void run() {
         try {
-            Thread.sleep(100);  // Wait until all sessions are connected (I cannot iterate over webSocketSessions while it is being modified --> ConcurrentModificationException)
+            Thread.sleep(250);  // Wait until all sessions are connected (I cannot iterate over webSocketSessions while it is being modified --> ConcurrentModificationException)
 
             String timeString = String.valueOf(timerValue);
             for (WebSocketSession webSocketSession : webSocketSessions) {
@@ -39,11 +39,16 @@ public class Timer extends Thread {
 
                 timeString = String.valueOf(tick);
                 System.out.println("Sending message: " + timeString);
+                /* Sending messages takes time. When the fist client got the message and
+                * built his connection to the new websocket, this thread might still be
+                * sending messages. The following if clause paves the way to enable that. */
+                if(tick == 0){
+                    timerWebSocketHandler.callBack(accessCode);
+                }
                 for (WebSocketSession webSocketSession : webSocketSessions) {
                     webSocketSession.sendMessage(new TextMessage(timeString));
                 }
             }
-            timerWebSocketHandler.callBack(accessCode);
         }
         catch(IOException e){
             System.out.println("IOException");
