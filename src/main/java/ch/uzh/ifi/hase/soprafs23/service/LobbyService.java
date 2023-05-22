@@ -247,4 +247,12 @@ public class LobbyService {
         }
         return true;
     }
+
+    public int getRemainingPlayersNeeded(int accessCode) {
+        int remainingPlayers = 0;
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        List<User> allUsers = lobby.getLobbyUsers();
+        remainingPlayers = 4 - allUsers.size();
+        return remainingPlayers;
+    }
 }
