@@ -118,6 +118,14 @@ public class LobbyController {
         return lobbyService.userIsInLobby(userId, accessCode);
     }
 
+    @GetMapping("/lobbies/{accessCode}/users/teams")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public boolean allUsersInTeam(@PathVariable int accessCode) {
+        // check if users are in a team
+        return lobbyService.allUsersInTeam(accessCode);
+    }
+
     @DeleteMapping("/lobbies/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
