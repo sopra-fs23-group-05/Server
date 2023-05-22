@@ -256,6 +256,9 @@ public class GameService {
             if (player.getName().equals(playerName)) {
                 team.getPlayers().remove(playerIdx);
                 gameRepository.flush();
+                if (team.getPlayers().size() <2) {
+                    forceEndGame(accessCode);
+                }
                 return;
             }
             playerIdx++;
@@ -283,6 +286,19 @@ public class GameService {
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
+        Settings settings = existingGame.getSettings();
+
+        if (existingGame.getRealRoundsPlayed() % 1 == 0) {
+            settings.setRounds(existingGame.getRoundsPlayed() + 1);
+        } else {
+            settings.setRounds(existingGame.getRoundsPlayed());
+        }
+        existingGame.setSettings(settings);
+        gameRepository.flush();
+    }
+
+    private void forceEndGame(int accessCode) {
+        Game existingGame = gameRepository.findByAccessCode(accessCode);
         Settings settings = existingGame.getSettings();
         settings.setRounds(existingGame.getRoundsPlayed());
         existingGame.setSettings(settings);
