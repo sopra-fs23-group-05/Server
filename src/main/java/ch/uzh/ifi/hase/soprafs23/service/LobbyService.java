@@ -253,6 +253,9 @@ public class LobbyService {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         List<User> allUsers = lobby.getLobbyUsers();
         remainingPlayers = 4 - allUsers.size();
+        if(remainingPlayers<0){
+            remainingPlayers=0;
+        }
         return remainingPlayers;
     }
 }
