@@ -120,4 +120,8 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
     private static int getAccessCode(WebSocketSession session) {
         return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
+    public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {
+        return webSocketSessions;
+    }
+
 }
