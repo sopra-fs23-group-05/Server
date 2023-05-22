@@ -30,7 +30,6 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
         int accessCode = getAccessCode(session);
         if (!webSocketSessions.containsKey(accessCode)) {
             webSocketSessions.put(accessCode, new ArrayList<>());
-            gameService.drawCard(accessCode);   // Draw a starting card when the first client connects
         }
         webSocketSessions.get(accessCode).add(session);
 

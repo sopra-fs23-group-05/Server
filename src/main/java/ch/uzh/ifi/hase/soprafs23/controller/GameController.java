@@ -105,6 +105,12 @@ public class GameController {
         gameService.createCard(accessCode, inputCard);
     }
 
+    @PutMapping("/games/{accessCode}/cards")
+    @ResponseStatus(HttpStatus.OK)
+    public void shuffleCards(@PathVariable int accessCode) {
+        gameService.shuffleCards(accessCode);
+    }
+
   
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
