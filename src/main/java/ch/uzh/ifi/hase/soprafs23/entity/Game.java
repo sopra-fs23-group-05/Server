@@ -96,5 +96,7 @@ public class Game {
         this.leader = leader;
     }
 
-
+    public double getRealRoundsPlayed() {
+        return roundsPlayed;
+    }
 }
