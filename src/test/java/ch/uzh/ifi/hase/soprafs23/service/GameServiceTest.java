@@ -321,9 +321,16 @@ class GameServiceTest {
     }
 
     @Test
-    void getMVPPlayer_validInput_success() {
+    void getMVPPlayer_validInput_team1() {
         Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
         assertEquals(testGame.getTeam1().getPlayers().get(0), gameService.getMPVPlayer(123456));
+    }
+
+    @Test
+    void getMVPPlayer_validInput_team2(){
+        Mockito.when(gameRepository.findByAccessCode(123456)).thenReturn(testGame);
+        testGame.getTeam2().getPlayers().get(0).setPersonalScore(10);
+        assertEquals(testGame.getTeam2().getPlayers().get(0), gameService.getMPVPlayer(123456));
     }
 
     @Test
