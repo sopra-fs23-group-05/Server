@@ -43,6 +43,9 @@ public class GameService {
     private CardWebSocketHandler cardWebSocketHandler;
     private ChatWebSocketHandler chatWebSocketHandler;
 
+    private final String gameWithCode = "Game with accessCode ";
+    private final String doesNotExist = " does not exist";
+
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository) {
         this.gameRepository = gameRepository;
@@ -56,8 +59,7 @@ public class GameService {
     public void initializeCardWebSocketHandler(CardWebSocketHandler cardWebSocketHandler) {
         this.cardWebSocketHandler = cardWebSocketHandler;
     }
-    private final String gameWithCode = "Game with accessCode ";
-    private final String doesNotExist = " does not exist";
+
     public Game getGame(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
@@ -302,7 +304,7 @@ public class GameService {
     public void shuffleCards(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
 
         existingGame.getTurn().getDeck().shuffle();
