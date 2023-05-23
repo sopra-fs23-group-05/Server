@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.net.URI;
@@ -59,6 +60,7 @@ public class ChatWebSocketHandlerTest {
 
         assertTrue(chatWebSocketHandler.getWebSocketSessions().containsKey(123456));
     }
+
     private String getUriWithAccessCode(int accessCode) {
         return "/websocket/" + accessCode;
     }

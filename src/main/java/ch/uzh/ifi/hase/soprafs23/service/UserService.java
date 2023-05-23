@@ -29,10 +29,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(@Qualifier("userRepository") UserRepository userRepository) {
-        this.userRepository = userRepository;
 
+
+    @Autowired
+    public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyService lobbyService) {
+        this.userRepository = userRepository;
     }
 
     public List<User> getUsers() {
