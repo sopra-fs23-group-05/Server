@@ -128,8 +128,6 @@ import the Server:
 - To run the project locally, use “./gradlew bootRun”. You can verify that the server is running by visiting localhost:8080 in your browser. 
 - If you want to run the tests, use “.gradlew test”. 
 
-## Illustrations
-
 ## Roadmap
 Possible features that new developers can add: 
 - A canvas to also draw the word instead of describing it. 
