@@ -113,6 +113,8 @@ For the backend we used Spring Boot with Java and Gradle. Also, we used:
 - Spring WebSocket 
 
 ## High-level components
+In the backend we have several main components to handle the game.
+- The GameService(https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/GameService.java) which handles all the requests to the Game(https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Game.java) entity and is also responsible to convert the Lobby(https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Lobby.java) and Users(https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/User.java) to Game(https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Game.java) and Players(https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/custom/Player.java).
 
 ## Launch & Deployment
 import the Server: 
