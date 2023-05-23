@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.net.URI;
@@ -58,6 +59,20 @@ public class ChatWebSocketHandlerTest {
         when(gameService.getGame(123456)).thenReturn(mock(ch.uzh.ifi.hase.soprafs23.entity.Game.class));
 
         assertTrue(chatWebSocketHandler.getWebSocketSessions().containsKey(123456));
+    }
+
+    @Test
+    void handleTextMessage() throws Exception {
+        int accessCode = 123456;
+        when(session.getUri()).thenReturn(URI.create(getUriWithAccessCode(accessCode)));
+        TextMessage textMessage = new TextMessage("test, test, test");
+        chatWebSocketHandler.afterConnectionEstablished(session);
+        chatWebSocketHandler.handleTextMessage(session, textMessage);
+
+        HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = chatWebSocketHandler.getWebSocketSessions();
+        assertTrue(webSocketSessions.containsKey(accessCode));
+        assertTrue( webSocketSessions.get(accessCode).contains(session));
+        Mockito.verify(session, times(1)).sendMessage(textMessage);
     }
     private String getUriWithAccessCode(int accessCode) {
         return "/websocket/" + accessCode;
