@@ -28,13 +28,12 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
-    private final LobbyService lobbyService;
+
 
 
     @Autowired
     public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyService lobbyService) {
         this.userRepository = userRepository;
-        this.lobbyService = lobbyService;
     }
 
     public List<User> getUsers() {
