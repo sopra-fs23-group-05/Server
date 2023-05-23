@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.net.URI;
@@ -44,6 +45,19 @@ public class ChatWebSocketHandlerTest {
         HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = chatWebSocketHandler.getWebSocketSessions();
         assertTrue(webSocketSessions.containsKey(accessCode));
         assertTrue( webSocketSessions.get(accessCode).contains(session));
+    }
+
+    @Test
+    void testAfterConnectionClosed_GameNotDeleted() {
+        int accessCode = 123456;
+        Mockito.when(session.getUri()).thenReturn(URI.create(getUriWithAccessCode(accessCode)));
+        chatWebSocketHandler.afterConnectionEstablished(session);
+        chatWebSocketHandler.afterConnectionClosed(session, CloseStatus.NORMAL);
+
+
+        when(gameService.getGame(123456)).thenReturn(mock(ch.uzh.ifi.hase.soprafs23.entity.Game.class));
+
+        assertTrue(chatWebSocketHandler.getWebSocketSessions().containsKey(123456));
     }
     private String getUriWithAccessCode(int accessCode) {
         return "/websocket/" + accessCode;
