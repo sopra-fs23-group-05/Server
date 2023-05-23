@@ -55,7 +55,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         }else if (messageParts[3].contains("LeaderLeftLobby")) {
             type = "LeaderLeftLobby";
         }
-        System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
+        //System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
 
         User aUser = userService.getUser(userId);
         TextMessage outMessage;
