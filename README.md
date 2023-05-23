@@ -96,14 +96,6 @@ Joining the game is convenient, with options to join remotely through an invite 
 Let’s play Taboo! 
 
 ## Technologies
-We used React with HTML/CSS and JS for the frontend of the application. Further we used: 
-- MUI for UI elements 
-- QR-Code API to invite people(link) 
-- Dictionary API to get definitions of a word(link) 
-- Twitter API to share the result(link) 
-- Taboo API to get the card data (link) 
-- Axios API 
-
 For the backend we used Spring Boot with Java and Gradle. Also, we used: 
 - Hibernate as database 
 - JPA as Database Interface 
