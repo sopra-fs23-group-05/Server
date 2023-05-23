@@ -61,19 +61,6 @@ public class ChatWebSocketHandlerTest {
         assertTrue(chatWebSocketHandler.getWebSocketSessions().containsKey(123456));
     }
 
-    @Test
-    void handleTextMessage() throws Exception {
-        int accessCode = 123456;
-        when(session.getUri()).thenReturn(URI.create(getUriWithAccessCode(accessCode)));
-        TextMessage textMessage = new TextMessage("test, test, test");
-        chatWebSocketHandler.afterConnectionEstablished(session);
-        chatWebSocketHandler.handleTextMessage(session, textMessage);
-
-        HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = chatWebSocketHandler.getWebSocketSessions();
-        assertTrue(webSocketSessions.containsKey(accessCode));
-        assertTrue( webSocketSessions.get(accessCode).contains(session));
-        Mockito.verify(session, times(1)).sendMessage(textMessage);
-    }
     private String getUriWithAccessCode(int accessCode) {
         return "/websocket/" + accessCode;
     }

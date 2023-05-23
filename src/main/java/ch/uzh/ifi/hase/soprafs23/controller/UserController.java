@@ -69,6 +69,12 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
+    @DeleteMapping("/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void deleteUser(@PathVariable long userId) {
+        userService.deleteUser(userId);
+    }
 
 }
 
