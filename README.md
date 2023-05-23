@@ -141,4 +141,4 @@ Possible features that new developers can add:
 - Tom Meier
 
 ## License
-Check License.md for further information 
+Check [License.md](https://github.com/sopra-fs23-group-05/Server/blob/main/LICENSE) for further information 
