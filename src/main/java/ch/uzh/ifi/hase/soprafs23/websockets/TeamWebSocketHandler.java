@@ -45,8 +45,17 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 1));
         int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
         int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 1));
-        String type = messageParts[3];
-        // System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
+        String type = "";
+        if (messageParts[3].contains("addition")) {
+            type = "addition";
+        }else if (messageParts[3].contains("removal")) {
+            type = "removal";
+        }else if (messageParts[3].contains("UserLeftLobby")) {
+            type = "UserLeftLobby";
+        }else if (messageParts[3].contains("LeaderLeftLobby")) {
+            type = "LeaderLeftLobby";
+        }
+        System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
 
         User aUser = userService.getUser(userId);
         TextMessage outMessage;
@@ -56,7 +65,7 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
                 case "addition" -> lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
                 case "UserLeftLobby" -> lobbyService.leaveLobby(accessCode, userId);
                 case "LeaderLeftLobby" -> lobbyService.deleteLobbyAndUsers(accessCode);
-                default -> lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
+                case "removal" -> lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
             }
             messagePayload = messagePayload.substring(0, messagePayload.length() - 1);
             messagePayload += ",\"username\":\"" + aUser.getUsername() + "\"}";
