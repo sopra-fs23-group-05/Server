@@ -362,5 +362,54 @@ class LobbyServiceTest {
         assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobbyTeam(123456, 1, 1));
     }
 
+    @Test
+    void allUsersInTeam_validInput(){
+        User user1 = new User();
+        User user2 = new User();
+        testLobby.addUserToLobby(user1);
+        testLobby.addUserToLobby(user2);
+        testLobby.addUserToTeam1(user1);
+        testLobby.addUserToTeam2(user2);
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        assertTrue(lobbyService.allUsersInTeam(123456));
+    }
+
+    @Test
+    void allUsersInTeam_invalidInput(){
+        User user1 = new User();
+        User user2 = new User();
+        testLobby.addUserToLobby(user1);
+        testLobby.addUserToLobby(user2);
+        testLobby.addUserToTeam1(user1);
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        assertFalse(lobbyService.allUsersInTeam(123456));
+    }
+
+    @Test
+    void getRemainingPlayersNeeded_validInput_smallerThan4(){
+        User user1 = new User();
+        User user2 = new User();
+        testLobby.addUserToLobby(user1);
+        testLobby.addUserToLobby(user2);
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        assertEquals(2, lobbyService.getRemainingPlayersNeeded(123456));
+    }
+
+    @Test
+    void getRemainingPlayersNeeded_validInput_largerThan4(){
+        User user1 = new User();
+        User user2 = new User();
+        User user3 = new User();
+        User user4 = new User();
+        User user5 = new User();
+        testLobby.addUserToLobby(user1);
+        testLobby.addUserToLobby(user2);
+        testLobby.addUserToLobby(user3);
+        testLobby.addUserToLobby(user4);
+        testLobby.addUserToLobby(user5);
+        Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
+        assertEquals(0, lobbyService.getRemainingPlayersNeeded(123456));
+    }
+
 
 }
