@@ -1,8 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.websockets;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,16 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 class TeamWebSocketHandlerTest {
     @Mock
@@ -31,8 +29,6 @@ class TeamWebSocketHandlerTest {
     @Mock
     private UserService userService;
 
-    @Mock
-    private GameService gameService;
 
     private TeamWebSocketHandler teamWebSocketHandler;
 
@@ -100,6 +96,15 @@ class TeamWebSocketHandlerTest {
         // Assert
         Mockito.verify(userService, times(1)).getUser(userId);
         Mockito.verify(session, times(1)).sendMessage(any(TextMessage.class));
+    }
+    @Test
+    void testAfterConnectionClosed_GameNotDeleted() {
+        WebSocketSession session = mock(WebSocketSession.class);
+
+        teamWebSocketHandler.afterConnectionEstablished(session);
+        teamWebSocketHandler.afterConnectionClosed(session, CloseStatus.NORMAL);
+        List<WebSocketSession> webSocketSessions = teamWebSocketHandler.getWebSocketSessions();
+        assertFalse(webSocketSessions.contains(session));
     }
 
 }
