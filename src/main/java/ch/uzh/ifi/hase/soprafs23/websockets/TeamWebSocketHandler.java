@@ -3,7 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.websockets;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
-import org.springframework.web.server.ResponseStatusException;
+
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -11,7 +11,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TeamWebSocketHandler extends TextWebSocketHandler {
@@ -46,18 +45,27 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         int accessCode = Integer.parseInt(messageParts[0].substring(messageParts[0].indexOf(':') + 1));
         int teamNr = Integer.parseInt(messageParts[1].substring(messageParts[1].indexOf(':') + 1));
         int userId = Integer.parseInt(messageParts[2].substring(messageParts[2].indexOf(':') + 1));
-        String type = messageParts[3].contains("addition") ? "addition" : "removal";
-        // System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
+        String type = "";
+        if (messageParts[3].contains("addition")) {
+            type = "addition";
+        }else if (messageParts[3].contains("removal")) {
+            type = "removal";
+        }else if (messageParts[3].contains("UserLeftLobby")) {
+            type = "UserLeftLobby";
+        }else if (messageParts[3].contains("LeaderLeftLobby")) {
+            type = "LeaderLeftLobby";
+        }
+        //System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
 
         User aUser = userService.getUser(userId);
         TextMessage outMessage;
 
         try {
-            if (type.equals("addition")) {
-                lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
-            }
-            else {
-                lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
+            switch (type) {
+                case "addition" -> lobbyService.joinLobbyTeam(accessCode, teamNr, userId);
+                case "UserLeftLobby" -> lobbyService.leaveLobby(accessCode, userId);
+                case "LeaderLeftLobby" -> lobbyService.deleteLobbyAndUsers(accessCode);
+                case "removal" -> lobbyService.leaveLobbyTeam(accessCode, teamNr, userId);
             }
             messagePayload = messagePayload.substring(0, messagePayload.length() - 1);
             messagePayload += ",\"username\":\"" + aUser.getUsername() + "\"}";
