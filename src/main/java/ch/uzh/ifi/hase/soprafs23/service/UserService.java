@@ -28,11 +28,13 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+    private final LobbyService lobbyService;
+
 
     @Autowired
-    public UserService(@Qualifier("userRepository") UserRepository userRepository) {
+    public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyService lobbyService) {
         this.userRepository = userRepository;
-
+        this.lobbyService = lobbyService;
     }
 
     public List<User> getUsers() {
@@ -66,10 +68,11 @@ public class UserService {
         }
     }
 
-    public void deleteUser(long userId) {
+    public void deleteUser(int userId, int accessCode) {
         if (userRepository.findById(userId) == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the given id does not exist. Therefore, the user could not be deleted!");
         }
+        lobbyService.leaveLobby(accessCode, userId);
         User userToDelete = getUser(userId);
         userRepository.delete(userToDelete);
     }

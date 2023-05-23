@@ -69,11 +69,11 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/users/{userId}/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteUser(@PathVariable long userId) {
-        userService.deleteUser(userId);
+    public void deleteUser(@PathVariable int userId, @PathVariable int accessCode ) {
+        userService.deleteUser(userId,accessCode);
     }
 
 }

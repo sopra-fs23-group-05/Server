@@ -183,6 +183,11 @@ public class LobbyService {
         else if (existingUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be removed from the lobby!");
         }
+        if(existingLobby.getTeam1().contains(existingUser)) {
+            existingLobby.removeUserFromTeam1(existingUser);
+        }else if(existingLobby.getTeam2().contains(existingUser)) {
+            existingLobby.removeUserFromTeam2(existingUser);
+        }
         existingLobby.removeUserFromLobby(existingUser);
         existingLobby = lobbyRepository.save(existingLobby);
         lobbyRepository.flush();
