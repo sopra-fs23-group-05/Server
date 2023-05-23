@@ -141,6 +141,13 @@ public class LobbyController {
         lobbyService.deleteLobbyAndUsers(accessCode);
     }
 
+    @DeleteMapping("/lobbies/{accessCode}/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void deleteUserFromLobby(@PathVariable int userId, @PathVariable int accessCode ) {
+        lobbyService.leaveLobby(accessCode, userId);
+    }
+
 }
 
 

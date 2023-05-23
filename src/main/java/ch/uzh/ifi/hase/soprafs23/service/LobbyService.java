@@ -189,6 +189,8 @@ public class LobbyService {
             existingLobby.removeUserFromTeam2(existingUser);
         }
         existingLobby.removeUserFromLobby(existingUser);
+        userRepository.delete(existingUser);
+        userRepository.flush();
         existingLobby = lobbyRepository.save(existingLobby);
         lobbyRepository.flush();
         log.debug("Removed User from lobby: {}", existingLobby);

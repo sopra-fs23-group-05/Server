@@ -68,13 +68,4 @@ public class UserService {
         }
     }
 
-    public void deleteUser(int userId, int accessCode) {
-        if (userRepository.findById(userId) == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the given id does not exist. Therefore, the user could not be deleted!");
-        }
-        lobbyService.leaveLobby(accessCode, userId);
-        User userToDelete = getUser(userId);
-        userRepository.delete(userToDelete);
-    }
-
 }
