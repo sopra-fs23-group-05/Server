@@ -9,15 +9,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -49,6 +46,23 @@ class TimerWebSocketHandlerTest {
         HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = timerWebSocketHandler.getWebSocketSessions();
         assertTrue(webSocketSessions.containsKey(accessCode));
         assertTrue( webSocketSessions.get(accessCode).contains(session));
+    }
+
+    @Test
+    void testAfterConnectionClosed_GameNotDeleted() {
+        int accessCode = 123456;
+        Mockito.when(session.getUri()).thenReturn(URI.create(getUriWithAccessCode(accessCode)));
+        Game game = new Game();
+        game.setAccessCode(accessCode);
+        game.setSettings(new Settings());
+        Mockito.when(gameService.getGame(accessCode)).thenReturn(game);
+        timerWebSocketHandler.afterConnectionEstablished(session);
+        timerWebSocketHandler.afterConnectionClosed(session, CloseStatus.NORMAL);
+
+
+        when(gameService.getGame(123456)).thenReturn(mock(ch.uzh.ifi.hase.soprafs23.entity.Game.class));
+
+        assertTrue(timerWebSocketHandler.getWebSocketSessions().containsKey(123456));
     }
 
 

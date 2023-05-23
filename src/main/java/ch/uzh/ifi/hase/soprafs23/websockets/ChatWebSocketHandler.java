@@ -104,4 +104,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             System.out.println("IOException in CardWebSocketHandler: Sending TextMessage objects failed.");
         }
     }
+    public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {
+        return webSocketSessions;
+    }
 }

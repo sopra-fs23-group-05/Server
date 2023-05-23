@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.websockets;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
@@ -31,8 +30,6 @@ class TeamWebSocketHandlerTest {
     @Mock
     private UserService userService;
 
-    @Mock
-    private GameService gameService;
 
     private TeamWebSocketHandler teamWebSocketHandler;
 
