@@ -131,12 +131,12 @@ Possible features that new developers can add:
 - A canvas to also draw the word instead of describing it. 
 - Feedback that shows if you are close to the word (if there is a spelling mistake etc.) 
 - Make it possible to use more than just one topic for the card deck. 
-- 
+
 ## Authors
 - Felix Merz 
 - Melea Köhler 
 - Daniel Maksimovic 
 - Tom Meier
--  
+
 ## License
 Check License.md for further information 
