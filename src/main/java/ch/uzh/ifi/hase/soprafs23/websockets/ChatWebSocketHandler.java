@@ -92,8 +92,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     }
 
     /** Inform the clients that a new card was drawn. */
-    public void sendInformationCallBack(int accessCode){
-        String messageString = "{\"accessCode\":\"" + accessCode + "\", \"userId\":" + -1 + ", \"message\":\"A new card was drawn.\", \"type\":\"information\"}";
+    public void sendInformationCallBack(int accessCode, String information){
+        String messageString = "{\"accessCode\":\"" + accessCode + "\", \"userId\":" + -1 + ", \"message\":\"" + information + "\", \"type\":\"information\"}";
         TextMessage message = new TextMessage(messageString);
         try {
             for (WebSocketSession webSocketSession : webSocketSessions.get(accessCode)) {
