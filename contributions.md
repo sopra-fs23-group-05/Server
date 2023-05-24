@@ -172,5 +172,6 @@
 
 # Meeting 18.05.2023 - Week 12
 ## Tom
-- [#225](https://github.com/sopra-fs23-group-05/Server/issues/225)Make the buzzer only avaiable once per card and player.
-- [#288](https://github.com/sopra-fs23-group-05/Server/issues/282)Delete Users who are not in a Team at roundstart
+- [#225](https://github.com/sopra-fs23-group-05/Server/issues/225) Make the buzzer only avaiable once per card and player.
+- [#288](https://github.com/sopra-fs23-group-05/Server/issues/282) Delete Users who are not in a Team at roundstart.
+- [#283](https://github.com/sopra-fs23-group-05/Server/issues/283) Change TeamWebsocket for Users who leave the Lobby.
