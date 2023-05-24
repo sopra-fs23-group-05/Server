@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.websockets;
 
-import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -15,11 +15,11 @@ public class PageWebSocketHandler extends TextWebSocketHandler {
     /** HashMap that stores a list of sessions for each access code. */
     private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = new HashMap<>();
 
-    // Inject dependency to GameService here
-    private final GameService gameService;
+    // Inject dependency to LobbyService here
+    private final LobbyService lobbyService;
 
-    public PageWebSocketHandler(GameService gameService) {
-        this.gameService = gameService;
+    public PageWebSocketHandler(LobbyService lobbyService) {
+        this.lobbyService = lobbyService;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PageWebSocketHandler extends TextWebSocketHandler {
 
         // If the game was deleted, delete the mapping.
         try{
-            gameService.getGame(accessCode);
+            lobbyService.getLobby(accessCode);
         }catch (ResponseStatusException e){
             webSocketSessions.remove(accessCode);
         }
