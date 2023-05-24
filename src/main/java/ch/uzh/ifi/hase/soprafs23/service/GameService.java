@@ -210,7 +210,7 @@ public class GameService {
             // Call the card websocket, so it sends a new card to the clients.
             cardWebSocketHandler.callBack(guess.getAccessCode(), existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
             // Call the chat websocket, so it sends a new message to the clients.
-            chatWebSocketHandler.sendInformationCallBack(guess.getAccessCode(), "A new card was drawn.");
+            chatWebSocketHandler.sendInformationCallBack(guess.getAccessCode(), cardInformation);
         }
         gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
     }
@@ -315,7 +315,7 @@ public class GameService {
     public Card getDrawnCard(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + " does not exist");
         }
         return existingGame.getTurn().getDrawnCard();
     }
