@@ -182,3 +182,4 @@
 - [#197](https://github.com/sopra-fs23-group-05/Client/issues/197) Add a music button to the game that allows the user to turn background music on and off.
 - [#230](https://github.com/sopra-fs23-group-05/Client/issues/230) Implementation of a notification sound that is played when a new card is drawn.
 - [#238](https://github.com/sopra-fs23-group-05/Client/issues/238) Display the remaining users to start the game.
+- [#258](https://github.com/sopra-fs23-group-05/Client/issues/258) When clicking the Start Game button, change the button to Loading.
