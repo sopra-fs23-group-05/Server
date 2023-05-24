@@ -280,6 +280,7 @@ public class GameService {
         else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player with name " + playerName + doesNotExist);
         }
+        chatWebSocketHandler.sendInformationCallBack(accessCode, playerName + " left the game.");
     }
 
     public void finishGame(int accessCode) {
