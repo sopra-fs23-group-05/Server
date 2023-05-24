@@ -45,6 +45,7 @@ public class GameService {
 
     private final String gameWithCode = "Game with accessCode ";
     private final String doesNotExist = " does not exist";
+    private final String cardInformation = "A new card was drawn.";
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository) {
@@ -107,7 +108,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Card outCard = existingGame.getTurn().drawCard();
-        chatWebSocketHandler.sendInformationCallBack(accessCode);
+        chatWebSocketHandler.sendInformationCallBack(accessCode, cardInformation);
         gameRepository.flush();
         existingGame.getTurn().resetBuzzCounter();
         return outCard;
@@ -121,7 +122,7 @@ public class GameService {
 
         Card outCard = existingGame.getTurn().buzz();
         if(outCard != null){
-            chatWebSocketHandler.sendInformationCallBack(accessCode);
+            chatWebSocketHandler.sendInformationCallBack(accessCode, cardInformation);
             gameRepository.flush();
         }else{
             outCard = existingGame.getTurn().getDrawnCard();
@@ -135,7 +136,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Card outCard = existingGame.getTurn().skip();
-        chatWebSocketHandler.sendInformationCallBack(accessCode);
+        chatWebSocketHandler.sendInformationCallBack(accessCode, cardInformation);
         gameRepository.flush();
         existingGame.getTurn().resetBuzzCounter();
         return outCard;
@@ -209,7 +210,7 @@ public class GameService {
             // Call the card websocket, so it sends a new card to the clients.
             cardWebSocketHandler.callBack(guess.getAccessCode(), existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
             // Call the chat websocket, so it sends a new message to the clients.
-            chatWebSocketHandler.sendInformationCallBack(guess.getAccessCode());
+            chatWebSocketHandler.sendInformationCallBack(guess.getAccessCode(), "A new card was drawn.");
         }
         gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
     }
@@ -295,6 +296,7 @@ public class GameService {
         }
         existingGame.setSettings(settings);
         gameRepository.flush();
+        chatWebSocketHandler.sendInformationCallBack(accessCode, "The game ends after this round.");
     }
 
     private void forceEndGame(int accessCode) {
