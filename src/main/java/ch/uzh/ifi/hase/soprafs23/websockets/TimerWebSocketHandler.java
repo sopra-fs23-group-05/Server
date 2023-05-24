@@ -1,17 +1,15 @@
 package ch.uzh.ifi.hase.soprafs23.websockets;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-
 import ch.uzh.ifi.hase.soprafs23.custom.Timer;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class TimerWebSocketHandler extends TextWebSocketHandler {
 
@@ -83,6 +81,7 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
     private static int getAccessCode(WebSocketSession session) {
         return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
+
     public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {
         return webSocketSessions;
     }

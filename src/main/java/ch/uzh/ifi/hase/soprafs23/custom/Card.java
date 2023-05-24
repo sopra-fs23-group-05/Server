@@ -35,14 +35,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "{" +
-                "\"word\":\"" + word + '\"' +
-                ", \"taboo1\":\"" + taboo1 + '\"' +
-                ", \"taboo2\":\"" + taboo2 + '\"' +
-                ", \"taboo3\":\"" + taboo3 + '\"' +
-                ", \"taboo4\":\"" + taboo4 + '\"' +
-                ", \"taboo5\":\"" + taboo5 + '\"' +
-                '}';
+        return "{" + "\"word\":\"" + word + '\"' + ", \"taboo1\":\"" + taboo1 + '\"' + ", \"taboo2\":\"" + taboo2 + '\"' + ", \"taboo3\":\"" + taboo3 + '\"' + ", \"taboo4\":\"" + taboo4 + '\"' + ", \"taboo5\":\"" + taboo5 + '\"' + '}';
     }
 
     public String getWord() {

@@ -35,7 +35,6 @@ class LobbyControllerTest {
     @MockBean
     private LobbyService lobbyService;
 
-    // Test POST for lobby
     @Test
     void createLobby_validInput_lobbyCreated() throws Exception {
         // given
@@ -47,16 +46,7 @@ class LobbyControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/lobbies");
 
-        mockMvc.perform(postRequest)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode())))
-                .andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader())))
-                .andExpect(jsonPath("$.lobbyUsers", is(lobby.getLobbyUsers())))
-                .andExpect(jsonPath("$.team1", is(lobby.getTeam1())))
-                .andExpect(jsonPath("$.team2", is(lobby.getTeam2())))
-                .andExpect(jsonPath("$.settings.rounds", is(7)))
-                .andExpect(jsonPath("$.settings.roundTime", is(120)))
-                .andExpect(jsonPath("$.settings.topic", is("ANIMALS")));
+        mockMvc.perform(postRequest).andExpect(status().isCreated()).andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode()))).andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader()))).andExpect(jsonPath("$.lobbyUsers", is(lobby.getLobbyUsers()))).andExpect(jsonPath("$.team1", is(lobby.getTeam1()))).andExpect(jsonPath("$.team2", is(lobby.getTeam2()))).andExpect(jsonPath("$.settings.rounds", is(7))).andExpect(jsonPath("$.settings.roundTime", is(120))).andExpect(jsonPath("$.settings.topic", is("ANIMALS")));
         Mockito.verify(lobbyService, times(1)).createLobby();
     }
 
@@ -71,16 +61,7 @@ class LobbyControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/lobbies/123456");
 
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode())))
-                .andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader())))
-                .andExpect(jsonPath("$.lobbyUsers", is(lobby.getLobbyUsers())))
-                .andExpect(jsonPath("$.team1", is(lobby.getTeam1())))
-                .andExpect(jsonPath("$.team2", is(lobby.getTeam2())))
-                .andExpect(jsonPath("$.settings.rounds", is(7)))
-                .andExpect(jsonPath("$.settings.roundTime", is(120)))
-                .andExpect(jsonPath("$.settings.topic", is("ANIMALS")));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode()))).andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader()))).andExpect(jsonPath("$.lobbyUsers", is(lobby.getLobbyUsers()))).andExpect(jsonPath("$.team1", is(lobby.getTeam1()))).andExpect(jsonPath("$.team2", is(lobby.getTeam2()))).andExpect(jsonPath("$.settings.rounds", is(7))).andExpect(jsonPath("$.settings.roundTime", is(120))).andExpect(jsonPath("$.settings.topic", is("ANIMALS")));
         Mockito.verify(lobbyService, times(1)).getLobby(123456);
     }
 
@@ -98,8 +79,7 @@ class LobbyControllerTest {
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/teams/1/additions/users/1");
 
-        mockMvc.perform(putRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(putRequest).andExpect(status().isOk());
 
         Mockito.verify(lobbyService, times(1)).joinLobbyTeam(123456, 1, 1);
     }
@@ -121,24 +101,7 @@ class LobbyControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/lobbies");
 
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].accessCode", is(lobby.getAccessCode())))
-                .andExpect(jsonPath("$[0].lobbyLeader", is(lobby.getLobbyLeader())))
-                .andExpect(jsonPath("$[0].lobbyUsers", is(lobby.getLobbyUsers())))
-                .andExpect(jsonPath("$[0].team1", is(lobby.getTeam1())))
-                .andExpect(jsonPath("$[0].team2", is(lobby.getTeam2())))
-                .andExpect(jsonPath("$[0].settings.rounds", is(7)))
-                .andExpect(jsonPath("$[0].settings.roundTime", is(120)))
-                .andExpect(jsonPath("$[0].settings.topic", is("ANIMALS")))
-                .andExpect(jsonPath("$[1].accessCode", is(lobby2.getAccessCode())))
-                .andExpect(jsonPath("$[1].lobbyLeader", is(lobby2.getLobbyLeader())))
-                .andExpect(jsonPath("$[1].lobbyUsers", is(lobby2.getLobbyUsers())))
-                .andExpect(jsonPath("$[1].team1", is(lobby2.getTeam1())))
-                .andExpect(jsonPath("$[1].team2", is(lobby2.getTeam2())))
-                .andExpect(jsonPath("$[1].settings.rounds", is(7)))
-                .andExpect(jsonPath("$[1].settings.roundTime", is(120)))
-                .andExpect(jsonPath("$[1].settings.topic", is("ANIMALS")));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$[0].accessCode", is(lobby.getAccessCode()))).andExpect(jsonPath("$[0].lobbyLeader", is(lobby.getLobbyLeader()))).andExpect(jsonPath("$[0].lobbyUsers", is(lobby.getLobbyUsers()))).andExpect(jsonPath("$[0].team1", is(lobby.getTeam1()))).andExpect(jsonPath("$[0].team2", is(lobby.getTeam2()))).andExpect(jsonPath("$[0].settings.rounds", is(7))).andExpect(jsonPath("$[0].settings.roundTime", is(120))).andExpect(jsonPath("$[0].settings.topic", is("ANIMALS"))).andExpect(jsonPath("$[1].accessCode", is(lobby2.getAccessCode()))).andExpect(jsonPath("$[1].lobbyLeader", is(lobby2.getLobbyLeader()))).andExpect(jsonPath("$[1].lobbyUsers", is(lobby2.getLobbyUsers()))).andExpect(jsonPath("$[1].team1", is(lobby2.getTeam1()))).andExpect(jsonPath("$[1].team2", is(lobby2.getTeam2()))).andExpect(jsonPath("$[1].settings.rounds", is(7))).andExpect(jsonPath("$[1].settings.roundTime", is(120))).andExpect(jsonPath("$[1].settings.topic", is("ANIMALS")));
         Mockito.verify(lobbyService, Mockito.times(1)).getLobbies();
     }
 
@@ -156,11 +119,7 @@ class LobbyControllerTest {
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/additions/users/1");
 
-        mockMvc.perform(putRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode())))
-                .andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader())))
-                .andExpect(jsonPath("$.lobbyUsers[0].username", is("testName")));
+        mockMvc.perform(putRequest).andExpect(status().isOk()).andExpect(jsonPath("$.accessCode", is(lobby.getAccessCode()))).andExpect(jsonPath("$.lobbyLeader", is(lobby.getLobbyLeader()))).andExpect(jsonPath("$.lobbyUsers[0].username", is("testName")));
 
         Mockito.verify(lobbyService, Mockito.times(1)).joinLobby(123456, 1);
     }
@@ -179,8 +138,7 @@ class LobbyControllerTest {
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/removals/users/1");
 
-        mockMvc.perform(putRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(putRequest).andExpect(status().isOk());
 
         Mockito.verify(lobbyService, Mockito.times(1)).leaveLobby(123456, 1);
 
@@ -200,8 +158,7 @@ class LobbyControllerTest {
 
         MockHttpServletRequestBuilder putRequest = put("/lobbies/123456/teams/1/removals/users/1");
 
-        mockMvc.perform(putRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(putRequest).andExpect(status().isOk());
 
         Mockito.verify(lobbyService, Mockito.times(1)).leaveLobbyTeam(123456, 1, 1);
     }
@@ -213,9 +170,7 @@ class LobbyControllerTest {
         given(lobbyService.userIsInLobby(1, 123456)).willReturn(true);
         MockHttpServletRequestBuilder getRequest = get("/lobbies/123456/users/1");
 
-        mockMvc.perform(getRequest)
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", is(true)));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$", is(true)));
 
         Mockito.verify(lobbyService, Mockito.times(1)).userIsInLobby(1, 123456);
 
@@ -225,8 +180,7 @@ class LobbyControllerTest {
     @Test
     void testDeleteLobbyAndUsers() throws Exception {
         MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/123456");
-        mockMvc.perform(deleteRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(deleteRequest).andExpect(status().isOk());
 
         Mockito.verify(lobbyService, Mockito.times(1)).deleteLobbyAndUsers(123456);
     }
@@ -235,10 +189,7 @@ class LobbyControllerTest {
     void testChangeSettings() throws Exception {
         SettingsPutDTO settingsPutDTO = new SettingsPutDTO();
         int accessCode = 123456;
-        mockMvc.perform(put("/lobbies/{accessCode}/settings", accessCode)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(settingsPutDTO)))
-                .andExpect(status().isOk());
+        mockMvc.perform(put("/lobbies/{accessCode}/settings", accessCode).contentType(MediaType.APPLICATION_JSON).content(asJsonString(settingsPutDTO))).andExpect(status().isOk());
 
         Mockito.verify(lobbyService, times(1)).changeSettings(eq(accessCode), any(Settings.class));
     }
@@ -248,9 +199,7 @@ class LobbyControllerTest {
         given(lobbyService.allUsersInTeam(123456)).willReturn(true);
         MockHttpServletRequestBuilder getRequest = get("/lobbies/123456/users/teams");
 
-        mockMvc.perform(getRequest)
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", is(true)));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$", is(true)));
 
         Mockito.verify(lobbyService, Mockito.times(1)).allUsersInTeam(123456);
     }
@@ -260,17 +209,14 @@ class LobbyControllerTest {
         given(lobbyService.getRemainingPlayersNeeded(123456)).willReturn(2);
         MockHttpServletRequestBuilder getRequest = get("/lobbies/123456/remainingUsers");
 
-        mockMvc.perform(getRequest)
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", is(2)));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$", is(2)));
         Mockito.verify(lobbyService, Mockito.times(1)).getRemainingPlayersNeeded(123456);
     }
 
     @Test
     void deleteUserFromLobby() throws Exception {
         MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/123456/users/1");
-        mockMvc.perform(deleteRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(deleteRequest).andExpect(status().isOk());
 
         Mockito.verify(lobbyService, Mockito.times(1)).leaveLobby(123456, 1);
     }

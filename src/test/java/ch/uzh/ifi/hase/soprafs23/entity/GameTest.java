@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GameTest {
 
     @Test
-    void settersAndGetters_validInput(){
+    void settersAndGetters_validInput() {
         Team team1 = new Team();
         Team team2 = new Team();
         Player player1 = new Player();
         Player player2 = new Player();
-        Game game = new Game(123456,new Settings(),team1,team2, player1);
+        Game game = new Game(123456, new Settings(), team1, team2, player1);
 
         assertEquals(123456, game.getAccessCode());
         assertEquals(team1, game.getTeam1());

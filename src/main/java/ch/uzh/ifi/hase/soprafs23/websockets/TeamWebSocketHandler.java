@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.websockets;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
-
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -15,7 +14,9 @@ import java.util.List;
 
 public class TeamWebSocketHandler extends TextWebSocketHandler {
 
-    /** HashMap that stores a list of sessions for each access code. */
+    /**
+     * HashMap that stores a list of sessions for each access code.
+     */
     private final List<WebSocketSession> webSocketSessions = new ArrayList<>();
 
     // Inject dependency to GameService here
@@ -48,11 +49,14 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
         String type = "";
         if (messageParts[3].contains("addition")) {
             type = "addition";
-        }else if (messageParts[3].contains("removal")) {
+        }
+        else if (messageParts[3].contains("removal")) {
             type = "removal";
-        }else if (messageParts[3].contains("UserLeftLobby")) {
+        }
+        else if (messageParts[3].contains("UserLeftLobby")) {
             type = "UserLeftLobby";
-        }else if (messageParts[3].contains("LeaderLeftLobby")) {
+        }
+        else if (messageParts[3].contains("LeaderLeftLobby")) {
             type = "LeaderLeftLobby";
         }
         //System.out.println("accessCode: " + accessCode + ", teamNr: " + teamNr + ", userId: " + userId + ", type: " + type);
@@ -72,7 +76,8 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
             System.out.println("Sending message: " + messagePayload);
             outMessage = new TextMessage(messagePayload);
 
-        } catch (Exception e) { //exception is thrown if the join would not be fair
+        }
+        catch (Exception e) { //exception is thrown if the join would not be fair
             messagePayload = "{\"accessCode\":" + accessCode + ",\"teamNr\":" + teamNr + ",\"userId\":" + userId + ",\"type\":\"" + "error" + "\",\"username\":\"" + aUser.getUsername() + "\"}";
             System.out.println("Sending message: " + messagePayload);
             outMessage = new TextMessage(messagePayload);
@@ -93,7 +98,8 @@ public class TeamWebSocketHandler extends TextWebSocketHandler {
             for (WebSocketSession webSocketSession : webSocketSessions) {
                 webSocketSession.sendMessage(outMessage);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -40,9 +40,9 @@ public class Timer extends Thread {
                 timeString = String.valueOf(tick);
                 System.out.println("Sending message: " + timeString);
                 /* Sending messages takes time. When the fist client got the message and
-                * built his connection to the new websocket, this thread might still be
-                * sending messages. The following if clause paves the way to enable that. */
-                if(tick == 0){
+                 * built his connection to the new websocket, this thread might still be
+                 * sending messages. The following if clause paves the way to enable that. */
+                if (tick == 0) {
                     timerWebSocketHandler.callBack(accessCode);
                 }
                 for (WebSocketSession webSocketSession : webSocketSessions) {
@@ -50,10 +50,10 @@ public class Timer extends Thread {
                 }
             }
         }
-        catch(IOException e){
+        catch (IOException e) {
             System.out.println("IOException");
         }
-        catch(InterruptedException e){
+        catch (InterruptedException e) {
             System.out.println("InterruptedException");
             Thread.currentThread().interrupt();
         }

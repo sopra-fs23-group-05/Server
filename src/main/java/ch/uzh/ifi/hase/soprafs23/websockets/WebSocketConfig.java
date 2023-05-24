@@ -35,18 +35,12 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), CHAT_ENDPOINT)
-                .setAllowedOrigins("*");
-        webSocketHandlerRegistry.addHandler(getCardWebSocketHandler(), CARD_ENDPOINT)
-                .setAllowedOrigins("*");
-        webSocketHandlerRegistry.addHandler(getTeamWebSocketHandler(), TEAM_ENDPOINT)
-                .setAllowedOrigins("*");
-        webSocketHandlerRegistry.addHandler(getPageWebSocketHandler(), PAGE_ENDPOINT)
-                .setAllowedOrigins("*");
-        webSocketHandlerRegistry.addHandler(getTimerWebSocketHandler(), TIMER_ENDPOINT)
-                .setAllowedOrigins("*");
-        webSocketHandlerRegistry.addHandler(getPreGameTimeWebSocketHandler(), PREGAME_ENDPOINT)
-                .setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), CHAT_ENDPOINT).setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getCardWebSocketHandler(), CARD_ENDPOINT).setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getTeamWebSocketHandler(), TEAM_ENDPOINT).setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getPageWebSocketHandler(), PAGE_ENDPOINT).setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getTimerWebSocketHandler(), TIMER_ENDPOINT).setAllowedOrigins("*");
+        webSocketHandlerRegistry.addHandler(getPreGameTimeWebSocketHandler(), PREGAME_ENDPOINT).setAllowedOrigins("*");
     }
 
     @Bean

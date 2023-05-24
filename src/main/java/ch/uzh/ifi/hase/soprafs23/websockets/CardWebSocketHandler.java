@@ -109,17 +109,21 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
         webSocketSessions.get(accessCode).remove(session);
 
         // If the game was deleted, delete the mapping.
-        try{
+        try {
             gameService.getGame(accessCode);
-        }catch (ResponseStatusException e){
+        }
+        catch (ResponseStatusException e) {
             webSocketSessions.remove(accessCode);
         }
     }
 
-    /** Extracts the access code from a WebSocketSession object. */
-   private static int getAccessCode(WebSocketSession session) {
+    /**
+     * Extracts the access code from a WebSocketSession object.
+     */
+    private static int getAccessCode(WebSocketSession session) {
         return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
+
     public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {
         return webSocketSessions;
     }

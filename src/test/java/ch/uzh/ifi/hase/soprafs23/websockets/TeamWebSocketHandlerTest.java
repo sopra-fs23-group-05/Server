@@ -15,9 +15,11 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 
 class TeamWebSocketHandlerTest {
     @Mock
@@ -97,6 +99,7 @@ class TeamWebSocketHandlerTest {
         Mockito.verify(userService, times(1)).getUser(userId);
         Mockito.verify(session, times(1)).sendMessage(any(TextMessage.class));
     }
+
     @Test
     void testAfterConnectionClosed_GameNotDeleted() {
         WebSocketSession session = mock(WebSocketSession.class);

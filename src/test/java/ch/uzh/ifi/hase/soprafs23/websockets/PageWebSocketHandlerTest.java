@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -63,6 +63,7 @@ class PageWebSocketHandlerTest {
 
         Mockito.verify(session, times(1)).sendMessage(any(TextMessage.class));
     }
+
     @Test
     void testAfterConnectionClosed_GameNotDeleted() {
         int accessCode = 123456;

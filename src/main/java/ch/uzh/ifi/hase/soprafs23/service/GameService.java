@@ -75,8 +75,8 @@ public class GameService {
     public Game createGame(int accessCode) {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         /* TODO We create two Player objects for the lobby leader. This is bad. Remove Player lobbyLeader as parameter constructor.
-        *   Instead, within the Game constructor, iterate over all Player objects, check if the Player is the leader, and if so set
-        *   the Game.leader field. */
+         *   Instead, within the Game constructor, iterate over all Player objects, check if the Player is the leader, and if so set
+         *   the Game.leader field. */
         Game newGame = new Game(lobby.getAccessCode(), lobby.getSettings(), teamService.createTeam(lobby.getTeam1(), Role.GUESSINGTEAM), teamService.createTeam(lobby.getTeam2(), Role.BUZZINGTEAM), teamService.convertUserToPlayer(lobby.getLobbyLeader().getId()));
         // saves the given entity but data is only persisted in the database once flush() is called
         lobbyService.deleteUsersNotInTeam(accessCode);
@@ -127,7 +127,8 @@ public class GameService {
         if(outCard != null){
             chatWebSocketHandler.sendInformationCallBack(accessCode, cardInformation);
             gameRepository.flush();
-        }else{
+        }
+        else {
             outCard = existingGame.getTurn().getDrawnCard();
         }
         return outCard;
@@ -154,7 +155,6 @@ public class GameService {
             else if (teamService.isClueGiver(existingGame.getTeam1().getTeamId(), userName)) {
                 return PlayerRole.CLUEGIVER;
             }
-            return PlayerRole.GUESSER;
         }
         else {
             if (existingGame.getTeam2().getaRole() == Role.BUZZINGTEAM) {
@@ -163,8 +163,8 @@ public class GameService {
             else if (teamService.isClueGiver(existingGame.getTeam2().getTeamId(), userName)) {
                 return PlayerRole.CLUEGIVER;
             }
-            return PlayerRole.GUESSER;
         }
+        return PlayerRole.GUESSER;
     }
 
     public Player getMPVPlayer(int accessCode) {
@@ -260,7 +260,7 @@ public class GameService {
             if (player.getName().equals(playerName)) {
                 team.getPlayers().remove(playerIdx);
                 gameRepository.flush();
-                if (team.getPlayers().size() <2) {
+                if (team.getPlayers().size() < 2) {
                     forceEndGame(accessCode);
                 }
                 return;
@@ -269,15 +269,15 @@ public class GameService {
         }
     }
 
-    public void deletePlayerFromGame(int accessCode, String playerName){
+    public void deletePlayerFromGame(int accessCode, String playerName) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
-        if(teamService.isInTeam(existingGame.getTeam1().getTeamId(), playerName)){
+        if (teamService.isInTeam(existingGame.getTeam1().getTeamId(), playerName)) {
             deletePlayerFromTeam(existingGame.getTeam1(), playerName, accessCode);
         }
-        else if(teamService.isInTeam(existingGame.getTeam2().getTeamId(), playerName)){
+        else if (teamService.isInTeam(existingGame.getTeam2().getTeamId(), playerName)) {
             deletePlayerFromTeam(existingGame.getTeam2(), playerName, accessCode);
         }
         else {
@@ -295,7 +295,8 @@ public class GameService {
 
         if (existingGame.getRealRoundsPlayed() % 1 == 0) {
             settings.setRounds(existingGame.getRoundsPlayed() + 1);
-        } else {
+        }
+        else {
             settings.setRounds(existingGame.getRoundsPlayed());
         }
         existingGame.setSettings(settings);

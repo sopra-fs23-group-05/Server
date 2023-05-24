@@ -183,9 +183,10 @@ public class LobbyService {
         else if (existingUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the id provided does not exist. Therefore, the user could not be removed from the lobby!");
         }
-        if(existingLobby.getTeam1().contains(existingUser)) {
+        if (existingLobby.getTeam1().contains(existingUser)) {
             existingLobby.removeUserFromTeam1(existingUser);
-        }else if(existingLobby.getTeam2().contains(existingUser)) {
+        }
+        else if (existingLobby.getTeam2().contains(existingUser)) {
             existingLobby.removeUserFromTeam2(existingUser);
         }
         existingLobby.removeUserFromLobby(existingUser);
@@ -247,8 +248,8 @@ public class LobbyService {
     public boolean allUsersInTeam(int accessCode) {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         List<User> allUsers = lobby.getLobbyUsers();
-        for(User user : allUsers){
-            if(!lobby.isUserInTeam1(user) && !lobby.isUserInTeam2(user)){
+        for (User user : allUsers) {
+            if (!lobby.isUserInTeam1(user) && !lobby.isUserInTeam2(user)) {
                 return false;
             }
         }
@@ -260,8 +261,8 @@ public class LobbyService {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         List<User> allUsers = lobby.getLobbyUsers();
         remainingPlayers = 4 - allUsers.size();
-        if(remainingPlayers<0){
-            remainingPlayers=0;
+        if (remainingPlayers < 0) {
+            remainingPlayers = 0;
         }
         return remainingPlayers;
     }
