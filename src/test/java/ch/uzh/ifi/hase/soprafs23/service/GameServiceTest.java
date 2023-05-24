@@ -54,6 +54,9 @@ class GameServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private LobbyService lobbyService;
+
     private Lobby testLobby;
 
     private Team testTeam;
