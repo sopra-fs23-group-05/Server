@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.custom.Settings;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
@@ -18,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.SecureRandom;
 import java.util.List;
+
 
 /**
  * User Service
@@ -265,4 +265,16 @@ public class LobbyService {
         }
         return remainingPlayers;
     }
+
+    public void deleteUsersNotInTeam(int accessCode){
+        Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
+        List<User> allUsers = lobby.getLobbyUsers();
+        for(int i = 0; i<allUsers.size(); i++){
+            if(!lobby.isUserInTeam1(allUsers.get(i)) && !lobby.isUserInTeam2(allUsers.get(i))){
+                leaveLobby(accessCode, Math.toIntExact(allUsers.get(i).getId()));
+            }
+        }
+        userRepository.flush();
+    }
+
 }

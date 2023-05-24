@@ -39,6 +39,7 @@ public class GameService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final LobbyRepository lobbyRepository;
+    private final LobbyService lobbyService;
 
     private CardWebSocketHandler cardWebSocketHandler;
     private ChatWebSocketHandler chatWebSocketHandler;
@@ -47,13 +48,14 @@ public class GameService {
     private final String doesNotExist = " does not exist";
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository, LobbyService lobbyService) {
         this.gameRepository = gameRepository;
         this.teamService = teamService;
         this.lobbyRepository = lobbyRepository;
         this.teamRepository = teamRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.lobbyService = lobbyService;
     }
 
     public void initializeCardWebSocketHandler(CardWebSocketHandler cardWebSocketHandler) {
@@ -76,6 +78,7 @@ public class GameService {
         *   the Game.leader field. */
         Game newGame = new Game(lobby.getAccessCode(), lobby.getSettings(), teamService.createTeam(lobby.getTeam1(), Role.GUESSINGTEAM), teamService.createTeam(lobby.getTeam2(), Role.BUZZINGTEAM), teamService.convertUserToPlayer(lobby.getLobbyLeader().getId()));
         // saves the given entity but data is only persisted in the database once flush() is called
+        lobbyService.deleteUsersNotInTeam(accessCode);
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
 
