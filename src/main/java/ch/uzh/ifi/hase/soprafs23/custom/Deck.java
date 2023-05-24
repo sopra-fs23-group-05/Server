@@ -10,6 +10,8 @@ public class Deck {
     @ElementCollection
     private final List<Card> cards;
 
+    private int cardIdx = 0;
+
     public Deck() {
         this.cards = new ArrayList<>();
     }
@@ -25,13 +27,8 @@ public class Deck {
             return new Card(s, s, s, s, s, s);
         }
 
-        Card card = cards.get(0);
-        cards.remove(0);
-        return card;
-    }
-
-    public boolean isEmpty() {
-        return cards.isEmpty();
+        cardIdx = cardIdx % cards.size();
+        return cards.get(cardIdx++);
     }
 
     public void addCard(Card card) {
