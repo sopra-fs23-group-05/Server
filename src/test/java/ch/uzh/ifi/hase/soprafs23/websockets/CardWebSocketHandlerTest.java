@@ -18,7 +18,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -72,6 +71,7 @@ class CardWebSocketHandlerTest {
 
         assertTrue(cardWebSocketHandler.getWebSocketSessions().containsKey(123456));
     }
+
     @Test
     void testCallBack() throws IOException {
         int accessCode = 123456;

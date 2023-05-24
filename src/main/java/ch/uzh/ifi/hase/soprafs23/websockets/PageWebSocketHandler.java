@@ -12,7 +12,9 @@ import java.util.HashMap;
 
 public class PageWebSocketHandler extends TextWebSocketHandler {
 
-    /** HashMap that stores a list of sessions for each access code. */
+    /**
+     * HashMap that stores a list of sessions for each access code.
+     */
     private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = new HashMap<>();
 
     // Inject dependency to GameService here
@@ -48,17 +50,21 @@ public class PageWebSocketHandler extends TextWebSocketHandler {
         webSocketSessions.get(accessCode).remove(session);
 
         // If the game was deleted, delete the mapping.
-        try{
+        try {
             gameService.getGame(accessCode);
-        }catch (ResponseStatusException e){
+        }
+        catch (ResponseStatusException e) {
             webSocketSessions.remove(accessCode);
         }
     }
 
-    /** Extracts the access code from a WebSocketSession object. */
+    /**
+     * Extracts the access code from a WebSocketSession object.
+     */
     private static int getAccessCode(WebSocketSession session) {
         return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
+
     public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {
         return webSocketSessions;
     }

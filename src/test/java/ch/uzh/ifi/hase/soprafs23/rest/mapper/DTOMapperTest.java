@@ -117,29 +117,25 @@ class DTOMapperTest {
 
     @Test
     void convertEntityToTeamGetDTO_invalidInput_null() {
-        Team team = null;
-        TeamGetDTO teamGetDTO = DTOMapper.INSTANCE.convertEntityToTeamGetDTO(team);
+        TeamGetDTO teamGetDTO = DTOMapper.INSTANCE.convertEntityToTeamGetDTO(null);
         assertNull(teamGetDTO);
     }
 
     @Test
     void convertEntityToLobbyGetDTO_invalidInput_null() {
-        Lobby lobby = null;
-        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+        LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(null);
         assertNull(lobbyGetDTO);
     }
 
     @Test
     void convertEntityToGameGetDTO_invalidInput_null() {
-        Game game = null;
-        GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(game);
+        GameGetDTO gameGetDTO = DTOMapper.INSTANCE.convertEntityToGameGetDTO(null);
         assertNull(gameGetDTO);
     }
 
     @Test
     void convertEntityToUserGetDTO_invalidInput_null() {
-        User user = null;
-        UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+        UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(null);
         assertNull(userGetDTO);
     }
 
@@ -166,22 +162,19 @@ class DTOMapperTest {
 
     @Test
     void convertCardDTOtoEntity_invalidInput_null() {
-        CardDTO card = null;
-        Card testCard = DTOMapper.INSTANCE.convertCardDTOtoEntity(card);
+        Card testCard = DTOMapper.INSTANCE.convertCardDTOtoEntity(null);
         assertNull(testCard);
     }
 
     @Test
     void convertSettingsPutDTOtoEntity_invalidInput_null() {
-        SettingsPutDTO settingsPutDTO = null;
-        Settings settings = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
+        Settings settings = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(null);
         assertNull(settings);
     }
 
     @Test
     void convertUserPostDTOtoEntity_invalidInput_null() {
-        UserPostDTO userPostDTO = null;
-        User user = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User user = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(null);
         assertNull(user);
     }
 

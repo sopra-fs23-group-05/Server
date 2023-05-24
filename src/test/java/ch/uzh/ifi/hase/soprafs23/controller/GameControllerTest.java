@@ -44,15 +44,7 @@ class GameControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/games/123456");
 
-        mockMvc.perform(postRequest)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.accessCode", is(game.getAccessCode())))
-                .andExpect(jsonPath("$.team1", is(game.getTeam1())))
-                .andExpect(jsonPath("$.team2", is(game.getTeam2())))
-                .andExpect(jsonPath("$.settings", is(game.getSettings())))
-                .andExpect(jsonPath("$.turn", is(game.getTurn())))
-                .andExpect(jsonPath("$.roundsPlayed", is(0)))
-                .andExpect(jsonPath("$.turn", is(game.getTurn())));
+        mockMvc.perform(postRequest).andExpect(status().isCreated()).andExpect(jsonPath("$.accessCode", is(game.getAccessCode()))).andExpect(jsonPath("$.team1", is(game.getTeam1()))).andExpect(jsonPath("$.team2", is(game.getTeam2()))).andExpect(jsonPath("$.settings", is(game.getSettings()))).andExpect(jsonPath("$.turn", is(game.getTurn()))).andExpect(jsonPath("$.roundsPlayed", is(0))).andExpect(jsonPath("$.turn", is(game.getTurn())));
         Mockito.verify(gameService).createGame(123456);
     }
 
@@ -68,9 +60,7 @@ class GameControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/games/" + accessCode);
 
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessCode", is(accessCode)));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$.accessCode", is(accessCode)));
         Mockito.verify(gameService).getGame(accessCode);
     }
 
@@ -86,10 +76,7 @@ class GameControllerTest {
 
         MockHttpServletRequestBuilder getRequest = get("/games");
 
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].accessCode", is(game1.getAccessCode())))
-                .andExpect(jsonPath("$[1].accessCode", is(game2.getAccessCode())));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$[0].accessCode", is(game1.getAccessCode()))).andExpect(jsonPath("$[1].accessCode", is(game2.getAccessCode())));
         Mockito.verify(gameService).getAllGames();
     }
 
@@ -97,8 +84,7 @@ class GameControllerTest {
     void nextTurn_validInput() throws Exception {
         MockHttpServletRequestBuilder putRequest = put("/games/123456/turns");
 
-        mockMvc.perform(putRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(putRequest).andExpect(status().isOk());
         Mockito.verify(gameService).nextTurn(123456);
     }
 
@@ -106,8 +92,7 @@ class GameControllerTest {
     void finishGame_validInput() throws Exception {
         MockHttpServletRequestBuilder putRequest = put("/games/123456/finishes");
 
-        mockMvc.perform(putRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(putRequest).andExpect(status().isOk());
         Mockito.verify(gameService).finishGame(123456);
     }
 
@@ -118,9 +103,7 @@ class GameControllerTest {
 
         MockHttpServletRequestBuilder getRequest = get("/games/123456/users/player1");
 
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(PlayerRole.GUESSER.toString())));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$", is(PlayerRole.GUESSER.toString())));
         Mockito.verify(gameService).getPlayerRole(123456, "player1");
     }
 
@@ -133,9 +116,7 @@ class GameControllerTest {
 
         MockHttpServletRequestBuilder getRequest = get("/games/123456/players/MVP");
 
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("player1")));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$.name", is("player1")));
         Mockito.verify(gameService).getMPVPlayer(123456);
     }
 
@@ -143,8 +124,7 @@ class GameControllerTest {
     void deleteGameTeamsAndPlayers() throws Exception {
         MockHttpServletRequestBuilder deleteRequest = delete("/games/123456");
 
-        mockMvc.perform(deleteRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(deleteRequest).andExpect(status().isOk());
         Mockito.verify(gameService).deleteGameTeamsUsersAndLobby(123456);
     }
 
@@ -152,8 +132,7 @@ class GameControllerTest {
     void deletePlayerFromGame() throws Exception {
         MockHttpServletRequestBuilder deleteRequest = delete("/games/123456/player1");
 
-        mockMvc.perform(deleteRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(deleteRequest).andExpect(status().isOk());
         Mockito.verify(gameService).deletePlayerFromGame(123456, "player1");
     }
 
@@ -161,19 +140,16 @@ class GameControllerTest {
     void shuffleCards() throws Exception {
         MockHttpServletRequestBuilder putRequest = put("/games/123456/cards");
 
-        mockMvc.perform(putRequest)
-                .andExpect(status().isOk());
+        mockMvc.perform(putRequest).andExpect(status().isOk());
         Mockito.verify(gameService).shuffleCards(123456);
     }
+
     @Test
     void testCreateCard() throws Exception {
         CardDTO cardDTO = new CardDTO();
         int accessCode = 123;
 
-        mockMvc.perform(post("/games/{accessCode}/cards", accessCode)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(cardDTO)))
-                .andExpect(status().isCreated());
+        mockMvc.perform(post("/games/{accessCode}/cards", accessCode).contentType(MediaType.APPLICATION_JSON).content(asJsonString(cardDTO))).andExpect(status().isCreated());
         Mockito.verify(gameService, times(1)).createCard(eq(accessCode), any(Card.class));
     }
 

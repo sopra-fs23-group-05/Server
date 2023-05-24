@@ -55,9 +55,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         webSocketSessions.get(accessCode).remove(session);
 
         // If the game was deleted, delete the mapping.
-        try{
+        try {
             gameService.getGame(accessCode);
-        }catch (ResponseStatusException e){
+        }
+        catch (ResponseStatusException e) {
             webSocketSessions.remove(accessCode);
         }
     }
@@ -86,13 +87,17 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         return new Message(accessCode, userId, content, msgType);
     }
 
-    /** Extracts the access code from a WebSocketSession object. */
+    /**
+     * Extracts the access code from a WebSocketSession object.
+     */
     private static int getAccessCode(WebSocketSession session) {
         return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 
-    /** Inform the clients that a new card was drawn. */
-    public void sendInformationCallBack(int accessCode){
+    /**
+     * Inform the clients that a new card was drawn.
+     */
+    public void sendInformationCallBack(int accessCode) {
         String messageString = "{\"accessCode\":\"" + accessCode + "\", \"userId\":" + -1 + ", \"message\":\"A new card was drawn.\", \"type\":\"information\"}";
         TextMessage message = new TextMessage(messageString);
         try {
@@ -104,6 +109,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             System.out.println("IOException in CardWebSocketHandler: Sending TextMessage objects failed.");
         }
     }
+
     public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {
         return webSocketSessions;
     }

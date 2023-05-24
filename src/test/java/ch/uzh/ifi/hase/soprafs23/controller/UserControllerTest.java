@@ -59,10 +59,7 @@ class UserControllerTest {
         MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON);
 
         // then
-        mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].leader", is(user.isLeader())))
-                .andExpect(jsonPath("$[0].username", is(user.getUsername())));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1))).andExpect(jsonPath("$[0].leader", is(user.isLeader()))).andExpect(jsonPath("$[0].username", is(user.getUsername())));
 
         Mockito.verify(userService).getUsers();
     }
@@ -82,16 +79,10 @@ class UserControllerTest {
         given(userService.createUser(Mockito.any())).willReturn(user);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder postRequest = post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+        MockHttpServletRequestBuilder postRequest = post("/users").contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPostDTO));
 
         // then
-        mockMvc.perform(postRequest)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-                .andExpect(jsonPath("$.leader", is(user.isLeader())))
-                .andExpect(jsonPath("$.username", is(user.getUsername())));
+        mockMvc.perform(postRequest).andExpect(status().isCreated()).andExpect(jsonPath("$.id", is(user.getId().intValue()))).andExpect(jsonPath("$.leader", is(user.isLeader()))).andExpect(jsonPath("$.username", is(user.getUsername())));
 
         Mockito.verify(userService).createUser(Mockito.any());
     }
@@ -102,8 +93,7 @@ class UserControllerTest {
             return new ObjectMapper().writeValueAsString(object);
         }
         catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("The request body could not be created.%s", e));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("The request body could not be created.%s", e));
         }
     }
 
@@ -118,10 +108,7 @@ class UserControllerTest {
 
         MockHttpServletRequestBuilder getRequest = get("/users/1").contentType(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-                .andExpect(jsonPath("$.leader", is(user.isLeader())))
-                .andExpect(jsonPath("$.username", is(user.getUsername())));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$.id", is(user.getId().intValue()))).andExpect(jsonPath("$.leader", is(user.isLeader()))).andExpect(jsonPath("$.username", is(user.getUsername())));
 
         Mockito.verify(userService).getUser(1);
     }

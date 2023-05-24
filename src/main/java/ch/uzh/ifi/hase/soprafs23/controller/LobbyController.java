@@ -9,7 +9,6 @@ import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,7 +143,7 @@ public class LobbyController {
     @DeleteMapping("/lobbies/{accessCode}/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteUserFromLobby(@PathVariable int userId, @PathVariable int accessCode ) {
+    public void deleteUserFromLobby(@PathVariable int userId, @PathVariable int accessCode) {
         lobbyService.leaveLobby(accessCode, userId);
     }
 

@@ -111,7 +111,7 @@ public class GameController {
         gameService.shuffleCards(accessCode);
     }
 
-  
+
     @DeleteMapping("/games/{accessCode}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

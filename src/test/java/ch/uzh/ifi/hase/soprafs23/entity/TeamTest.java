@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TeamTest {
 
     private List<Player> players;
+
     @BeforeEach
     void setUp() {
         players = new ArrayList<>();
@@ -21,8 +22,8 @@ class TeamTest {
     }
 
     /* Test for issue Server #48
-    * Test if after playing multiple rounds the roles are distributed correctly
-    * and the correct player is the clue giver. */
+     * Test if after playing multiple rounds the roles are distributed correctly
+     * and the correct player is the clue giver. */
     @Test
     void changeTurn() {
         int scoredPoints = 1;

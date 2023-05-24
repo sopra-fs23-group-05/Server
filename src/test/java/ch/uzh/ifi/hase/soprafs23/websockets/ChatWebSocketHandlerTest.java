@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.net.URI;
@@ -17,9 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-public class ChatWebSocketHandlerTest {
+class ChatWebSocketHandlerTest {
     @Mock
     private WebSocketSession session;
     @Mock
@@ -45,7 +45,7 @@ public class ChatWebSocketHandlerTest {
 
         HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = chatWebSocketHandler.getWebSocketSessions();
         assertTrue(webSocketSessions.containsKey(accessCode));
-        assertTrue( webSocketSessions.get(accessCode).contains(session));
+        assertTrue(webSocketSessions.get(accessCode).contains(session));
     }
 
     @Test

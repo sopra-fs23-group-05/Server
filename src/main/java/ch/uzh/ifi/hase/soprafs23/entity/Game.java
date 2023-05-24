@@ -70,7 +70,9 @@ public class Game {
         this.accessCode = accessCode;
     }
 
-    public void incrementRoundsPlayed() {this.roundsPlayed = this.roundsPlayed + 0.5;}
+    public void incrementRoundsPlayed() {
+        this.roundsPlayed = this.roundsPlayed + 0.5;
+    }
 
     public void setSettings(Settings settings) {
         this.settings = settings;

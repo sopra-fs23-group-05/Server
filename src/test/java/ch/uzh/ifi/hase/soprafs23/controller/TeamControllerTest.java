@@ -3,23 +3,22 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.constant.Role;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
+import ch.uzh.ifi.hase.soprafs23.entity.Team;
 import ch.uzh.ifi.hase.soprafs23.service.TeamService;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import ch.uzh.ifi.hase.soprafs23.entity.Team;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,11 +45,7 @@ class TeamControllerTest {
 
         MockHttpServletRequestBuilder getRequest = get("/teams/1");
 
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.teamId", is(team.getTeamId())))
-                .andExpect(jsonPath("$.aRole", is("BUZZINGTEAM")))
-                .andExpect(jsonPath("$.players[0].name", is(player.getName())));
+        mockMvc.perform(getRequest).andExpect(status().isOk()).andExpect(jsonPath("$.teamId", is(team.getTeamId()))).andExpect(jsonPath("$.aRole", is("BUZZINGTEAM"))).andExpect(jsonPath("$.players[0].name", is(player.getName())));
 
         Mockito.verify(teamService).getTeam(1);
 

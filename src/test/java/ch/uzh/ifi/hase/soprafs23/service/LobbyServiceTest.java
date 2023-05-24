@@ -338,14 +338,14 @@ class LobbyServiceTest {
     }
 
     @Test
-    void joinLobby_userNotExists(){
+    void joinLobby_userNotExists() {
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
         Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobby(123456, 1L));
     }
 
     @Test
-    void joinLobby_validInput_Leader(){
+    void joinLobby_validInput_Leader() {
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
         Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
         lobbyService.joinLobby(123456, 1L);
@@ -355,7 +355,7 @@ class LobbyServiceTest {
     }
 
     @Test
-    void leaveLobbyTeam_userNotInTeam(){
+    void leaveLobbyTeam_userNotInTeam() {
         Mockito.when(lobbyRepository.findByAccessCode(Mockito.anyInt())).thenReturn(testLobby);
         Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
         testLobby.addUserToLobby(testUser);
@@ -363,7 +363,7 @@ class LobbyServiceTest {
     }
 
     @Test
-    void allUsersInTeam_validInput(){
+    void allUsersInTeam_validInput() {
         User user1 = new User();
         User user2 = new User();
         testLobby.addUserToLobby(user1);
@@ -375,7 +375,7 @@ class LobbyServiceTest {
     }
 
     @Test
-    void allUsersInTeam_invalidInput(){
+    void allUsersInTeam_invalidInput() {
         User user1 = new User();
         User user2 = new User();
         testLobby.addUserToLobby(user1);
@@ -386,7 +386,7 @@ class LobbyServiceTest {
     }
 
     @Test
-    void getRemainingPlayersNeeded_validInput_smallerThan4(){
+    void getRemainingPlayersNeeded_validInput_smallerThan4() {
         User user1 = new User();
         User user2 = new User();
         testLobby.addUserToLobby(user1);
@@ -396,7 +396,7 @@ class LobbyServiceTest {
     }
 
     @Test
-    void getRemainingPlayersNeeded_validInput_largerThan4(){
+    void getRemainingPlayersNeeded_validInput_largerThan4() {
         User user1 = new User();
         User user2 = new User();
         User user3 = new User();
