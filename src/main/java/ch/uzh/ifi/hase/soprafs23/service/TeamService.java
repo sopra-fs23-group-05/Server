@@ -76,6 +76,7 @@ public class TeamService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team2 not found");
         }
 
+        scoredPoints = Math.max(scoredPoints, 0);   // Team has at least 0 points after guessing
         team1.changeTurn(scoredPoints);
         team2.changeTurn(scoredPoints);
 
