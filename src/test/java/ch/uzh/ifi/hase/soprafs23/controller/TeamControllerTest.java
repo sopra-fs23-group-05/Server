@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.service.TeamService;
 import org.junit.jupiter.api.Test;
 
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -50,6 +51,8 @@ class TeamControllerTest {
                 .andExpect(jsonPath("$.teamId", is(team.getTeamId())))
                 .andExpect(jsonPath("$.aRole", is("BUZZINGTEAM")))
                 .andExpect(jsonPath("$.players[0].name", is(player.getName())));
+
+        Mockito.verify(teamService).getTeam(1);
 
     }
 }
