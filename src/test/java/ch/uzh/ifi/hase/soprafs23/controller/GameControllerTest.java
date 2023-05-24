@@ -4,19 +4,25 @@ import ch.uzh.ifi.hase.soprafs23.constant.PlayerRole;
 import ch.uzh.ifi.hase.soprafs23.custom.Card;
 import ch.uzh.ifi.hase.soprafs23.custom.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.CardDTO;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +53,7 @@ class GameControllerTest {
                 .andExpect(jsonPath("$.turn", is(game.getTurn())))
                 .andExpect(jsonPath("$.roundsPlayed", is(0)))
                 .andExpect(jsonPath("$.turn", is(game.getTurn())));
+        Mockito.verify(gameService).createGame(123456);
     }
 
     @Test
@@ -64,6 +71,7 @@ class GameControllerTest {
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessCode", is(accessCode)));
+        Mockito.verify(gameService).getGame(accessCode);
     }
 
     @Test
@@ -82,6 +90,7 @@ class GameControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].accessCode", is(game1.getAccessCode())))
                 .andExpect(jsonPath("$[1].accessCode", is(game2.getAccessCode())));
+        Mockito.verify(gameService).getAllGames();
     }
 
     @Test
@@ -90,6 +99,7 @@ class GameControllerTest {
 
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk());
+        Mockito.verify(gameService).nextTurn(123456);
     }
 
     @Test
@@ -98,6 +108,7 @@ class GameControllerTest {
 
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk());
+        Mockito.verify(gameService).finishGame(123456);
     }
 
     @Test
@@ -110,6 +121,7 @@ class GameControllerTest {
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(PlayerRole.GUESSER.toString())));
+        Mockito.verify(gameService).getPlayerRole(123456, "player1");
     }
 
     @Test
@@ -124,6 +136,7 @@ class GameControllerTest {
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("player1")));
+        Mockito.verify(gameService).getMPVPlayer(123456);
     }
 
     @Test
@@ -132,6 +145,7 @@ class GameControllerTest {
 
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());
+        Mockito.verify(gameService).deleteGameTeamsUsersAndLobby(123456);
     }
 
     @Test
@@ -140,6 +154,7 @@ class GameControllerTest {
 
         mockMvc.perform(deleteRequest)
                 .andExpect(status().isOk());
+        Mockito.verify(gameService).deletePlayerFromGame(123456, "player1");
     }
 
     @Test
@@ -148,6 +163,23 @@ class GameControllerTest {
 
         mockMvc.perform(putRequest)
                 .andExpect(status().isOk());
+        Mockito.verify(gameService).shuffleCards(123456);
+    }
+    @Test
+    void testCreateCard() throws Exception {
+        CardDTO cardDTO = new CardDTO();
+        int accessCode = 123;
+
+        mockMvc.perform(post("/games/{accessCode}/cards", accessCode)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(cardDTO)))
+                .andExpect(status().isCreated());
+        Mockito.verify(gameService, times(1)).createCard(eq(accessCode), any(Card.class));
+    }
+
+    private static String asJsonString(Object obj) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(obj);
     }
 
 

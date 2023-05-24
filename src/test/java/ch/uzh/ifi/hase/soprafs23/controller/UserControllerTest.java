@@ -63,6 +63,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].leader", is(user.isLeader())))
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())));
+
+        Mockito.verify(userService).getUsers();
     }
 
     @Test
@@ -90,6 +92,8 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id", is(user.getId().intValue())))
                 .andExpect(jsonPath("$.leader", is(user.isLeader())))
                 .andExpect(jsonPath("$.username", is(user.getUsername())));
+
+        Mockito.verify(userService).createUser(Mockito.any());
     }
 
 
@@ -118,5 +122,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.id", is(user.getId().intValue())))
                 .andExpect(jsonPath("$.leader", is(user.isLeader())))
                 .andExpect(jsonPath("$.username", is(user.getUsername())));
+
+        Mockito.verify(userService).getUser(1);
     }
 }
