@@ -170,7 +170,7 @@
 - [#189](https://github.com/sopra-fs23-group-05/Client/issues/189) Adjust settings that sliders are on current settings.
 - [#49](https://github.com/sopra-fs23-group-05/Server/issues/49) Changed the timer that it works with the websocket and adjusted the frontend.
 
-# Meeting 18.05.2023 - Week 12
+# Meeting 24.05.2023 - Week 13
 ## Tom
 - [#225](https://github.com/sopra-fs23-group-05/Server/issues/225) Make the buzzer only avaiable once per card and player.
 - [#288](https://github.com/sopra-fs23-group-05/Server/issues/282) Delete Users who are not in a Team at roundstart.
