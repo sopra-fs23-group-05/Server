@@ -170,8 +170,15 @@
 - [#189](https://github.com/sopra-fs23-group-05/Client/issues/189) Adjust settings that sliders are on current settings.
 - [#49](https://github.com/sopra-fs23-group-05/Server/issues/49) Changed the timer that it works with the websocket and adjusted the frontend.
 
-# Meeting 24.05.2023 - Week 13
+# Meeting 25.05.2023 - Week 13
 ## Tom
 - [#225](https://github.com/sopra-fs23-group-05/Server/issues/225) Make the buzzer only avaiable once per card and player.
 - [#288](https://github.com/sopra-fs23-group-05/Server/issues/282) Delete Users who are not in a Team at roundstart.
 - [#283](https://github.com/sopra-fs23-group-05/Server/issues/283) Change TeamWebsocket for Users who leave the Lobby.
+
+## Daniel
+- [#271](https://github.com/sopra-fs23-group-05/Server/issues/271) Implement a function that determines how many users must join to start the game.
+- [#196](https://github.com/sopra-fs23-group-05/Client/issues/196) Implement the background music for the game.
+- [#197](https://github.com/sopra-fs23-group-05/Client/issues/197) Add a music button to the game that allows the user to turn background music on and off.
+- [#230](https://github.com/sopra-fs23-group-05/Client/issues/230) Implementation of a notification sound that is played when a new card is drawn.
+- [#238](https://github.com/sopra-fs23-group-05/Client/issues/238) Display the remaining users to start the game.
