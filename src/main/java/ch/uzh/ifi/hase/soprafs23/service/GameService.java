@@ -39,21 +39,24 @@ public class GameService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final LobbyRepository lobbyRepository;
+    private final LobbyService lobbyService;
 
     private CardWebSocketHandler cardWebSocketHandler;
     private ChatWebSocketHandler chatWebSocketHandler;
 
     private final String gameWithCode = "Game with accessCode ";
     private final String doesNotExist = " does not exist";
+    private final String cardInformation = "A new card was drawn.";
 
     @Autowired
-    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository) {
+    public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository, LobbyService lobbyService) {
         this.gameRepository = gameRepository;
         this.teamService = teamService;
         this.lobbyRepository = lobbyRepository;
         this.teamRepository = teamRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.lobbyService = lobbyService;
     }
 
     public void initializeCardWebSocketHandler(CardWebSocketHandler cardWebSocketHandler) {
@@ -76,6 +79,7 @@ public class GameService {
          *   the Game.leader field. */
         Game newGame = new Game(lobby.getAccessCode(), lobby.getSettings(), teamService.createTeam(lobby.getTeam1(), Role.GUESSINGTEAM), teamService.createTeam(lobby.getTeam2(), Role.BUZZINGTEAM), teamService.convertUserToPlayer(lobby.getLobbyLeader().getId()));
         // saves the given entity but data is only persisted in the database once flush() is called
+        lobbyService.deleteUsersNotInTeam(accessCode);
         newGame = gameRepository.save(newGame);
         gameRepository.flush();
 
@@ -107,7 +111,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Card outCard = existingGame.getTurn().drawCard();
-        chatWebSocketHandler.sendInformationCallBack(accessCode);
+        chatWebSocketHandler.sendInformationCallBack(accessCode, cardInformation);
         gameRepository.flush();
         existingGame.getTurn().resetBuzzCounter();
         return outCard;
@@ -120,8 +124,8 @@ public class GameService {
         }
 
         Card outCard = existingGame.getTurn().buzz();
-        if (outCard != null) {
-            chatWebSocketHandler.sendInformationCallBack(accessCode);
+        if(outCard != null){
+            chatWebSocketHandler.sendInformationCallBack(accessCode, cardInformation);
             gameRepository.flush();
         }
         else {
@@ -136,7 +140,7 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + doesNotExist);
         }
         Card outCard = existingGame.getTurn().skip();
-        chatWebSocketHandler.sendInformationCallBack(accessCode);
+        chatWebSocketHandler.sendInformationCallBack(accessCode, cardInformation);
         gameRepository.flush();
         existingGame.getTurn().resetBuzzCounter();
         return outCard;
@@ -209,7 +213,7 @@ public class GameService {
             // Call the card websocket, so it sends a new card to the clients.
             cardWebSocketHandler.callBack(guess.getAccessCode(), existingGame.getTurn().drawCard(), existingGame.getTurn().getTurnPoints());
             // Call the chat websocket, so it sends a new message to the clients.
-            chatWebSocketHandler.sendInformationCallBack(guess.getAccessCode());
+            chatWebSocketHandler.sendInformationCallBack(guess.getAccessCode(), cardInformation);
         }
         gameRepository.flush(); // I might have changed the turn points, drawn a new card and changed a Player, so I need to flush.
     }
@@ -279,6 +283,7 @@ public class GameService {
         else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player with name " + playerName + doesNotExist);
         }
+        chatWebSocketHandler.sendInformationCallBack(accessCode, playerName + " left the game.");
     }
 
     public void finishGame(int accessCode) {
@@ -296,6 +301,7 @@ public class GameService {
         }
         existingGame.setSettings(settings);
         gameRepository.flush();
+        chatWebSocketHandler.sendInformationCallBack(accessCode, "The game ends after this round.");
     }
 
     private void forceEndGame(int accessCode) {
@@ -313,7 +319,7 @@ public class GameService {
     public Card getDrawnCard(int accessCode) {
         Game existingGame = gameRepository.findByAccessCode(accessCode);
         if (existingGame == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game with accessCode " + accessCode + " does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gameWithCode + accessCode + " does not exist");
         }
         return existingGame.getTurn().getDrawnCard();
     }

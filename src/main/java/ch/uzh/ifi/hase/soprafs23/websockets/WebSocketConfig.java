@@ -45,7 +45,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public WebSocketHandler getPageWebSocketHandler() {
-        return new PageWebSocketHandler(gameService);
+        return new PageWebSocketHandler(lobbyService);
     }
 
     @Bean

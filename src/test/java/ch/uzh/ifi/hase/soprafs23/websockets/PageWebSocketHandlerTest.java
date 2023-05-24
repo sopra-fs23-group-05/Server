@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.websockets;
 
 
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -26,6 +27,9 @@ class PageWebSocketHandlerTest {
     private GameService gameService;
 
     @Mock
+    private LobbyService lobbyService;
+
+    @Mock
     private WebSocketSession session;
 
     private PageWebSocketHandler pageWebSocketHandler;
@@ -33,7 +37,7 @@ class PageWebSocketHandlerTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
-        pageWebSocketHandler = new PageWebSocketHandler(gameService);
+        pageWebSocketHandler = new PageWebSocketHandler(lobbyService);
     }
 
     @Test
