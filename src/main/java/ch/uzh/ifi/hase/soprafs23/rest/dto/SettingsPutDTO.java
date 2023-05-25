@@ -7,16 +7,20 @@ public class SettingsPutDTO {
     private int roundTime;   // in seconds
     private Topic topic;
 
-    public void setRoundTime(int roundTime) {
-        this.roundTime = roundTime;
-    }
-
     public int getRounds() {
         return rounds;
     }
 
+    public void setRounds(int rounds) {
+        this.rounds = rounds;
+    }
+
     public int getRoundTime() {
         return roundTime;
+    }
+
+    public void setRoundTime(int roundTime) {
+        this.roundTime = roundTime;
     }
 
     public Topic getTopic() {
@@ -25,9 +29,5 @@ public class SettingsPutDTO {
 
     public void setTopic(Topic topic) {
         this.topic = topic;
-    }
-
-    public void setRounds(int rounds) {
-        this.rounds = rounds;
     }
 }

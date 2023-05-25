@@ -15,12 +15,10 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
 
     // HashMap that stores a list of sessions for each access code
     private final HashMap<Integer, ArrayList<WebSocketSession>> webSocketSessions = new HashMap<>();
-
-    // The current value of the timer
-    private int timerValue;
-
     private final GameService gameService;
     private final List<Integer> isRunning = new ArrayList<>();
+    // The current value of the timer
+    private int timerValue;
 
     public TimerWebSocketHandler(GameService gameService) {
         this.gameService = gameService;
@@ -29,6 +27,13 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
     public TimerWebSocketHandler() {
         this.gameService = null;
         timerValue = 10;
+    }
+
+    /**
+     * Extracts the access code from a WebSocketSession object.
+     */
+    private static int getAccessCode(WebSocketSession session) {
+        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 
     @Override
@@ -73,13 +78,6 @@ public class TimerWebSocketHandler extends TextWebSocketHandler {
 
     public void callBack(int accessCode) {
         isRunning.remove(Integer.valueOf(accessCode));
-    }
-
-    /**
-     * Extracts the access code from a WebSocketSession object.
-     */
-    private static int getAccessCode(WebSocketSession session) {
-        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 
     public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {

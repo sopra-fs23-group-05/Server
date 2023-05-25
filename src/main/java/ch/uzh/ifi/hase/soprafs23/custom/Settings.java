@@ -17,20 +17,20 @@ public class Settings {
         return rounds;
     }
 
-    public int getRoundTime() {
-        return roundTime;
-    }
-
-    public Topic getTopic() {
-        return topic;
-    }
-
     public void setRounds(int rounds) {
         this.rounds = rounds;
     }
 
+    public int getRoundTime() {
+        return roundTime;
+    }
+
     public void setRoundTime(int time) {
         this.roundTime = time;
+    }
+
+    public Topic getTopic() {
+        return topic;
     }
 
     public void setTopic(Topic topic) {

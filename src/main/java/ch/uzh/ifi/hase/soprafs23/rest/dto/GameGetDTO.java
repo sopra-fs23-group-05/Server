@@ -20,52 +20,52 @@ public class GameGetDTO {
     private Team team2;
     private Player leader;
 
-    public void setTurn(Turn turn) {
-        this.turn = turn;
+    public Settings getSettings() {
+        return settings;
     }
 
     public void setSettings(Settings settings) {
         this.settings = settings;
     }
 
-    public void setRoundsPlayed(int roundsPlayed) {
-        this.roundsPlayed = roundsPlayed;
-    }
-
-    public void setAccessCode(int accessCode) {
-        this.accessCode = accessCode;
-    }
-
-    public void setTeam2(Team team2) {
-        this.team2 = team2;
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
     public int getRoundsPlayed() {
         return roundsPlayed;
+    }
+
+    public void setRoundsPlayed(int roundsPlayed) {
+        this.roundsPlayed = roundsPlayed;
     }
 
     public int getAccessCode() {
         return accessCode;
     }
 
-    public void setTeam1(Team team1) {
-        this.team1 = team1;
+    public void setAccessCode(int accessCode) {
+        this.accessCode = accessCode;
     }
 
     public Turn getTurn() {
         return turn;
     }
 
+    public void setTurn(Turn turn) {
+        this.turn = turn;
+    }
+
     public Team getTeam2() {
         return team2;
     }
 
+    public void setTeam2(Team team2) {
+        this.team2 = team2;
+    }
+
     public Team getTeam1() {
         return team1;
+    }
+
+    public void setTeam1(Team team1) {
+        this.team1 = team1;
     }
 
     public Player getLeader() {

@@ -35,6 +35,11 @@ class LobbyControllerTest {
     @MockBean
     private LobbyService lobbyService;
 
+    private static String asJsonString(Object obj) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(obj);
+    }
+
     @Test
     void createLobby_validInput_lobbyCreated() throws Exception {
         // given
@@ -163,7 +168,6 @@ class LobbyControllerTest {
         Mockito.verify(lobbyService, Mockito.times(1)).leaveLobbyTeam(123456, 1, 1);
     }
 
-
     @Test
     void getIsUserInLobby_validInput() throws Exception {
 
@@ -175,7 +179,6 @@ class LobbyControllerTest {
         Mockito.verify(lobbyService, Mockito.times(1)).userIsInLobby(1, 123456);
 
     }
-
 
     @Test
     void testDeleteLobbyAndUsers() throws Exception {
@@ -219,12 +222,6 @@ class LobbyControllerTest {
         mockMvc.perform(deleteRequest).andExpect(status().isOk());
 
         Mockito.verify(lobbyService, Mockito.times(1)).leaveLobby(123456, 1);
-    }
-
-
-    private static String asJsonString(Object obj) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(obj);
     }
 
 }

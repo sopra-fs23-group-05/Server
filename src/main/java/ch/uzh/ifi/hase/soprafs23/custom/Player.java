@@ -21,24 +21,24 @@ public class Player {
         return personalScore;
     }
 
+    public void setPersonalScore(int personalScore) {
+        this.personalScore = personalScore;
+    }
+
     public String getName() {
         return name;
     }
 
-    public void setLeader(boolean leader) {
-        this.leader = leader;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isLeader() {
         return leader;
     }
 
-    public void setPersonalScore(int personalScore) {
-        this.personalScore = personalScore;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setLeader(boolean leader) {
+        this.leader = leader;
     }
 
     public void increaseScore() {
