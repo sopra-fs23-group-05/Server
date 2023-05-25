@@ -27,7 +27,7 @@ public class Timer extends Thread {
     @Override
     public void run() {
         try {
-            Thread.sleep(250);  // Wait until all sessions are connected (I cannot iterate over webSocketSessions while it is being modified --> ConcurrentModificationException)
+            Thread.sleep(500);  // Wait until all sessions are connected (I cannot iterate over webSocketSessions while it is being modified --> ConcurrentModificationException)
 
             String timeString = String.valueOf(timerValue);
             for (WebSocketSession webSocketSession : webSocketSessions) {
