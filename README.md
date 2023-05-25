@@ -11,21 +11,21 @@ Let’s play Taboo!
 ## Technologies
 - Spring Boot with Java and Gradle
 - Hibernate as database 
-- JPA as Database Interface 
-- GitHub Action 
+- JPA as database interface 
+- GitHub Actions
 - SonarQube 
 - Google Cloud for deployment 
 - Spring WebSocket 
 
-## High-level components
+## High-Level Components
 In the backend we have several main components to handle the game.
-- The [GameService](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/GameService.java) which handles all the requests to the [Game](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Game.java) entity and is  responsible to convert the [Lobby](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Lobby.java) and [Users](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/User.java) to [Game](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Game.java) and [Players](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/custom/Player.java).
+- The [GameService](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/GameService.java) handles all the requests to the [Game](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Game.java) entity and is  responsible to convert the [Lobby](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Lobby.java) and [User](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/User.java) objects to [Game](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Game.java) and [Player](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/custom/Player.java) objects.
 - The [LobbyService](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/LobbyService.java) is responsible for gathering all the [Users](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/User.java), assign them to Teams and let the leader adjust the [Settings](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/custom/Settings.java) for the [Game](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Game.java).
 - The [ChatWebSocket](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/websockets/ChatWebSocketHandler.java) handles the realtime chat interaction between all the [Players](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/custom/Player.java) during the [Game](https://github.com/sopra-fs23-group-05/Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Game.java).
 
 ## Launch & Deployment
-import the Server: 
-- Download the code here. (https://github.com/sopra-fs23-group-05/Server) 
+Import the Server 
+- Download the code [here](https://github.com/sopra-fs23-group-05/Server). 
 - In your IDE, locate the option to import a project or open an existing project (e.g. in IntelliJ, go to “File” > “New” > “Project from Existing Sources”). 
 - Select the downloaded file of the server code. 
 - Choose the option to import the project as a Gradle project. 
@@ -34,10 +34,11 @@ import the Server:
 - If you want to run the tests, use “.gradlew test”. 
 
 ## Roadmap
-Possible features that new developers can add: 
-- A canvas to also draw the word instead of describing it. 
-- Feedback that shows if you are close to the word (if there is a spelling mistake etc.) 
-- Make it possible to use more than just one topic for the card deck. 
+Possible features that new developers can add
+- Restructure the database.
+- Feedback that shows if you are close to the word (if there is a spelling mistake etc.).
+- Add multiple difficulties of cards (easy, medium, hard) and let the lobby leader choose the difficulty.
+
 
 ## Authors
 - Felix Merz 
