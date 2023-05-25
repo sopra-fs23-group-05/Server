@@ -14,7 +14,7 @@ Let’s play Taboo!
 - JPA as Database Interface 
 - GitHub Action 
 - SonarQube 
-- HEROKU for deployment 
+- Google Cloud for deployment 
 - Spring WebSocket 
 
 ## High-level components
