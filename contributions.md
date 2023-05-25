@@ -183,3 +183,11 @@
 - [#230](https://github.com/sopra-fs23-group-05/Client/issues/230) Implementation of a notification sound that is played when a new card is drawn.
 - [#238](https://github.com/sopra-fs23-group-05/Client/issues/238) Display the remaining users to start the game.
 - [#258](https://github.com/sopra-fs23-group-05/Client/issues/258) When clicking the Start Game button, change the button to Loading.
+
+## Felix
+- [#168](https://github.com/sopra-fs23-group-05/Server/issues/168) Send information to clients when new card is drawn.
+- [#247](https://github.com/sopra-fs23-group-05/Server/issues/247) Fix card ws.
+- [#249](https://github.com/sopra-fs23-group-05/Server/issues/249) Fix timer ws.
+- [#101](https://github.com/sopra-fs23-group-05/Client/issues/101) Correct the roles of the teams and players in Game.js.
+
+
