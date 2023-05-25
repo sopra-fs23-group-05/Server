@@ -190,4 +190,10 @@
 - [#249](https://github.com/sopra-fs23-group-05/Server/issues/249) Fix timer ws.
 - [#101](https://github.com/sopra-fs23-group-05/Client/issues/101) Correct the roles of the teams and players in Game.js.
 
+## Melea
+- [#113](https://github.com/sopra-fs23-group-05/Client/issues/113) Display a “Finish” Button on Game page of the lobby leader.
+- [#114](https://github.com/sopra-fs23-group-05/Client/issues/114) Implement event listener when the “Finish” button is clicked.
+- [#115](https://github.com/sopra-fs23-group-05/Client/issues/115) Send a request to the server to indicate that the game has finished.
+- [#116](https://github.com/sopra-fs23-group-05/Client/issues/116) Redirect players to endscreen.
+- [#117](https://github.com/sopra-fs23-group-05/Client/issues/117) Show a mesage that a new card is drawn.
 
