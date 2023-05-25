@@ -47,4 +47,7 @@ Possible features that new developers can add
 - Tom Meier
 
 ## License
-Check [License.md](https://github.com/sopra-fs23-group-05/Server/blob/main/LICENSE) for further information 
+Check [License.md](https://github.com/sopra-fs23-group-05/Server/blob/main/LICENSE) for further information
+
+## Acknowledgement
+As a group, we would like to extend our heartfelt thanks to Luis, our remarkable TA, for his exceptional support throughout this project. His unwavering dedication, guidance, and patience have been instrumental in our collective success, and we are truly grateful for his expertise and encouragement. Working with Luis has been an invaluable learning experience for all of us, and we feel fortunate to have had him as our TA.
