@@ -267,11 +267,11 @@ public class LobbyService {
         return remainingPlayers;
     }
 
-    public void deleteUsersNotInTeam(int accessCode){
+    public void deleteUsersNotInTeam(int accessCode) {
         Lobby lobby = lobbyRepository.findByAccessCode(accessCode);
         List<User> allUsers = lobby.getLobbyUsers();
-        for(int i = 0; i<allUsers.size(); i++){
-            if(!lobby.isUserInTeam1(allUsers.get(i)) && !lobby.isUserInTeam2(allUsers.get(i))){
+        for (int i = 0; i < allUsers.size(); i++) {
+            if (!lobby.isUserInTeam1(allUsers.get(i)) && !lobby.isUserInTeam2(allUsers.get(i))) {
                 leaveLobby(accessCode, Math.toIntExact(allUsers.get(i).getId()));
             }
         }

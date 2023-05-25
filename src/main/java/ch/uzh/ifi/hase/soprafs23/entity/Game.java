@@ -46,6 +46,10 @@ public class Game {
         return accessCode;
     }
 
+    public void setAccessCode(int accessCode) {
+        this.accessCode = accessCode;
+    }
+
     public int getRoundsPlayed() {
         return (int) Math.ceil(roundsPlayed); //return the rounded number of rounds played
     }
@@ -54,40 +58,36 @@ public class Game {
         return settings;
     }
 
-    public Team getTeam1() {
-        return team1;
-    }
-
-    public Team getTeam2() {
-        return team2;
-    }
-
-    public Turn getTurn() {
-        return turn;
-    }
-
-    public void setAccessCode(int accessCode) {
-        this.accessCode = accessCode;
-    }
-
-    public void incrementRoundsPlayed() {
-        this.roundsPlayed = this.roundsPlayed + 0.5;
-    }
-
     public void setSettings(Settings settings) {
         this.settings = settings;
+    }
+
+    public Team getTeam1() {
+        return team1;
     }
 
     public void setTeam1(Team team1) {
         this.team1 = team1;
     }
 
+    public Team getTeam2() {
+        return team2;
+    }
+
     public void setTeam2(Team team2) {
         this.team2 = team2;
     }
 
+    public Turn getTurn() {
+        return turn;
+    }
+
     public void setTurn(Turn turn) {
         this.turn = turn;
+    }
+
+    public void incrementRoundsPlayed() {
+        this.roundsPlayed = this.roundsPlayed + 0.5;
     }
 
     public Player getLeader() {

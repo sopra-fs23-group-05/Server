@@ -45,11 +45,11 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public void setLeader(boolean isLeader) {
-        this.isLeader = isLeader;
-    }
-
     public boolean isLeader() {
         return isLeader;
+    }
+
+    public void setLeader(boolean isLeader) {
+        this.isLeader = isLeader;
     }
 }

@@ -35,6 +35,11 @@ class GameControllerTest {
     @MockBean
     private GameService gameService;
 
+    private static String asJsonString(Object obj) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(obj);
+    }
+
     @Test
     void createGame_validInput_gameCreated() throws Exception {
         Game game = new Game();
@@ -151,11 +156,6 @@ class GameControllerTest {
 
         mockMvc.perform(post("/games/{accessCode}/cards", accessCode).contentType(MediaType.APPLICATION_JSON).content(asJsonString(cardDTO))).andExpect(status().isCreated());
         Mockito.verify(gameService, times(1)).createCard(eq(accessCode), any(Card.class));
-    }
-
-    private static String asJsonString(Object obj) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(obj);
     }
 
 

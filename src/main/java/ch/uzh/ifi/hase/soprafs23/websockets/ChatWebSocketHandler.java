@@ -24,6 +24,13 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         gameService.initializeChatWebSocketHandler(this);
     }
 
+    /**
+     * Extracts the access code from a WebSocketSession object.
+     */
+    private static int getAccessCode(WebSocketSession session) {
+        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
+    }
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         int accessCode = getAccessCode(session);
@@ -88,15 +95,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     }
 
     /**
-     * Extracts the access code from a WebSocketSession object.
+     * Inform the clients that a new card was drawn.
      */
-    private static int getAccessCode(WebSocketSession session) {
-        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
-    }
-
-
-    /** Inform the clients that a new card was drawn. */
-    public void sendInformationCallBack(int accessCode, String information){
+    public void sendInformationCallBack(int accessCode, String information) {
         String messageString = "{\"accessCode\":\"" + accessCode + "\", \"userId\":" + -1 + ", \"message\":\"" + information + "\", \"type\":\"information\"}";
         TextMessage message = new TextMessage(messageString);
         try {

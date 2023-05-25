@@ -40,22 +40,21 @@ public class Lobby {
         return accessCode;
     }
 
-    public User getLobbyLeader() {
-        return lobbyLeader;
-    }
-
-    public Settings getSettings() {
-        return aSettings;
-    }
-
-
     public void setAccessCode(int accessCode) {
         this.accessCode = accessCode;
 
     }
 
+    public User getLobbyLeader() {
+        return lobbyLeader;
+    }
+
     public void setLobbyLeader(User lobbyLeader) {
         this.lobbyLeader = lobbyLeader;
+    }
+
+    public Settings getSettings() {
+        return aSettings;
     }
 
     public void setSettings(Settings aSettings) {
@@ -126,7 +125,8 @@ public class Lobby {
         //check if fair join is possible (difference in team size is less than or equal to 1)
         if (teamNr == 1) {
             return sizeTeam1 - sizeTeam2 <= 1;
-        } else {
+        }
+        else {
             return sizeTeam2 - sizeTeam1 <= 1;
         }
     }

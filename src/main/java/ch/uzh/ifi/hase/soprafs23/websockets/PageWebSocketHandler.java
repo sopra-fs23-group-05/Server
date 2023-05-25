@@ -24,6 +24,13 @@ public class PageWebSocketHandler extends TextWebSocketHandler {
         this.lobbyService = lobbyService;
     }
 
+    /**
+     * Extracts the access code from a WebSocketSession object.
+     */
+    private static int getAccessCode(WebSocketSession session) {
+        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
+    }
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         int accessCode = getAccessCode(session);
@@ -51,18 +58,12 @@ public class PageWebSocketHandler extends TextWebSocketHandler {
 
         // If the game was deleted, delete the mapping.
 
-        try{
+        try {
             lobbyService.getLobby(accessCode);
-        }catch (ResponseStatusException e){
+        }
+        catch (ResponseStatusException e) {
             webSocketSessions.remove(accessCode);
         }
-    }
-
-    /**
-     * Extracts the access code from a WebSocketSession object.
-     */
-    private static int getAccessCode(WebSocketSession session) {
-        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 
     public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {

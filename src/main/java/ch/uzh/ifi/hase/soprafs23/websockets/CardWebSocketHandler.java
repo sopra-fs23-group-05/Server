@@ -25,6 +25,13 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
         gameService.initializeCardWebSocketHandler(this);
     }
 
+    /**
+     * Extracts the access code from a WebSocketSession object.
+     */
+    private static int getAccessCode(WebSocketSession session) {
+        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
+    }
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws IOException {
         int accessCode = getAccessCode(session);
@@ -39,6 +46,10 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
         String outCardStringWithTurnPoints = outCardString.substring(0, outCardString.length() - 1) + ", \"turnPoints\":\"" + 0 + '\"' + "}";
         session.sendMessage(new TextMessage(outCardStringWithTurnPoints));
     }
+
+    /* Send new card to all clients after a correct guess.
+     * I could have a method that sends stuff to clients without first receiving a message to trigger it.
+     * I would inject this CardWebSocketHandler into the gameService and call this method from there. */
 
     // Handle the client requesting a card
     @Override
@@ -81,10 +92,6 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    /* Send new card to all clients after a correct guess.
-     * I could have a method that sends stuff to clients without first receiving a message to trigger it.
-     * I would inject this CardWebSocketHandler into the gameService and call this method from there. */
-
     /* Make a method that observes the Turn and realizes, when a new card is drawn. */
     public void callBack(int accessCode, Card outCard, int turnPoints) {
         // Convert the card to a TextMessage object
@@ -115,13 +122,6 @@ public class CardWebSocketHandler extends TextWebSocketHandler {
         catch (ResponseStatusException e) {
             webSocketSessions.remove(accessCode);
         }
-    }
-
-    /**
-     * Extracts the access code from a WebSocketSession object.
-     */
-    private static int getAccessCode(WebSocketSession session) {
-        return Integer.parseInt(session.getUri().toString().substring(session.getUri().toString().lastIndexOf('/') + 1));
     }
 
     public HashMap<Integer, ArrayList<WebSocketSession>> getWebSocketSessions() {

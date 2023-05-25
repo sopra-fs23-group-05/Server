@@ -18,12 +18,12 @@ public class TeamGetDTO {
 
     private int idxClueGiver;
 
-    public void setIdxClueGiver(int idxClueGiver) {
-        this.idxClueGiver = idxClueGiver;
-    }
-
     public int getIdxClueGiver() {
         return idxClueGiver;
+    }
+
+    public void setIdxClueGiver(int idxClueGiver) {
+        this.idxClueGiver = idxClueGiver;
     }
 
     public List<Player> getPlayers() {
@@ -34,28 +34,28 @@ public class TeamGetDTO {
         this.players = players;
     }
 
-    public void setaRole(Role aRole) {
-        this.aRole = aRole;
-    }
-
     public Role getaRole() {
         return aRole;
     }
 
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
+    public void setaRole(Role aRole) {
+        this.aRole = aRole;
     }
 
     public int getTeamId() {
         return teamId;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 
     public int getPoints() {
         return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
 }

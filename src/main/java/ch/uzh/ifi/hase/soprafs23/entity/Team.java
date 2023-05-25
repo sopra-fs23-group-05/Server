@@ -39,12 +39,12 @@ public class Team {
         points = 0;
     }
 
-    public void setIdxClueGiver(int idxClueGiver) {
-        this.idxClueGiver = idxClueGiver;
-    }
-
     public int getIdxClueGiver() {
         return idxClueGiver;
+    }
+
+    public void setIdxClueGiver(int idxClueGiver) {
+        this.idxClueGiver = idxClueGiver;
     }
 
     public List<Player> getPlayers() {
@@ -55,12 +55,12 @@ public class Team {
         this.players = players;
     }
 
-    public void setaRole(Role aRole) {
-        this.aRole = aRole;
-    }
-
     public Role getaRole() {
         return aRole;
+    }
+
+    public void setaRole(Role aRole) {
+        this.aRole = aRole;
     }
 
     public void changeTurn(int scoredPoints) {
@@ -74,20 +74,20 @@ public class Team {
         }
     }
 
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
     public int getTeamId() {
         return teamId;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 
     public int getPoints() {
         return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public void addPoints(int scoredPoints) {

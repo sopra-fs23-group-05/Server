@@ -40,13 +40,11 @@ public class GameService {
     private final UserRepository userRepository;
     private final LobbyRepository lobbyRepository;
     private final LobbyService lobbyService;
-
-    private CardWebSocketHandler cardWebSocketHandler;
-    private ChatWebSocketHandler chatWebSocketHandler;
-
     private final String gameWithCode = "Game with accessCode ";
     private final String doesNotExist = " does not exist";
     private final String cardInformation = "A new card was drawn.";
+    private CardWebSocketHandler cardWebSocketHandler;
+    private ChatWebSocketHandler chatWebSocketHandler;
 
     @Autowired
     public GameService(@Qualifier("gameRepository") GameRepository gameRepository, TeamService teamService, LobbyRepository lobbyRepository, TeamRepository teamRepository, UserService userService, UserRepository userRepository, LobbyService lobbyService) {
@@ -121,7 +119,7 @@ public class GameService {
         }
 
         Card outCard = existingGame.getTurn().buzz();
-        if(outCard != null){
+        if (outCard != null) {
             chatWebSocketHandler.sendInformationCallBack(accessCode, cardInformation);
             gameRepository.flush();
         }
